@@ -10,3 +10,4 @@ Under Graduate Advisor Program
 ## Team Members
 - Joshua Connor
 - Josh Kenney
+- Nick Santini
