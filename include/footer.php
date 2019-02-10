@@ -11,7 +11,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm">
-        <small>&copy; <?php echo date("Y"); // Shows current year ?> Copyright Music Playlist Connor, Heng. </small>
+        <small>&copy; <?php echo date("Y"); // Shows current year ?> Copyright Undergraduate Advisior. </small>
       </div>
     </div>
   </div>
