@@ -1,5 +1,11 @@
 # ug-advisor
 Under Graduate Advisor Program
+
+## Guide For Use
+Download XAMPP
+Clone this repository to http directory
+open http://localhost/ug-advisior
+
 ## Stack
 - Apache
 - mysql
@@ -7,6 +13,7 @@ Under Graduate Advisor Program
 - javascript
 - html
 - css
+
 ## Team Members
 - Joshua Connor
 - Josh Kenney
