@@ -18,3 +18,4 @@ open http://localhost/ug-advisior
 - Joshua Connor
 - Josh Kenney
 - Nick Santini
+- Greg Rodriguez
