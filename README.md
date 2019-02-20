@@ -1,14 +1,19 @@
-# ug-advisor
-Under Graduate Advisor Program
+# Undergraduate Advisor
+The purpose of this program is to enable students and advisiors to create a future plan for student graduation. 
 
 ## Guide For Use
-Download XAMPP
-Clone this repository to http directory
-open http://localhost/ug-advisior
+1. [Download XAMPP](https://www.apachefriends.org/download.html)
+2. Clone this repository to http directory found in the xampp directory
+3. Open XAMPP Manager Click on "Manage Servers" tab
+4. Click "Start All" Button
+5. Click here to [Create Database](http://localhost/ug-advisor/db/start.php)
 
-## Stack
+login: snow 
+password: winter
+
+## Development Stack
 - Apache
-- mysql
+- mysql (note: mariaDB)
 - php
 - javascript
 - html
@@ -19,3 +24,5 @@ open http://localhost/ug-advisior
 - Josh Kenney (pull request)
 - Nick Santini
 - Greg Rodriguez
+
+## Database Constructor
