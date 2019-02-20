@@ -16,5 +16,6 @@ open http://localhost/ug-advisior
 
 ## Team Members
 - Joshua Connor
-- Josh Kenney
+- Josh Kenney (pull request)
 - Nick Santini
+- Greg Rodriguez
