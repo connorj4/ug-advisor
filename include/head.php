@@ -14,7 +14,7 @@
 <meta name="author" content="Joshua Connor, ">
 <link rel="icon" href="<?php echo BASE_URL; ?>favicon.ico">
 
-<title>Music Website PLaylist</title>
+<title>Undergraduate Advisor</title>
 
 <!-- Google Font Raleway -->
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
