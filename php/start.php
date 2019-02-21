@@ -32,7 +32,7 @@ $salt = 'graduate';
 
 $create_role = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE role
-       (role_id int NOT NULL AUTO_INCREMENT,
+  (role_id int NOT NULL AUTO_INCREMENT,
 	role_type varchar(255) NOT NULL,
 	PRIMARY KEY(role_id));");
 $create_role->execute();
@@ -40,13 +40,23 @@ $create_role->close();
 
 $create_status = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE status
-       (status_id int NOT NULL AUTO_INCREMENT,
-       status_type varchar(255) NOT NULL,
+  (status_id int NOT NULL AUTO_INCREMENT,
+  status_type varchar(255) NOT NULL,
 	PRIMARY KEY(status_id));");
 $create_status->execute();
 $create_status->close();
 
 /* Below Are Tables That Have Forigen Keys */ 
+$create_dept = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE department
+	(dept_id int NOT NULL AUTO_INCREMENT,
+	dept_name varchar(255) NOT NULL,
+	creation_date timestamp,
+  status_id int NOT NULL,
+	PRIMARY KEY(dept_id),
+  FOREIGN KEY(status_id) REFERENCES status(status_id));");
+$create_dept->execute();
+$create_dept->close();
 
 $create_sysadmin = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE administrator
@@ -64,6 +74,25 @@ $create_sysadmin = $db_connection->prepare(
 	FOREIGN KEY(role_id) REFERENCES role(role_id));");
 $create_sysadmin->execute();
 $create_sysadmin->close();
+
+$create_faculty = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE faculty
+	(faculty_id int NOT NULL AUTO_INCREMENT,
+	username varchar(255) NOT NULL,
+	password varchar(255) NOT NULL,
+	faculty_email varchar(255),
+	faculty_first_name varchar(255),
+	faculty_last_name varchar(255),
+	role_id int NOT NULL,
+	dept_id int NOT NULL,
+	creation_date timestamp,
+  status_id int NOT NULL,
+	PRIMARY KEY(faculty_id),
+	FOREIGN KEY(dept_id) REFERENCES dept(dept_id),
+  FOREIGN KEY(status_id) REFERENCES status(status_id),
+	FOREIGN KEY(role_id) REFERENCES role(role_id));");
+$create_faculty->execute();
+$create_faculty->close();
 
 //-----------------------------------------------------
 // Populate Database Tables
@@ -98,9 +127,7 @@ $insert_role->close();
 $insert_status = $db_connection->prepare(
 	"INSERT INTO status 
 	(status_id, status_type) VALUES(?,?);");
-
 $insert_status->bind_param("is", $status_id, $status_title);
-
 $status_id = 1;
 $status_title = "active";
 $insert_status->execute();
@@ -108,7 +135,6 @@ $insert_status->execute();
 $status_id = 2;
 $status_title = "dormant";
 $insert_status->execute();
-
 $insert_status->close();
 
 /* Administrator */
@@ -140,9 +166,56 @@ $password = crypt("winter", $salt);
 $email = "snow@winter.edu";
 $first_name = "john";
 $last_name = "snow";
-//$creation_date = date("Y-m-d H:i:s");
 $insert_admin->execute();
+$insert_admin->close();
 
+/* Department */
+$insert_dept = $db_connection->prepare(
+	"INSERT INTO department
+	(dept_id,
+  dept_name,
+  status_id) VALUES(?,?,?);");
+	$insert_dept->bind_param("isi",
+  $dept_id,
+  $dept_name,
+  $status_id);
+
+$dept_id = 1;	
+$dept_name = "Computer Science";
+$status_id = 1;
+$insert_dept->execute();
+$insert_dept->close();
+
+/* Faculty */
+$insert_faculty = $db_connection->prepare(
+	"INSERT INTO faculty 
+	(faculty_id,
+  role_id,
+  status_id,
+	username,
+	password,
+	faculty_email,
+	faculty_first_name,
+	faculty_last_name) VALUES(?,?,?,?,?,?,?,?);");
+$insert_faculty->bind_param("iiisssss",
+  $faculty_id,
+  $role_id,
+  $status_id,
+	$username,
+	$password,
+	$faculty_email,
+	$faculty_first_name,
+	$faculty_last_name);
+
+$faculty_id = 1;	
+$role_id = 1;
+$status_id = 1;
+$username = "snow";
+$password = crypt("winter", $salt);
+$faculty_email = "snow@winter.edu";
+$faculty_first_name = "john";
+$faculty_last_name = "snow";
+$insert_admin->execute();
 $insert_admin->close();
 
 //-----------------------------------------------------

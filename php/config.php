@@ -20,5 +20,9 @@ try {
 } catch (Exception $e) {
   echo 'Caught exception: ',  $e->getMessage(), "\n";
 } 
+
+/* Define base url path */
+  define( "BASE_URL", "/ug-advisor");
+  define("ROOT_PATH", $_SERVER["DOCUMENT_ROOT"] . "/ug-advisor");
   
 ?>
