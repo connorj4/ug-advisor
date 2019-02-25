@@ -30,6 +30,7 @@ $salt = 'graduate';
 // Create Database Tables
 //-----------------------------------------------------
 
+/* Role */
 $create_role = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE role
   (role_id int NOT NULL AUTO_INCREMENT,
@@ -38,6 +39,7 @@ $create_role = $db_connection->prepare(
 $create_role->execute();
 $create_role->close();
 
+/* Status */
 $create_status = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE status
   (status_id int NOT NULL AUTO_INCREMENT,
@@ -47,6 +49,8 @@ $create_status->execute();
 $create_status->close();
 
 /* Below Are Tables That Have Forigen Keys */ 
+
+/* Department */
 $create_dept = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE department
 	(dept_id int NOT NULL AUTO_INCREMENT,
@@ -58,6 +62,7 @@ $create_dept = $db_connection->prepare(
 $create_dept->execute();
 $create_dept->close();
 
+/* Administrator */
 $create_sysadmin = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE administrator
 	(admin_id int NOT NULL AUTO_INCREMENT,
@@ -75,6 +80,7 @@ $create_sysadmin = $db_connection->prepare(
 $create_sysadmin->execute();
 $create_sysadmin->close();
 
+/* Faculty */
 $create_faculty = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE faculty
 	(faculty_id int NOT NULL AUTO_INCREMENT,
@@ -93,6 +99,26 @@ $create_faculty = $db_connection->prepare(
 	FOREIGN KEY(role_id) REFERENCES role(role_id));");
 $create_faculty->execute();
 $create_faculty->close();
+
+/* Student */
+$create_student = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE student
+	(faculty_id int NOT NULL AUTO_INCREMENT,
+	username varchar(255) NOT NULL,
+	password varchar(255) NOT NULL,
+	student_email varchar(255),
+	student_first_name varchar(255),
+	student_last_name varchar(255),
+	role_id int NOT NULL,
+	dept_id int NOT NULL,
+	creation_date timestamp,
+  status_id int NOT NULL,
+	PRIMARY KEY(faculty_id),
+	FOREIGN KEY(dept_id) REFERENCES student(student_id),
+  FOREIGN KEY(status_id) REFERENCES status(status_id),
+	FOREIGN KEY(role_id) REFERENCES role(role_id));");
+$create_student->execute();
+$create_student->close();
 
 //-----------------------------------------------------
 // Populate Database Tables

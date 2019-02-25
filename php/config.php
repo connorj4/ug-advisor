@@ -3,6 +3,8 @@
 // DATABASE CONNECTION
 //======================================================================
 
+include_once (realpath(dirname(__FILE__).'/php/path.php'));
+
 /* Important - Comment Error Reporting Section out before going live!!!  */
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -13,6 +15,7 @@ DEFINE('DB_HOST', "localhost");
 DEFINE('DB_USER', "root");
 DEFINE('DB_PASSWORD', ""); //Note: this should be your root password
 DEFINE('DB_NAME', "ugadvisor_db");
+DEFINE('SALT', "graduate");
 
 try {
   $db_connection = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)
@@ -20,9 +23,5 @@ try {
 } catch (Exception $e) {
   echo 'Caught exception: ',  $e->getMessage(), "\n";
 } 
-
-/* Define base url path */
-  define( "BASE_URL", "/ug-advisor");
-  define("ROOT_PATH", $_SERVER["DOCUMENT_ROOT"] . "/ug-advisor");
   
 ?>

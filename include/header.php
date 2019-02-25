@@ -20,7 +20,7 @@
           if (!isset($_SESSION['user_role'])) {
             echo '<span class="navbar-text">Currently Logged Out!</span>';
           } elseif ($_SESSION['user_role'] === 1) { // Only shows for general users
-            include_once (realpath(dirname(__FILE__, 2).'/include/nav_user.php'));
+            include_once (realpath(dirname(__FILE__, 2).'/include/nav_admin.php'));
           } elseif ($_SESSION['user_role'] === 2) { // Only shows for admin users
             include_once (realpath(dirname(__FILE__, 2).'/include/nav_admin.php'));
           } else {
@@ -30,10 +30,10 @@
         ?>
       </ul>
       <?php 
-        if (!isset($user_name)) {
+        if (!isset($login_user)) {
           echo '<span class="navbar-text">Please login or create an account.</span>';
         } else {
-          echo '<span class="navbar-text">Hello '.$user_name.'</span>';  
+          echo '<span class="navbar-text">Hello '.$login_user.'</span>';  
         }
       ?>
     </div>
