@@ -94,7 +94,7 @@ $create_faculty = $db_connection->prepare(
 	creation_date timestamp,
   status_id int NOT NULL,
 	PRIMARY KEY(faculty_id),
-	FOREIGN KEY(dept_id) REFERENCES dept(dept_id),
+	FOREIGN KEY(dept_id) REFERENCES department(dept_id),
   FOREIGN KEY(status_id) REFERENCES status(status_id),
 	FOREIGN KEY(role_id) REFERENCES role(role_id));");
 $create_faculty->execute();
@@ -103,7 +103,7 @@ $create_faculty->close();
 /* Student */
 $create_student = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE student
-	(faculty_id int NOT NULL AUTO_INCREMENT,
+	(student_id int NOT NULL AUTO_INCREMENT,
 	username varchar(255) NOT NULL,
 	password varchar(255) NOT NULL,
 	student_email varchar(255),
@@ -113,7 +113,7 @@ $create_student = $db_connection->prepare(
 	dept_id int NOT NULL,
 	creation_date timestamp,
   status_id int NOT NULL,
-	PRIMARY KEY(faculty_id),
+	PRIMARY KEY(student_id),
 	FOREIGN KEY(dept_id) REFERENCES student(student_id),
   FOREIGN KEY(status_id) REFERENCES status(status_id),
 	FOREIGN KEY(role_id) REFERENCES role(role_id));");
@@ -201,7 +201,7 @@ $insert_dept = $db_connection->prepare(
 	(dept_id,
   dept_name,
   status_id) VALUES(?,?,?);");
-	$insert_dept->bind_param("isi",
+$insert_dept->bind_param("isi",
   $dept_id,
   $dept_name,
   $status_id);
@@ -214,35 +214,38 @@ $insert_dept->close();
 
 /* Faculty */
 $insert_faculty = $db_connection->prepare(
-	"INSERT INTO faculty 
+	"INSERT INTO faculty
 	(faculty_id,
-  role_id,
-  status_id,
 	username,
 	password,
 	faculty_email,
 	faculty_first_name,
-	faculty_last_name) VALUES(?,?,?,?,?,?,?,?);");
-$insert_faculty->bind_param("iiisssss",
-  $faculty_id,
-  $role_id,
-  $status_id,
+	faculty_last_name,
+  role_id,
+	dept_id,
+  status_id) VALUES(?,?,?,?,?,?,?,?,?);");
+$insert_faculty->bind_param("isssssiii",
+	$faculty_id,
 	$username,
 	$password,
 	$faculty_email,
 	$faculty_first_name,
-	$faculty_last_name);
+	$faculty_last_name,
+	$role_id,
+	$dept_id,
+	$status_id);
 
-$faculty_id = 1;	
-$role_id = 1;
+$faculty_id = 1;
+$username = "prof";
+$password = crypt("sugar", $salt);
+$faculty_email = "prof@place.edu";
+$faculty_first_name = "mike";
+$faculty_last_name = "ike";	
+$role_id = 2;
+$dept_id = 1;
 $status_id = 1;
-$username = "snow";
-$password = crypt("winter", $salt);
-$faculty_email = "snow@winter.edu";
-$faculty_first_name = "john";
-$faculty_last_name = "snow";
-$insert_admin->execute();
-$insert_admin->close();
+$insert_faculty->execute();
+$insert_faculty->close();
 
 //-----------------------------------------------------
 // Finish Database Creation
