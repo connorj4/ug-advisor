@@ -1,12 +1,13 @@
 <?php
 //======================================================================
-// LOGIN PAGE
+// ADMIN DASHBOARD PAGE
 //======================================================================
   /* Quick Paths */
-  include_once (realpath(dirname(__FILE__).'/php/path.php'));
+  /* note the 2 after __FILE__, because it's 2 directories deep */
+  include_once (realpath(dirname(__FILE__, 2).'/php/path.php'));
 
   /* Page Name */
-  $page_name = "home";
+  $page_name = "admin";
 
   /* Start The Session */
   session_start(); 
@@ -21,24 +22,10 @@
   <?php include_once (ROOT_PATH . '/include/header.php'); ?>
     <main role="main" class="container">
       <div class="row justify-content-sm-center">
-        <div class="col-sm-4">  <!-- 4 coulumns -->
-          <h1>Login</h1>
-          <form action="<?php echo BASE_URL; ?>/php/authenticate.php" method="post">
-            <div class="form-group">
-              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="username" placeholder="Enter username" name="username" required>
-            </div>
-            <div class="form-group">
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter Password" name="password" required>
-            </div>
-            <?php
-              /* Error Message */
-              if (isset($error)) {
-                // uses bootstrap alert style for error messages
-                echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
-              }
-            ?>
-            <button type="submit" class="btn btn-primary">Log In</button>
-          </form>
+        <div class="col-sm-9">
+          <!-- Content for the webpage starts here -->
+          <h1>Page Title</h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et auctor lectus. Donec a est at orci ultrices finibus. Ut et gravida est. Cras ut pretium mi, et sagittis dui. Nunc facilisis quam nibh, id ornare magna sodales in. Proin viverra elementum odio ut hendrerit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
           
         </div>
       </div>
