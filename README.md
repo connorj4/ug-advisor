@@ -6,7 +6,7 @@ The purpose of this program is to enable students and advisiors to create a futu
 2. Clone this repository to http directory found in the xampp directory
 3. Open XAMPP Manager Click on "Manage Servers" tab
 4. Click "Start All" Button
-5. Click here to [Create Database](http://localhost/ug-advisor/db/start.php)
+5. Click here to [Create Database](http://localhost/ug-advisor/php/start.php)
 
 login: snow 
 password: winter
