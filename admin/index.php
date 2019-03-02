@@ -4,13 +4,10 @@
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
-  include_once (realpath(dirname(__FILE__, 2).'/php/path.php'));
+  include_once (realpath(dirname(__FILE__, 2).'/php/session.php'));
 
   /* Page Name */
   $page_name = "admin";
-
-  /* Start The Session */
-  session_start(); 
 
 ?>
 <!doctype html>
@@ -24,8 +21,127 @@
       <div class="row justify-content-sm-center">
         <div class="col-sm-9">
           <!-- Content for the webpage starts here -->
-          <h1>Page Title</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et auctor lectus. Donec a est at orci ultrices finibus. Ut et gravida est. Cras ut pretium mi, et sagittis dui. Nunc facilisis quam nibh, id ornare magna sodales in. Proin viverra elementum odio ut hendrerit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+          <h1>Welcome <?php echo $user_name; ?></h1>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-header">
+                  <strong>Students Without Advisors</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text bigger-icon"><i class="fas fa-user-friends"></i> [count]</p>
+                  <a href="#" class="btn btn-primary">Update</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+              <div class="card-header">
+                Courses without programs
+              </div>
+                <div class="card-body">
+                  <p class="card-text bigger-icon"><i class="fas fa-user-graduate"></i> [count]</p>
+                  <a href="#" class="btn btn-primary">Update</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <h5>Aministration</h5>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-header">
+                Studnet
+                </div>
+                <div class="card-body">
+                  <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-header">
+                Faculty
+                </div>
+                <div class="card-body">
+                  <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-header">
+                Advisior
+                </div>
+                <div class="card-body">
+                  <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-header">
+                Course
+                </div>
+                <div class="card-body">
+                  <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-header">
+                PreRequisit
+                </div>
+                <div class="card-body">
+                  <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-header">
+                Program
+                </div>
+                <div class="card-body">
+                  <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-header">
+                Deparment
+                </div>
+                <div class="card-body">
+                  <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-header">
+                Semester
+                </div>
+                <div class="card-body">
+                  <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div>
+            </div>
+
+            </div>
+
+             
+                  
           
         </div>
       </div>

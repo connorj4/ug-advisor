@@ -6,6 +6,8 @@
 include_once (realpath(dirname(__FILE__).'/path.php'));
 include_once (realpath(dirname(__FILE__).'/config.php'));
 
+session_start();
+
 //-----------------------------------------------------
 // Authenticate
 //-----------------------------------------------------
@@ -48,17 +50,17 @@ if (isset($_POST['submit'])) {
         if ($_SESSION['user_role'] == 1) {
           header("location: " . BASE_URL . "/admin");
         } elseif ($_SESSION['user_role'] == 2) {
-          header("location:" . BASE_URL . "/admin");
+          header("location:" . BASE_URL . "/faculty");
         } elseif ($_SESSION['user_role'] == 3) {
-          header("location:" . BASE_URL . "/admin");
+          header("location:" . BASE_URL . "/student");
         } else {
-          echo "problem...";
+          $_SESSION['message'] = "Login Failed";
         }
       
       }
   } else {
     echo "Username or Password did not match!";
-    header("location:" . ROOT_PATH );
+    header("location:" . BASE_URL );
   }
   // close the mysql connection
   $select_user->close();

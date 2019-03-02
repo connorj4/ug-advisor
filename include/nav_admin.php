@@ -28,6 +28,7 @@
   </div>
 </li>
 <li class="nav-item"><a class="nav-link" href="<?php echo BASE_URL; ?>/admin/user.php">Users</a></li>
--->
+
 <li class="nav-item"><a class="nav-link" href="<?php echo SRC_PATH; ?>/logout.php">Logout</a></li>
 
+-->

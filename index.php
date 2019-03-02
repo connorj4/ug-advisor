@@ -31,10 +31,15 @@
               <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter Password" name="password" required>
             </div>
             <?php
-              /* Error Message */
+              /* Error Report */
               if (isset($error)) {
                 // uses bootstrap alert style for error messages
                 echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
+              }
+              /* Message Report */
+              if (isset($message)) {
+                // uses bootstrap alert style for error messages
+                echo '<div class="alert alert-warning" role="warning">' . $message . '</div>';
               }
             ?>
             <button type="submit" class="btn btn-primary">Log In</button>

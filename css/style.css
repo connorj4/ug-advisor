@@ -53,3 +53,8 @@ body > .container {
 .card-deck {
   margin-bottom: 30px;
 }
+
+/* bigger icons */
+.bigger-icon {
+  font-size: 2em;
+}

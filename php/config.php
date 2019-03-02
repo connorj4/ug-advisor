@@ -3,7 +3,7 @@
 // DATABASE CONNECTION
 //======================================================================
 
-include_once (realpath(dirname(__FILE__).'/php/path.php'));
+include_once (ROOT_PATH.'/php/path.php');
 
 /* Important - Comment Error Reporting Section out before going live!!!  */
 error_reporting(E_ALL);
