@@ -6,7 +6,7 @@
 include_once (realpath(dirname(__FILE__).'/path.php'));
 include_once (realpath(dirname(__FILE__).'/config.php'));
 
-session_start();
+
 
 //-----------------------------------------------------
 // Authenticate
@@ -19,10 +19,8 @@ if (isset($_POST['submit'])) {
 } else {
 /* Check the Username and Password */
   if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $salt = SALT;
     $username = $_POST['username'];
-    //$pass = $_POST["password"]; // Fix use salt
-    $pass = crypt($_POST["password"], $salt );
+    $pass = crypt($_POST["password"], SALT );
     $user_roll = 0;
   
     // Protect against MYSQL injection
@@ -33,7 +31,11 @@ if (isset($_POST['submit'])) {
 
     // SQL query to fetch information and find match user
     $select_user = $db_connection->prepare(
-      "SELECT username,role_id FROM administrator WHERE username = ? AND password = ? LIMIT 1");
+      "SELECT username, role_id 
+        FROM administrator JOIN faculty
+          WHERE username = ? AND password = ? ");
+
+      //"SELECT username,role_id FROM administrator WHERE username = ? AND password = ? LIMIT 1");
     $select_user->bind_param("ss", $username, $pass);
     $select_user->execute();
     $select_user->bind_result($user_name, $user_role);
@@ -54,7 +56,8 @@ if (isset($_POST['submit'])) {
         } elseif ($_SESSION['user_role'] == 3) {
           header("location:" . BASE_URL . "/student");
         } else {
-          $_SESSION['message'] = "Login Failed";
+          $message = "Login Failed";
+          return $message;
         }
       
       }

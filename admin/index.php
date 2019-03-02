@@ -53,7 +53,7 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                Studnet
+                Student
                 </div>
                 <div class="card-body">
                   <a href="#" class="btn btn-primary">View</a>
@@ -97,7 +97,7 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                PreRequisit
+                Prerequisit
                 </div>
                 <div class="card-body">
                   <a href="#" class="btn btn-primary">View</a>
@@ -119,7 +119,7 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                Deparment
+                Department
                 </div>
                 <div class="card-body">
                   <a href="#" class="btn btn-primary">View</a>

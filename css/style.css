@@ -58,3 +58,7 @@ body > .container {
 .bigger-icon {
   font-size: 2em;
 }
+
+.card {
+  margin-bottom: 1em;
+}

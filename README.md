@@ -8,8 +8,8 @@ The purpose of this program is to enable students and advisiors to create a futu
 4. Click "Start All" Button
 5. Click here to [Create Database](http://localhost/ug-advisor/php/start.php)
 
-login: snow 
-password: winter
+Admin - login: snow  password: winter
+Faculty - login: prof  password: sugar
 
 ## Development Stack
 - Apache
