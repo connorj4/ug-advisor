@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// CREATE THE DATABASE 
+// CREATE THE DATABASE
 //======================================================================
 
 /* the first connection to the database */
@@ -14,7 +14,7 @@ try {
     OR die("Connection failed: " . $db_connection->connect_error);
 } catch (Exception $e) {
   echo 'Caught exception: ',  $e->getMessage(), "\n";
-} 
+}
 
 /* Creates the Database */
 $create_stmt = "CREATE OR REPLACE DATABASE ugadvisor_db";
@@ -48,7 +48,7 @@ $create_status = $db_connection->prepare(
 $create_status->execute();
 $create_status->close();
 
-/* Below Are Tables That Have Forigen Keys */ 
+/* Below Are Tables That Have Forigen Keys */
 
 /* Department */
 $create_dept = $db_connection->prepare(
@@ -126,7 +126,7 @@ $create_student->close();
 
 /* Role */
 $insert_role = $db_connection->prepare(
-	"INSERT INTO role 
+	"INSERT INTO role
 	(role_id, role_type) VALUES(?,?);");
 
 $insert_role->bind_param("is", $role_id, $role_title);
@@ -151,7 +151,7 @@ $insert_role->close();
 
 /* Status */
 $insert_status = $db_connection->prepare(
-	"INSERT INTO status 
+	"INSERT INTO status
 	(status_id, status_type) VALUES(?,?);");
 $insert_status->bind_param("is", $status_id, $status_title);
 $status_id = 1;
@@ -162,6 +162,40 @@ $status_id = 2;
 $status_title = "dormant";
 $insert_status->execute();
 $insert_status->close();
+
+/* Student */
+$insert_student = $db_connection->prepare(
+	"INSERT INTO student
+	(student_id,
+  role_id,
+  status_id,
+	username,
+	password,
+	email,
+	first_name,
+	last_name) VALUES(?,?,?,?,?,?,?,?,?);");
+$insert_student->bind_param("iiiisssss",
+  $student_id,
+  $role_id,
+  $dept_id,
+  $status_id,
+	$username,
+	$password,
+	$email,
+	$first_name,
+	$last_name);
+
+$student_id = 1;
+$role_id = 1;
+$dept_id = 1;
+$status_id = 1;
+$username = "ken";
+$password = crypt("SCSU2019", $salt);
+$email = "ken@smith.edu";
+$first_name = "ken";
+$last_name = "smith";
+$insert_student->execute();
+$insert_student->close();
 
 /* Administrator */
 $insert_admin = $db_connection->prepare(
@@ -184,7 +218,7 @@ $insert_admin->bind_param("iiisssss",
 	$first_name,
 	$last_name);
 
-$admin_id = 1;	
+$admin_id = 1;
 $role_id = 1;
 $status_id = 1;
 $username = "snow";
@@ -206,7 +240,7 @@ $insert_dept->bind_param("isi",
   $dept_name,
   $status_id);
 
-$dept_id = 1;	
+$dept_id = 1;
 $dept_name = "Computer Science";
 $status_id = 1;
 $insert_dept->execute();
@@ -240,7 +274,7 @@ $username = "prof";
 $password = crypt("sugar", $salt);
 $faculty_email = "prof@place.edu";
 $faculty_first_name = "mike";
-$faculty_last_name = "ike";	
+$faculty_last_name = "ike";
 $role_id = 2;
 $dept_id = 1;
 $status_id = 1;
