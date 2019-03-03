@@ -1,5 +1,5 @@
 # Undergraduate Advisor
-The purpose of this program is to enable students and advisiors to create a future plan for student graduation. 
+The purpose of this program is to enable students and advisiors to create a future plan for student graduation.
 
 ## Guide For Use
 1. [Download XAMPP](https://www.apachefriends.org/download.html)
@@ -8,8 +8,12 @@ The purpose of this program is to enable students and advisiors to create a futu
 4. Click "Start All" Button
 5. Click here to [Create Database](http://localhost/ug-advisor/php/start.php)
 
-login: snow 
+login: snow
 password: winter
+
+Student Login:
+login: ken
+password: SCSU2019
 
 ## Development Stack
 - Apache
