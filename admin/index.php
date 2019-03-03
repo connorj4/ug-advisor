@@ -53,7 +53,7 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                Student
+                <i class="fas fa-book-reader"></i> Student
                 </div>
                 <div class="card-body">
                   <a href="#" class="btn btn-primary">View</a>
