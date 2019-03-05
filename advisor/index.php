@@ -24,9 +24,50 @@
       <div class="row justify-content-sm-center">
         <div class="col-sm-9">
           <!-- Content for the webpage starts here -->
-          <h1>Page Title</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et auctor lectus. Donec a est at orci ultrices finibus. Ut et gravida est. Cras ut pretium mi, et sagittis dui. Nunc facilisis quam nibh, id ornare magna sodales in. Proin viverra elementum odio ut hendrerit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-          
+          <h1>Advisor </h1>
+          <!-- Students -->
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Permission</th>
+                <th scope="col">View Record</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mike</td>
+                <td>Hunt</td>
+                <td>@mdo</td>
+                <td>
+                <form action="//" type="post">
+	                <button type="submit" value="DoIt">This</button>
+                </form>
+</td>
+
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Billy bob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+                <td>@mdo</td>
+
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+                <td>@mdo</td>
+
+              </tr>
+            </tbody>
+          </table>
+
         </div>
       </div>
     </main>
