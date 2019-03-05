@@ -28,6 +28,9 @@
   if(!isset($user_name)){
     header("location: " . BASE_URL);
   }
+  if(!isset($user_role)){
+    header("location: " . BASE_URL);
+  }
 
   $select_user->close();
   // Close the mysql connection
