@@ -14,7 +14,7 @@
 
   $select_user = $db_connection->prepare(
     /* Need to update this section FROM table */
-    "SELECT username,role_id FROM administrator WHERE username = ?");
+    "SELECT username,role_id FROM user WHERE username = ?");
   $select_user->bind_param("s", $user_check);
   $select_user->execute();
   $select_user->bind_result($user_name, $user_role);

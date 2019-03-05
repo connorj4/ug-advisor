@@ -36,7 +36,7 @@ if (isset($_POST['submit'])) {
         FROM administrator JOIN faculty
           WHERE username = ? AND password = ? ");
 */
-      "SELECT username,role_id FROM administrator WHERE username = ? AND password = ? LIMIT 1");
+      "SELECT username,role_id FROM user WHERE username = ? AND password = ? LIMIT 1");
     $select_user->bind_param("ss", $username, $pass);
     $select_user->execute();
     $select_user->bind_result($user_name, $user_role);
