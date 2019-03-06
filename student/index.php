@@ -1,12 +1,13 @@
 <?php
 //======================================================================
-// LOGIN PAGE
+// STUDENT DASHBOARD PAGE
 //======================================================================
   /* Quick Paths */
-  include_once (realpath(dirname(__FILE__).'/php/path.php'));
+  /* note the 2 after __FILE__, because it's 2 directories deep */
+  include_once (realpath(dirname(__FILE__, 2).'/php/path.php'));
 
   /* Page Name */
-  $page_name = "home";
+  $page_name = "student";
 
   /* Start The Session */
   session_start(); 
@@ -19,27 +20,164 @@
   </head>
   <body class="<?php echo $page_name; ?>">
   <?php include_once (ROOT_PATH . '/include/header.php'); ?>
-    <main role="main" class="container">
+    <main role="main" class="container text-center">
       <div class="row justify-content-sm-center">
-        <div class="col-sm-4">
-          <h1>Login</h1>
-          <form action="<?php echo BASE_URL; ?>/php/authenticate.php" method="post">
-            <div class="form-group">
-              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="username" placeholder="Enter username" name="username" required>
-            </div>
-            <div class="form-group">
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter Password" name="password" required>
-            </div>
-            <?php
-              /* Error Message */
-              if (isset($error)) {
-                // uses bootstrap alert style for error messages
-                echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
-              }
-            ?>
-            <button type="submit" class="btn btn-primary">Log In</button>
-          </form>
-          
+        <div class="col-sm-9">
+          <!-- Content for the webpage starts here -->
+          <h1>Student [NAME] Advisor [NAME] </h1>
+          <p>Lorem ipsum dolor sit amet,</p> 
+
+          <!-- GRADUATION  MAP -->
+
+          <!-- YEAR -->
+          <div class="row">
+            <!-- TERM -->
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-header">
+                  [YEAR] - Fall
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                </ul>
+                <div class="card-footer">
+                <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div><!-- /card -->
+            </div><!-- /col 6 -->
+            <!-- TERM -->
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-header">
+                  [YEAR] - Spring
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                </ul>
+                <div class="card-footer">
+                <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div><!-- /card -->
+            </div><!-- /col 6 -->
+          </div><!-- /row -->
+          <hr>
+          <div class="row">
+            <!-- TERM -->
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-header">
+                  [YEAR] - Fall
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                </ul>
+                <div class="card-footer">
+                <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div><!-- /card -->
+            </div><!-- /col 6 -->
+            <!-- TERM -->
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-header">
+                  [YEAR] - Spring
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                </ul>
+                <div class="card-footer">
+                <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div><!-- /card -->
+            </div><!-- /col 6 -->
+          </div><!-- /row -->
+          <hr>
+          <div class="row">
+            <!-- TERM -->
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-header">
+                  [YEAR] - Fall
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                </ul>
+                <div class="card-footer">
+                <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div><!-- /card -->
+            </div><!-- /col 6 -->
+            <!-- TERM -->
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-header">
+                  [YEAR] - Spring
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                </ul>
+                <div class="card-footer">
+                <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div><!-- /card -->
+            </div><!-- /col 6 -->
+          </div><!-- /row -->
+          <hr>
+          <div class="row">
+            <!-- TERM -->
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-header">
+                  [YEAR] - Fall
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                </ul>
+                <div class="card-footer">
+                <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div><!-- /card -->
+            </div><!-- /col 6 -->
+            <!-- TERM -->
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-header">
+                  [YEAR] - Spring
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                  <li class="list-group-item">[course]</li>
+                </ul>
+                <div class="card-footer">
+                <a href="#" class="btn btn-primary">View</a>
+                </div>
+              </div><!-- /card -->
+            </div><!-- /col 6 -->
+          </div><!-- /row -->
+          <hr>
         </div>
       </div>
     </main>
