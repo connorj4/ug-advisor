@@ -24,7 +24,8 @@
       <div class="row justify-content-sm-center">
         <div class="col-sm-9">
           <!-- Content for the webpage starts here -->
-          <h1>Student [NAME] Advisor [NAME] </h1>
+          <h1>Student [NAME]</h1> 
+          <h1>Advisor [NAME] <a href="mailto:advisoremail@southernct.edu" target="_blank" class="btn btn-primary">Email</a></h1>
           <p>Lorem ipsum dolor sit amet,</p> 
 
           <!-- GRADUATION  MAP -->
