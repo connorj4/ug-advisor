@@ -5,6 +5,8 @@
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
   include_once (realpath(dirname(__FILE__, 2).'/php/session.php'));
+  /* Check Role */
+  include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
   $page_name = "admin";
@@ -21,8 +23,15 @@
       <div class="row justify-content-sm-center">
         <div class="col-sm-9">
           <!-- Content for the webpage starts here -->
-          <h1>Welcome <?php echo $user_name; ?></h1>
-
+          
+          <div class="row">
+            <div class="col-sm-9">
+              <h1>Welcome <?php echo $user_name; ?></h1>
+            </div>
+            <div class="col-sm-3">
+              Notification
+            </div>
+          </div>  
           <div class="row">
             <div class="col-sm-6">
               <div class="card">
@@ -56,7 +65,7 @@
                 <i class="fas fa-book-reader"></i> Student
                 </div>
                 <div class="card-body">
-                  <a href="#" class="btn btn-primary">View</a>
+                  <a href="<?php echo BASE_URL ?>/admin/student.php" class="btn btn-primary">View</a>
                 </div>
               </div>
             </div>
