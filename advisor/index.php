@@ -1,13 +1,13 @@
 <?php
 //======================================================================
-// ADMIN DASHBOARD PAGE
+// ADVISOR DASHBOARD PAGE
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
   include_once (realpath(dirname(__FILE__, 2).'/php/path.php'));
 
   /* Page Name */
-  $page_name = "admin";
+  $page_name = "advisor";
 
   /* Start The Session */
   session_start(); 
