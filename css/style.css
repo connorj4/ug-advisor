@@ -62,3 +62,6 @@ body > .container {
 .card {
   margin-bottom: 1em;
 }
+td form {
+  margin:0;
+}

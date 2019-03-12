@@ -73,7 +73,7 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                Faculty
+                <i class="fas fa-user-tie"></i> Faculty
                 </div>
                 <div class="card-body">
                   <a href="#" class="btn btn-primary">View</a>
@@ -84,7 +84,7 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                Advisior
+                <i class="fas fa-user-friends"></i> Advisior
                 </div>
                 <div class="card-body">
                   <a href="#" class="btn btn-primary">View</a>
@@ -95,7 +95,7 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                Course
+                <i class="fas fa-book"></i> Course
                 </div>
                 <div class="card-body">
                   <a href="#" class="btn btn-primary">View</a>
@@ -106,7 +106,7 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                Prerequisit
+                <i class="fas fa-clipboard-check"></i> Prerequisit
                 </div>
                 <div class="card-body">
                   <a href="#" class="btn btn-primary">View</a>
@@ -117,7 +117,7 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                Program
+                <i class="fas fa-clipboard-list"></i> Program
                 </div>
                 <div class="card-body">
                   <a href="#" class="btn btn-primary">View</a>
@@ -128,7 +128,7 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                Department
+                <i class="fas fa-archway"></i> Department
                 </div>
                 <div class="card-body">
                   <a href="<?php echo BASE_URL ?>/admin/department.php" class="btn btn-primary">View</a>
@@ -139,7 +139,7 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                Semester
+                <i class="fas fa-calendar-alt"></i> Semester
                 </div>
                 <div class="card-body">
                   <a href="#" class="btn btn-primary">View</a>
