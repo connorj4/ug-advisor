@@ -34,6 +34,6 @@
 
   $select_user->close();
   // Close the mysql connection
-  mysqli_close($db_connection); 
+  //mysqli_close($db_connection); 
 
 ?>

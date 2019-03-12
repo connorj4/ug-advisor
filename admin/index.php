@@ -131,7 +131,7 @@
                 Department
                 </div>
                 <div class="card-body">
-                  <a href="#" class="btn btn-primary">View</a>
+                  <a href="<?php echo BASE_URL ?>/admin/department.php" class="btn btn-primary">View</a>
                 </div>
               </div>
             </div>
