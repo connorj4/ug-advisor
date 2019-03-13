@@ -19,7 +19,7 @@
           } elseif ($_SESSION['user_role'] === 1) { // Only shows for admin users
             include_once (ROOT_PATH . '/include/nav_admin.php');
           } elseif ($_SESSION['user_role'] === 2) { // Only shows for faculty users
-            include_once (ROOT_PATH . '/include/nav_faculty.php');
+            include_once (ROOT_PATH . '/include/nav_advisor.php');
           } elseif ($_SESSION['user_role'] === 3) { // Only shows for student users
             include_once (ROOT_PATH . '/include/nav_student.php');
           } else {
