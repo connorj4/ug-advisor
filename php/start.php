@@ -479,7 +479,7 @@ $first_name = "north";
 $last_name = "compass";
 $role_id = 3;
 $insert_user->execute();
-3
+
 $user_id = 9;
 $username = "prof_james";
 $password = crypt("sugar1", $salt);
@@ -638,6 +638,7 @@ $insert_course = $db_connection->prepare(
 	faculty_id,
 	program_id,
 	status_id) VALUES(?,?,?,?,?,?);");
+  
 $insert_course->bind_param("isiiii",
 	$course_id,
 	$course_name,
