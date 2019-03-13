@@ -435,6 +435,78 @@ $last_name = "ike";
 $role_id = 2;
 $insert_user->execute();
 
+$user_id = 4;
+$username = "flowers";
+$password = crypt("spring", $salt);
+$email = "flowers@spring.edu";
+$first_name = "jeff";
+$last_name = "flowers";
+$role_id = 3;
+$insert_user->execute();
+
+$user_id = 5;
+$username = "bugs";
+$password = crypt("summer", $salt);
+$email = "bugs@summer.edu";
+$first_name = "tim";
+$last_name = "summer";
+$role_id = 3;
+$insert_user->execute();
+
+$user_id = 6;
+$username = "leaf";
+$password = crypt("tree", $salt);
+$email = "leaf@fall.edu";
+$first_name = "kelly";
+$last_name = "tree";
+$role_id = 3;
+$insert_user->execute();
+
+$user_id = 7;
+$username = "john";
+$password = crypt("smith1", $salt);
+$email = "john@smith.edu";
+$first_name = "john";
+$last_name = "smith";
+$role_id = 3;
+$insert_user->execute();
+
+$user_id = 8;
+$username = "north";
+$password = crypt("west", $salt);
+$email = "north@west.edu";
+$first_name = "north";
+$last_name = "compass";
+$role_id = 3;
+$insert_user->execute();
+3
+$user_id = 9;
+$username = "prof_james";
+$password = crypt("sugar1", $salt);
+$email = "prof_james@place.edu";
+$first_name = "james";
+$last_name = "ike";
+$role_id = 2;
+$insert_user->execute();
+
+$user_id = 9;
+$username = "prof_jess";
+$password = crypt("sugar2", $salt);
+$email = "prof_jess@place.edu";
+$first_name = "jess";
+$last_name = "ike";
+$role_id = 2;
+$insert_user->execute();
+
+$user_id = 9;
+$username = "prof_pam";
+$password = crypt("sugar3", $salt);
+$email = "prof_pam@place.edu";
+$first_name = "pam";
+$last_name = "east";
+$role_id = 2;
+$insert_user->execute();
+
 $insert_user->close();
 
 /* Administrator */
@@ -445,7 +517,7 @@ $insert_admin = $db_connection->prepare(
 $insert_admin->bind_param("ii",
   $admin_id,
 	$user_id);
-	
+
 $admin_id = 1;
 $user_id = 2;
 $insert_admin->execute();
