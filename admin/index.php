@@ -84,10 +84,10 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                <i class="fas fa-user-friends"></i> Advisior
+                <i class="fas fa-user-friends"></i> Advisor
                 </div>
                 <div class="card-body">
-                  <a href="#" class="btn btn-primary">View</a>
+                  <a href="<?php echo BASE_URL ?>/admin/advisor.php" class="btn btn-primary">View</a>
                 </div>
               </div>
             </div>
@@ -98,7 +98,7 @@
                 <i class="fas fa-book"></i> Course
                 </div>
                 <div class="card-body">
-                  <a href="#" class="btn btn-primary">View</a>
+                  <a href="<?php echo BASE_URL ?>/admin/course.php" class="btn btn-primary">View</a>
                 </div>
               </div>
             </div>
@@ -120,7 +120,7 @@
                 <i class="fas fa-clipboard-list"></i> Program
                 </div>
                 <div class="card-body">
-                  <a href="#" class="btn btn-primary">View</a>
+                  <a href="<?php echo BASE_URL ?>/admin/program.php" class="btn btn-primary">View</a>
                 </div>
               </div>
             </div>
