@@ -9,8 +9,18 @@ The purpose of this program is to enable students and advisiors to create a futu
 5. Click here to [Create Database](http://localhost/ug-advisor/php/start.php)
 
 - Admin login: snow,  password: winter
-- Faculty login: prof,  password: sugar
-- Student login: ken, password: SCSU2019
+- Faculty logins:
+ - prof,  password: sugar
+ - prof_james password: sugar1
+ - prof_jess password: sugar2
+ - prof_pam password: sugar3
+- Student logins:
+ - ken, password: SCSU2019
+ - flowers, password: spring
+ - bugs, password: summer
+ - leaf, password: tree
+ - john, password: smith1
+ - north, password: west
 
 ## Development Stack
 - Apache

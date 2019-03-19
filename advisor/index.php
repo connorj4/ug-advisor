@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// ADVISOR DASHBOARD PAGE x
+// ADVISOR DASHBOARD PAGE
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
