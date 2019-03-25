@@ -5,7 +5,8 @@
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
   include_once (realpath(dirname(__FILE__, 2).'/php/path.php'));
-
+  /* Check Role */
+  include_once (ROOT_SRC_PATH .'/check_advisor.php');
   /* Page Name */
   $page_name = "advisor";
 

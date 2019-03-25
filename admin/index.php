@@ -62,9 +62,10 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                <i class="fas fa-book-reader"></i> Student
+                 Student
                 </div>
                 <div class="card-body">
+                  <i class="fas fa-book-reader text-secondary large-icon"></i> 
                   <a href="<?php echo BASE_URL ?>/admin/student.php" class="btn btn-primary">View</a>
                 </div>
               </div>
@@ -73,9 +74,10 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                <i class="fas fa-user-tie"></i> Faculty
+                 Faculty
                 </div>
                 <div class="card-body">
+                <i class="fas fa-user-tie text-secondary large-icon"></i>
                   <a href="#" class="btn btn-primary">View</a>
                 </div>
               </div>
@@ -84,9 +86,10 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                <i class="fas fa-user-friends"></i> Advisor
+                 Advisor
                 </div>
                 <div class="card-body">
+                <i class="fas fa-user-friends text-secondary large-icon"></i>
                   <a href="<?php echo BASE_URL ?>/admin/advisor.php" class="btn btn-primary">View</a>
                 </div>
               </div>
@@ -95,9 +98,10 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                <i class="fas fa-book"></i> Course
+                 Course
                 </div>
                 <div class="card-body">
+                <i class="fas fa-book text-secondary large-icon"></i>
                   <a href="<?php echo BASE_URL ?>/admin/course.php" class="btn btn-primary">View</a>
                 </div>
               </div>
@@ -106,9 +110,10 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                <i class="fas fa-clipboard-check"></i> Prerequisit
+                 Prerequisit
                 </div>
                 <div class="card-body">
+                <i class="fas fa-clipboard-check text-secondary large-icon"></i>
                   <a href="#" class="btn btn-primary">View</a>
                 </div>
               </div>
@@ -117,9 +122,10 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                <i class="fas fa-clipboard-list"></i> Program
+                 Program
                 </div>
                 <div class="card-body">
+                <i class="fas fa-clipboard-list text-secondary large-icon"></i>
                   <a href="<?php echo BASE_URL ?>/admin/program.php" class="btn btn-primary">View</a>
                 </div>
               </div>
@@ -128,9 +134,10 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                <i class="fas fa-archway"></i> Department
+                 Department
                 </div>
                 <div class="card-body">
+                <i class="fas fa-archway text-secondary large-icon"></i>
                   <a href="<?php echo BASE_URL ?>/admin/department.php" class="btn btn-primary">View</a>
                 </div>
               </div>
@@ -139,9 +146,10 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                <i class="fas fa-calendar-alt"></i> Semester
+                 Semester
                 </div>
                 <div class="card-body">
+                <i class="fas fa-calendar-alt text-secondary large-icon"></i>
                   <a href="#" class="btn btn-primary">View</a>
                 </div>
               </div>
@@ -149,9 +157,6 @@
 
             </div>
 
-             
-                  
-          
         </div>
       </div>
     </main>

@@ -1,10 +1,10 @@
 <?php
 
 //======================================================================
-// CHECK ADMIN ROLL
+// CHECK ADVISOR ROLL
 //======================================================================
 
-if($user_role == 1){
+if($user_role == 2){
   $_SESSION['message'] = "Access Granted";
 } else {
   $_SESSION['message'] = "Access Denied";

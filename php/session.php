@@ -14,13 +14,14 @@
 
   $select_user = $db_connection->prepare(
     /* Need to update this section FROM table */
-    "SELECT username,role_id FROM user WHERE username = ?");
+    "SELECT user_id,username,role_id FROM user WHERE username = ?");
   $select_user->bind_param("s", $user_check);
   $select_user->execute();
-  $select_user->bind_result($user_name, $user_role);
+  $select_user->bind_result($user_id, $user_name, $user_role);
   $select_user->fetch();
 
   # session information
+  $_SESSION['user_id'] = $user_id;
   $_SESSION['user_name'] = $user_name;
   $_SESSION['user_role'] = $user_role;
   

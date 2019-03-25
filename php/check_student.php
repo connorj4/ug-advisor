@@ -1,10 +1,10 @@
 <?php
 
 //======================================================================
-// CHECK ADMIN ROLL
+// CHECK STUDENT ROLL
 //======================================================================
 
-if($user_role == 1){
+if($user_role == 3){
   $_SESSION['message'] = "Access Granted";
 } else {
   $_SESSION['message'] = "Access Denied";

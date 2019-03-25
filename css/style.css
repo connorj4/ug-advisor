@@ -65,3 +65,9 @@ body > .container {
 td form {
   margin:0;
 }
+.large-icon {
+  font-size: 10em;
+}
+.student_name {
+  text-transform: capitalize;
+}
