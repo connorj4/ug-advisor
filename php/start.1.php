@@ -16,44 +16,25 @@ try {
   $db_connection = new mysqli(DB_HOST, DB_USER, DB_PASSWORD)
     OR die("Connection failed: " . $db_connection->connect_error);
 } catch (Exception $e) {
-  echo 'Caught exception: ',  $e->getMessage(), nl2br("\r\n");
+  echo 'Caught exception: ',  $e->getMessage(), "\n";
 }
-
-/* Check if database is there or will create it */
+/* Check if database is there and destroy it */
 $create_stmt = "CREATE DATABASE IF NOT EXISTS ugadvisor_db";
-/* Check if database drop was sucessful */
-if(mysqli_query($db_connection, $create_stmt)) {
-	echo nl2br("Database was successfully created.\r\n");
-} else {
-	echo "Error dropping database: " . mysqli_error() . nl2br("\r\n");
-}
+$create_stmt = "DROP DATABASE ugadvisor_db";
+/* Creates the Database */
+//$create_stmt = "CREATE OR REPLACE DATABASE ugadvisor_db";
+$create_stmt = "CREATE DATABASE ugadvisor_db";
 $prep_stmt = $db_connection -> prepare($create_stmt);
 $prep_stmt->execute();
 $prep_stmt->close();
 
-/* Change to the created database */
+/* Select the New Database */
 $db_connection->select_db("ugadvisor_db");
-
-/* Drop all tables for clean install */
-$db_connection->query('SET foreign_key_checks = 0');
-if ($result = $db_connection->query("SHOW TABLES")) {
-  while($row = $result->fetch_array(MYSQLI_NUM)) {
-    $db_connection->query('DROP TABLE IF EXISTS '.$row[0]);
-	}
-	echo "Tables removed successfully." . nl2br("\r\n");
-} else {
-	echo "No tables were removed." . nl2br("\r\n");
-}
-$db_connection->query('SET foreign_key_checks = 1');
-
-
-/* Salt used for seasoning */
 $salt = 'graduate';
 
 //-----------------------------------------------------
 // Create Database Tables
 //-----------------------------------------------------
-echo "Table creation started." . nl2br("\r\n");
 
 /* Role */
 $create_role = $db_connection->prepare(
@@ -82,20 +63,11 @@ $create_status = $db_connection->prepare(
 $create_status->execute();
 $create_status->close();
 
-/* Permission */
-$create_permission = $db_connection->prepare(
-	"CREATE OR REPLACE TABLE permission
-	(permission_id int NOT NULL AUTO_INCREMENT,
-	permission_type varchar(255) NOT NULL,
-	PRIMARY KEY(permission_id));");
-$create_permission->execute();
-$create_permission->close();
-
 /* Grade */
 $create_grade = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE grade
   (grade_id int NOT NULL AUTO_INCREMENT,
-  grade_type varchar(2) NOT NULL,
+  grade_type varchar(255) NOT NULL,
 	PRIMARY KEY(grade_id));");
 $create_grade->execute();
 $create_grade->close();
@@ -119,36 +91,6 @@ $create_semester->execute();
 $create_semester->close();
 
 /* Below Are Tables That Have Forigen Keys */
-/* ------------------------------------------ */
-
-/* Department */
-$create_dept = $db_connection->prepare(
-	"CREATE OR REPLACE TABLE department(
-		dept_id varchar(4) NOT NULL,
-		dept_name varchar(255) NOT NULL,
-		creation_date timestamp,
-		status_id int NOT NULL,
-		PRIMARY KEY(dept_id),
-		FOREIGN KEY(status_id) REFERENCES status(status_id));");
-$create_dept->execute();
-$create_dept->close();
-
-/* Program */
-$create_program = $db_connection->prepare(
-	"CREATE OR REPLACE TABLE program
-		(program_id int NOT NULL AUTO_INCREMENT,
-		program_name varchar(255) NOT NULL,
-		creation_date timestamp,
-		dept_id varchar(4) NOT NULL,
-		status_id int NOT NULL,
-		PRIMARY KEY(program_id),
-		FOREIGN KEY(dept_id) REFERENCES department(dept_id),
-		FOREIGN KEY(status_id) REFERENCES status(status_id));");
-	$create_program->execute();
-	$create_program->close();
-
-/* Below Are Tables Describe Users */
-/* ------------------------------------------ */
 
 /* User */
 $create_user = $db_connection->prepare(
@@ -165,6 +107,57 @@ $create_user = $db_connection->prepare(
 	FOREIGN KEY(role_id) REFERENCES role(role_id));");
 $create_user->execute();
 $create_user->close();
+
+/* Department */
+$create_dept = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE department
+	(dept_id varchar(4) NOT NULL,
+	dept_name varchar(255) NOT NULL,
+	creation_date timestamp,
+  status_id int NOT NULL,
+	PRIMARY KEY(dept_id),
+  FOREIGN KEY(status_id) REFERENCES status(status_id));");
+$create_dept->execute();
+$create_dept->close();
+
+/* Program */
+$create_program = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE program
+	(program_id int NOT NULL AUTO_INCREMENT,
+	program_name varchar(255) NOT NULL,
+	creation_date timestamp,
+	dept_id varchar(4) NOT NULL,
+  status_id int NOT NULL,
+	PRIMARY KEY(program_id),
+	FOREIGN KEY(dept_id) REFERENCES department(dept_id),
+  FOREIGN KEY(status_id) REFERENCES status(status_id));");
+$create_program->execute();
+$create_program->close();
+
+/* Course */
+$create_course = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE course
+	(course_id int NOT NULL,
+	course_name varchar(255) NOT NULL,
+	credits int,
+	faculty_id int NOT NULL,
+  status_id int NOT NULL,
+	creation_date timestamp,
+	PRIMARY KEY(course_id),
+	FOREIGN KEY(faculty_id) REFERENCES faculty(faculty_id),
+  FOREIGN KEY(status_id) REFERENCES status(status_id));");
+$create_course->execute();
+$create_course->close();
+
+/* Prerequisite */
+$create_prerequisite = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE prerequisite
+	(prerequisite_id int NOT NULL AUTO_INCREMENT,
+	course_id int NOT NULL,
+	PRIMARY KEY(prerequisite_id),
+	FOREIGN KEY(course_id) REFERENCES course(course_id));");
+$create_prerequisite->execute();
+$create_prerequisite->close();
 
 /* Administrator */
 $create_sysadmin = $db_connection->prepare(
@@ -215,77 +208,57 @@ $create_advisor = $db_connection->prepare(
 $create_advisor->execute();
 $create_advisor->close();
 
-/* ------------------------------------------ */
-/* Courses and graduation maps */
-
-/* Course */
-$create_course = $db_connection->prepare(
-	"CREATE OR REPLACE TABLE course
-		(course_id int NOT NULL,
-		course_name varchar(255) NOT NULL,
-		credits int,
-		dept_id varchar(4) NOT NULL,
-		status_id int NOT NULL,
-		creation_date timestamp,
-		PRIMARY KEY(course_id),
-		FOREIGN KEY(dept_id) REFERENCES department(dept_id),
-		FOREIGN KEY(status_id) REFERENCES status(status_id));");
-$create_course->execute();
-$create_course->close();
-	
-/* Prerequisite */
-$create_prerequisite = $db_connection->prepare(
-	"CREATE OR REPLACE TABLE prerequisite
-		(prerequisite_id int NOT NULL AUTO_INCREMENT,
-		course_id int NOT NULL,
-		PRIMARY KEY(prerequisite_id),
-		FOREIGN KEY(course_id) REFERENCES course(course_id));");
-$create_prerequisite->execute();
-$create_prerequisite->close();
-	
 /* Take */
 $create_taken = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE take
-		(take_id int NOT NULL AUTO_INCREMENT,
-		course_id int NOT NULL,
-		grade_id int NOT NULL,
-		semester_id int NOT NULL,
-		year_id int NOT NULL,
-		state_id int NOT NULL,
-		student_id int NOT NULL,
-		PRIMARY KEY(take_id),
-		FOREIGN KEY(course_id) REFERENCES course(course_id),
-		FOREIGN KEY(grade_id) REFERENCES grade(grade_id),
-		FOREIGN KEY(semester_id) REFERENCES semester(semester_id),
-		FOREIGN KEY(year_id) REFERENCES years(year_id),
-		FOREIGN KEY(state_id) REFERENCES state(state_id),
-		FOREIGN KEY(student_id) REFERENCES student(student_id));");
+	(take_id int NOT NULL AUTO_INCREMENT,
+	course_id int NOT NULL,
+	grade_id int NOT NULL,
+	semester_id int NOT NULL,
+	year_id int NOT NULL,
+	state_id int NOT NULL,
+  student_id int NOT NULL,
+	PRIMARY KEY(take_id),
+	FOREIGN KEY(course_id) REFERENCES course(course_id),
+	FOREIGN KEY(grade_id) REFERENCES grade(grade_id),
+	FOREIGN KEY(semester_id) REFERENCES semester(semester_id),
+	FOREIGN KEY(year_id) REFERENCES years(year_id),
+	FOREIGN KEY(state_id) REFERENCES state(state_id),
+  FOREIGN KEY(student_id) REFERENCES student(student_id));");
 $create_taken->execute();
 $create_taken->close();
-	
+
 /* Graduation Map */
 $create_graduation = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE graduation
-		(graduation_id int NOT NULL AUTO_INCREMENT,
-		take_id int NOT NULL,
-		enrolled timestamp,
-		PRIMARY KEY(graduation_id),
-		FOREIGN KEY(take_id) REFERENCES take(take_id));");
+	(graduation_id int NOT NULL AUTO_INCREMENT,
+	take_id int NOT NULL,
+	enrolled timestamp,
+	PRIMARY KEY(graduation_id),
+	FOREIGN KEY(take_id) REFERENCES take(take_id));");
 $create_graduation->execute();
 $create_graduation->close();
 
-/* Status Display */
-echo nl2br("The database tables were successfully created.\r\n");
+/* Permission */
+$create_permission = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE permission
+	(permission_id int NOT NULL AUTO_INCREMENT,
+	permission_type varchar(255) NOT NULL,
+	PRIMARY KEY(permission_id));");
+$create_permission->execute();
+$create_permission->close();
+
 
 
 //-----------------------------------------------------
-// Populate Tables of Database
+// Populate Database Tables
 //-----------------------------------------------------
 
 /* Role */
 $insert_role = $db_connection->prepare(
 	"INSERT INTO role
-		(role_id, role_type) VALUES(?,?);");
+	(role_id, role_type) VALUES(?,?);");
+
 $insert_role->bind_param("is", $role_id, $role_title);
 
 $role_id = 1;
@@ -309,41 +282,39 @@ $insert_role->close();
 /* Status */
 $insert_status = $db_connection->prepare(
 	"INSERT INTO status
-		(status_id, status_type) VALUES(?,?);");
+	(status_id, status_type) VALUES(?,?);");
 $insert_status->bind_param("is", $status_id, $status_title);
 $status_id = 1;
 $status_title = "active";
 $insert_status->execute();
-	
+
 $status_id = 2;
 $status_title = "dormant";
 $insert_status->execute();
-
 $insert_status->close();
 
 /* State */
 $insert_state = $db_connection->prepare(
 	"INSERT INTO state
-		(state_id, state_type) VALUES(?,?);");
+	(state_id, state_type) VALUES(?,?);");
 $insert_state->bind_param("is", $state_id, $state_title);
 $state_id = 1;
 $state_title = "past";
 $insert_state->execute();
-	
+
 $state_id = 2;
 $state_title = "present";
 $insert_state->execute();
-	
+
 $state_id = 3;
 $state_title = "future";
 $insert_state->execute();
-
 $insert_state->close();
 
 /* Grade */
 $insert_grade = $db_connection->prepare(
 	"INSERT INTO grade
-		(grade_id, grade_type) VALUES(?,?);");
+	(grade_id, grade_type) VALUES(?,?);");
 $insert_grade->bind_param("is", $grade_id, $grade_type);
 $grade_id = 1;
 $grade_type = "A+";
@@ -410,49 +381,41 @@ $insert_grade->close();
 /* Department */
 $insert_dept = $db_connection->prepare(
 	"INSERT INTO department
-		(dept_id,
-		dept_name,
-		status_id) VALUES(?,?,?);");
+	(dept_id,
+  dept_name,
+  status_id) VALUES(?,?,?);");
 $insert_dept->bind_param("ssi",
-$dept_id,
-$dept_name,
-$status_id);
+  $dept_id,
+  $dept_name,
+  $status_id);
 
 $dept_id = "CSC";
 $dept_name = "Computer Science";
 $status_id = 1;
 $insert_dept->execute();
-
-$dept_id = "MAT";
-$dept_name = "Mathematics";
-$status_id = 1;
-$insert_dept->execute();
-
 $insert_dept->close();
 
 /* Program */
 $insert_program = $db_connection->prepare(
 	"INSERT INTO program
-		(program_id,
-		program_name,
-		dept_id,
-		status_id) VALUES(?,?,?,?);");
+	(program_id,
+	program_name,
+  dept_id,
+  status_id) VALUES(?,?,?,?);");
 $insert_program->bind_param("issi",
-$program_id,
-$program_name,
-$dept_id,
-$status_id);
-	
+  $program_id,
+	$program_name,
+	$dept_id,
+  $status_id);
+
 $program_id = 1;
 $program_name = "Computer Science General";
 $dept_id = "CSC";
-$status_id = 1;
 $insert_program->execute();
 
 $program_id = 2;
 $program_name = "Computer Information Systems";
 $dept_id = "CSC";
-$status_id = 1;
 $insert_program->execute();
 
 $insert_program->close();
@@ -460,22 +423,22 @@ $insert_program->close();
 /* User */
 $insert_user = $db_connection->prepare(
 	"INSERT INTO user
-		(user_id,
-		username,
-		password,
-		email,
-		first_name,
-		last_name,
-		role_id) VALUES(?,?,?,?,?,?,?);");
+	(user_id,
+	username,
+	password,
+	email,
+	first_name,
+	last_name,
+	role_id) VALUES(?,?,?,?,?,?,?);");
 $insert_user->bind_param("isssssi",
-$user_id,
-$username,
-$password,
-$email,
-$first_name,
-$last_name,
-$role_id);
-	
+  $user_id,
+	$username,
+	$password,
+	$email,
+	$first_name,
+	$last_name,
+	$role_id);
+
 $user_id = 1;
 $username = "ken";
 $password = crypt("SCSU2019", $salt);
@@ -576,58 +539,51 @@ $role_id = 2;
 $insert_user->execute();
 
 $insert_user->close();
-	
+
 /* Administrator */
 $insert_admin = $db_connection->prepare(
 	"INSERT INTO administrator
-		(admin_id,
-		user_id) VALUES(?,?);");
+	(admin_id,
+  user_id) VALUES(?,?);");
 $insert_admin->bind_param("ii",
-$admin_id,
-$user_id);
-	
+  $admin_id,
+	$user_id);
+
 $admin_id = 1;
 $user_id = 2;
 $insert_admin->execute();
-
 $insert_admin->close();
 
 /* Faculty */
 $insert_faculty = $db_connection->prepare(
 	"INSERT INTO faculty
-		(faculty_id,
-		user_id,
-		dept_id,
-		status_id) VALUES(?,?,?,?);");
+	(faculty_id,
+	user_id,
+	dept_id,
+  status_id) VALUES(?,?,?,?);");
 $insert_faculty->bind_param("iisi",
-$faculty_id,
-$user_id,
-$dept_id,
-$status_id);
-	
+	$faculty_id,
+	$user_id,
+	$dept_id,
+	$status_id);
+
 $faculty_id = 1;
 $user_id = 3;
 $dept_id = "CSC";
 $status_id = 1;
 $insert_faculty->execute();
-
-$faculty_id = 2;
-$user_id = 9;
-$dept_id = "CSC";
-$status_id = 1;
-$insert_faculty->execute();
-
 $insert_faculty->close();
+
 
 /* Year */
 $insert_year = $db_connection->prepare(
 	"INSERT INTO years
-		(year_id,
-		year_type) VALUES(?,?);");
+	(year_id,
+	year_type) VALUES(?,?);");
 $insert_year->bind_param("ii",
-$year_id,
-$year_type);
-	
+	$year_id,
+	$year_type);
+
 $year_id = 1;
 $year_type= 2015;
 $insert_year->execute();
@@ -669,47 +625,31 @@ $insert_year->close();
 /* Semester */
 $insert_semester = $db_connection->prepare(
 	"INSERT INTO semester
-		(semester_id,
-		semester_type) VALUES(?,?);");
+	(semester_id,
+	semester_type) VALUES(?,?);");
 $insert_semester->bind_param("is",
-$semester_id,
-$semester_type);
-	
+	$semester_id,
+	$semester_type);
+
 $semester_id = 1;
 $semester_type= "Fall";
 $insert_semester->execute();
-	
+
 $semester_id = 2;
 $semester_type= "Spring";
 $insert_semester->execute();
 
-$semester_id = 3;
-$semester_type= "Winter";
-$insert_semester->execute();
-
-$semester_id = 4;
-$semester_type= "Summer A";
-$insert_semester->execute();
-
-$semester_id = 5;
-$semester_type= "Summer B";
-$insert_semester->execute();
-
-$semester_id = 6;
-$semester_type= "Summer C";
-$insert_semester->execute();
-	
 $insert_semester->close();
 
 /* Permission */
 $insert_permission = $db_connection->prepare(
 	"INSERT INTO permission
-		(permission_id,
-		permission_type) VALUES(?,?);");
+	(permission_id,
+	permission_type) VALUES(?,?);");
 $insert_permission->bind_param("is",
-$permission_id,
-$permission_type);
-	
+	$permission_id,
+	$permission_type);
+
 $permission_id = 1;
 $permission_type= "Approved";
 $insert_permission->execute();
@@ -723,30 +663,26 @@ $insert_permission->close();
 /* Course */
 $insert_course = $db_connection->prepare(
 	"INSERT INTO course
-		(course_id,
-		course_name,
-		credits,
-		dept_id,
-		status_id) VALUES(?,?,?,?,?);");
-		
-$insert_course->bind_param("isisi",
-$course_id,
-$course_name,
-$credits,
-$dept_id,
-$status_id);
-	
+	(course_id,
+	course_name,
+	credits,
+	faculty_id,
+	program_id,
+	status_id) VALUES(?,?,?,?,?,?);");
+  
+$insert_course->bind_param("isiiii",
+	$course_id,
+	$course_name,
+	$credits,
+	$faculty_id,
+	$program_id,
+	$status_id);
+
 $course_id = 152;
 $course_name= "Fundamentals of Programming";
 $credits = 3;
-$dept_id = "CSC";
-$status_id = 1;
-$insert_course->execute();
-
-$course_id = 112;
-$course_name= "Algebra for Bus. & Services";
-$credits = 3;
-$dept_id = "MAT";
+$faculty_id = 1;
+$program_id = 1;
 $status_id = 1;
 $insert_course->execute();
 
@@ -755,79 +691,42 @@ $insert_course->close();
 /* Student */
 $insert_student = $db_connection->prepare(
 	"INSERT INTO student
-		(student_id,
-		user_id,
-		program_id,
-		status_id) VALUES(?,?,?,?);");
-$insert_student->bind_param("iiii",
-$student_id,
-$user_id,
-$program_id,
-$status_id);
-	
+	(student_id,
+	user_id,
+  status_id) VALUES(?,?,?);");
+$insert_student->bind_param("iii",
+	$student_id,
+	$user_id,
+	$status_id);
+
 $student_id = 1;
 $user_id = 1;
 $status_id = 1;
-$program_id = 1;
 $insert_student->execute();
-
-$student_id = 2;
-$user_id = 4;
-$status_id = 1;
-$program_id = 2;
-$insert_student->execute();
-
-$student_id = 3;
-$user_id = 5;
-$status_id = 1;
-$program_id = 1;
-$insert_student->execute();
-
-$student_id = 3;
-$user_id = 6;
-$status_id = 1;
-$program_id = 1;
-$insert_student->execute();
-
-$student_id = 4;
-$user_id = 7;
-$status_id = 1;
-$program_id = 1;
-$insert_student->execute();
-
-$student_id = 5;
-$user_id = 8;
-$status_id = 2;
-$program_id = 1;
-$insert_student->execute();
-
 $insert_student->close();
 
 /* Take */
 $insert_take = $db_connection->prepare(
 	"INSERT INTO take
-		(take_id,
-		course_id,
-		grade_id,
-		semester_id,
-		year_id,
-		state_id,
-		student_id) VALUES(?,?,?,?,?,?,?);");
-$insert_take->bind_param("iiiiiii",
-$take_id,
-$course_id,
-$grade_id,
-$semester_id,
-$year_id,
-$state_id,
-$student_id);
-	
+	(take_id,
+	course_id,
+  grade_id,
+	semester_id,
+	year_id,
+  student_id) VALUES(?,?,?,?,?,?);");
+$insert_take->bind_param("iiiiii",
+  $take_id,
+	$course_id,
+	$grade_id,
+	$semester_id,
+	$year_id,
+  $student_id);
+
 $take_id = 1;
 $course_id = 152;
 $grade_id = 14;
 $semester_id = 1;
 $year_id = 5;
-$state_id = 3;
 $student_id = 1;
 $insert_take->execute();
 
@@ -836,37 +735,45 @@ $insert_take->close();
 /* Graduation Map */
 $insert_graduation = $db_connection->prepare(
 	"INSERT INTO graduation
-		(graduation_id,
-		take_id) VALUES(?,?);");
-$insert_graduation->bind_param("ii",
-$graduation_id,
-$take_id);
-	
+	(graduation_id,
+  take_id,
+  program_id) VALUES(?,?,?);");
+$insert_graduation->bind_param("iii",
+  $graduation_id,
+	$take_id,
+  $program_id);
+
 $graduation_id = 1;
 $take_id = 1;
+$program_id= 1;
 $insert_graduation->execute();
-	
+
 $insert_graduation->close();
 
 /* Advisor */
 $insert_advisor = $db_connection->prepare(
 	"INSERT INTO advisor
-		(student_id,
-		faculty_id) VALUES(?,?);");
+	(student_id,
+  faculty_id) VALUES(?,?);");
 $insert_advisor->bind_param("ii",
-$student_id,
-$faculty_id);
-	
+  $student_id,
+	$faculty_id);
+
 $student_id = 1;
 $faculty_id = 1;
 $insert_advisor->execute();
-	
+
 $insert_advisor->close();
 
+
+//-----------------------------------------------------
+// Finish Database Creation
+//-----------------------------------------------------
+
 /* Status Display */
-echo nl2br("The database tables were successfully populated.\r\n");
+echo 'The Database was successfully created';
 /* Return to homepage after 5 seconds */
-header( "refresh:10;url=/ug-advisor" );
+header( "refresh:5;url=/ug-advisor" );
 
 /* ALWAYS CLOSE THE DB CONNECTION */
 $db_connection->close();
