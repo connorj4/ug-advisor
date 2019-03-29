@@ -33,19 +33,19 @@
             //-----------------------------------------------------
 
             $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-            $student_map = $db_connection->prepare("SELECT first_name, last_name 
+            $student_detail = $db_connection->prepare("SELECT first_name, last_name 
                 FROM user NATURAL JOIN student
                 WHERE user_id = ?;");
             // Check Connection
-            if ($student_map === FALSE) {
+            if ($student_detail === FALSE) {
               $error = "Connection Failed";
               die($db_connection->error);
             }
             // bind
-            $student_map->bind_param("s", $user_id);
-            $student_map->execute();
+            $student_detail->bind_param("s", $user_id);
+            $student_detail->execute();
             // results
-            $result = $student_map->get_result();
+            $result = $student_detail->get_result();
 
             if ($result->num_rows > 0) {
               while($row = $result->fetch_assoc()) {
@@ -62,7 +62,43 @@
               }
             }
 
-            $student_map->close();
+            $student_detail->close();
+
+            // create the first term map
+            $student_term_map = $db_connection->prepare("SELECT * 
+              FROM take NATURAL JOIN student
+              WHERE user_id = ?;");
+            // Check Connection
+            if ($student_term_map === FALSE) {
+              $error = "Connection Failed";
+              die($db_connection->error);
+            }
+            // bind
+            $student_term_map->bind_param("s", $user_id);
+            $student_term_map->execute();
+            // results
+            $result = $student_term_map->get_result();
+
+            if ($result->num_rows > 0) {
+              while($row = $result->fetch_assoc()) {
+                echo '<div class="row">';
+                echo '<div class="col-sm-6">';
+                echo '<div class="card">';
+                echo '<div class="card-header">';
+                echo '</div>'; // end card-header
+                echo '<ul class="list-group list-group-flush">'; 
+                echo '<li class="list-group-item">';
+                echo '';
+                echo '</li>'; // end list-group-item
+                echo '</ul>'; // end list-group
+                echo '<div class="card-footer">';
+                echo '<a href="#" class="btn btn-primary">View</a>';
+                echo '</div>'; // end card-footer
+                echo '</div>'; // end card
+                echo '</div>'; // end col
+                echo '</div>'; // end row
+              }
+            }
             // Close the mysql connection
             mysqli_close($db_connection);
             
