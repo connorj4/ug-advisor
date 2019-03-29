@@ -65,31 +65,46 @@
             $student_detail->close();
 
             // create the first term map
-            $student_term_map = $db_connection->prepare("SELECT * 
-              FROM take NATURAL JOIN student
-              WHERE user_id = ?;");
+            $student_term_map = $db_connection->prepare("SELECT 
+              year_type AS year, 
+              semester_type AS semester, 
+              dept_id AS dept, 
+              course_id AS course, 
+              course_name 
+              FROM take 
+                NATURAL JOIN semester 
+                NATURAL JOIN years 
+                NATURAL JOIN grade 
+                NATURAL JOIN course;");
             // Check Connection
             if ($student_term_map === FALSE) {
               $error = "Connection Failed";
               die($db_connection->error);
             }
             // bind
-            $student_term_map->bind_param("s", $user_id);
+            // $student_term_map->bind_param("s", $user_id);
             $student_term_map->execute();
             // results
             $result = $student_term_map->get_result();
 
             if ($result->num_rows > 0) {
-              while($row = $result->fetch_assoc()) {
+              $row = $result->fetch_assoc();
+
+            
                 echo '<div class="row">';
                 echo '<div class="col-sm-6">';
                 echo '<div class="card">';
                 echo '<div class="card-header">';
+                echo $row["year"] . ' ' . $row["semester"];
                 echo '</div>'; // end card-header
                 echo '<ul class="list-group list-group-flush">'; 
-                echo '<li class="list-group-item">';
-                echo '';
-                echo '</li>'; // end list-group-item
+                if ($result->num_rows > 0) {
+                  while($row = $result->fetch_assoc()) {
+                    echo '<li class="list-group-item">';
+                    echo $row["dept"] . '-' . $row["course"] . ' ' . $row["course_name"];
+                    echo '</li>'; // end list-group-item
+                  }
+                }
                 echo '</ul>'; // end list-group
                 echo '<div class="card-footer">';
                 echo '<a href="#" class="btn btn-primary">View</a>';
@@ -97,7 +112,8 @@
                 echo '</div>'; // end card
                 echo '</div>'; // end col
                 echo '</div>'; // end row
-              }
+              
+              
             }
             // Close the mysql connection
             mysqli_close($db_connection);

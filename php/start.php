@@ -428,6 +428,21 @@ $dept_name = "Mathematics";
 $status_id = 1;
 $insert_dept->execute();
 
+$dept_id = "INQ";
+$dept_name = "Inquiry";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "ENG";
+$dept_name = "English";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "AAA";
+$dept_name = "Department Not Specified";
+$status_id = 1;
+$insert_dept->execute();
+
 $insert_dept->close();
 
 /* Program */
@@ -678,24 +693,40 @@ $semester_type);
 $semester_id = 1;
 $semester_type= "Fall";
 $insert_semester->execute();
-	
+
 $semester_id = 2;
-$semester_type= "Spring";
+$semester_type= "Fall 1st 8 weeks";
 $insert_semester->execute();
 
 $semester_id = 3;
-$semester_type= "Winter";
+$semester_type= "Fall 2nd 8 weeks";
 $insert_semester->execute();
-
+	
 $semester_id = 4;
-$semester_type= "Summer A";
+$semester_type= "Spring 1st 8 weeks";
 $insert_semester->execute();
 
 $semester_id = 5;
-$semester_type= "Summer B";
+$semester_type= "Spring 2nd 8 weeks";
 $insert_semester->execute();
 
 $semester_id = 6;
+$semester_type= "Spring";
+$insert_semester->execute();
+
+$semester_id = 7;
+$semester_type= "Winter";
+$insert_semester->execute();
+
+$semester_id = 8;
+$semester_type= "Summer A";
+$insert_semester->execute();
+
+$semester_id = 9;
+$semester_type= "Summer B";
+$insert_semester->execute();
+
+$semester_id = 10;
 $semester_type= "Summer C";
 $insert_semester->execute();
 	
@@ -747,6 +778,27 @@ $course_id = 112;
 $course_name= "Algebra for Bus. & Services";
 $credits = 3;
 $dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 101;
+$course_name= "Intellectual Inquiry";
+$credits = 3;
+$dept_id = "INQ";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 001;
+$course_name= "Tech Fluency";
+$credits = 3;
+$dept_id = "AAA";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 110;
+$course_name= "Composition Writing Lab";
+$credits = 3;
+$dept_id = "ENG";
 $status_id = 1;
 $insert_course->execute();
 
@@ -824,6 +876,42 @@ $student_id);
 	
 $take_id = 1;
 $course_id = 152;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 5;
+$state_id = 3;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 2;
+$course_id = 112;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 5;
+$state_id = 3;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 3;
+$course_id = 101;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 5;
+$state_id = 3;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 4;
+$course_id = 001;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 5;
+$state_id = 3;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 5;
+$course_id = 110;
 $grade_id = 14;
 $semester_id = 1;
 $year_id = 5;
