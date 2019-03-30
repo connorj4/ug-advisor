@@ -11,9 +11,6 @@
   /* Page Name */
   $page_name = "student";
 
-  /* Start The Session */
-  session_start(); 
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -90,7 +87,6 @@
             if ($result->num_rows > 0) {
               $row = $result->fetch_assoc();
 
-            
                 echo '<div class="row">';
                 echo '<div class="col-sm-6">';
                 echo '<div class="card">';
@@ -112,7 +108,6 @@
                 echo '</div>'; // end card
                 echo '</div>'; // end col
                 echo '</div>'; // end row
-              
               
             }
             // Close the mysql connection

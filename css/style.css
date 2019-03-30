@@ -66,7 +66,8 @@ td form {
   margin:0;
 }
 .large-icon {
-  font-size: 10em;
+  font-size: 6em;
+  margin: 0 0 0.1em;
 }
 .student_name {
   text-transform: capitalize;
