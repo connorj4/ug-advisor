@@ -797,6 +797,7 @@ $credits,
 $dept_id,
 $status_id);
 
+/* CSC Courses */
 $course_id = 152;
 $course_name= "Fundamentals of Programming";
 $credits = 3;
@@ -804,10 +805,439 @@ $dept_id = "CSC";
 $status_id = 1;
 $insert_course->execute();
 
+$course_id = 207;
+$course_name= "Computer Systems";
+$credits = 4;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 212;
+$course_name= "CS2: Data Structures";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 229;
+$course_name= "Object-Oriented Programming";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 235;
+$course_name= "Web and Database Development";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 265;
+$course_name= "Computer Networking and Security I";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 305;
+$course_name= "Computer Organization";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 310;
+$course_name= "Multimedia Systems";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 321;
+$course_name= "Algorithm Design and Analysis";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 324;
+$course_name= "Computer Ethics";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 330;
+$course_name= "Software Design and Development";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 334;
+$course_name= "Human-Computer Interactions";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 335;
+$course_name= "Database System";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 341;
+$course_name= "Digital Imaging";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 400;
+$course_name= "Capstone";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 424;
+$course_name= "Computer Ethics";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 425;
+$course_name= "Operating Systems";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 431;
+$course_name= "Computer Graphics";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 443;
+$course_name= "Internet Programming";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 453;
+$course_name= "Information Security";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 463;
+$course_name= "Development of Distributed and E-Commerce Applications";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 465;
+$course_name= "Computer Networking and Security II";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 476;
+$course_name= "Fundamentals of Data Warehousing";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 477;
+$course_name= "Data Mining";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 481;
+$course_name= "Artificial Intelligence ";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+
+/* Math */
 $course_id = 112;
 $course_name= "Algebra for Bus. & Services";
 $credits = 3;
 $dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 122;
+$course_name= "Pre Calculus";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 139;
+$course_name= "Short Course in Calculus";
+$credits = 3;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 150;
+$course_name= "Calculus I";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 151;
+$course_name= "Calculus II";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 178;
+$course_name= "Elementary Discrete Mathematics";
+$credits = 3;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 221;
+$course_name= "Intermediate Applied Statistics";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 252;
+$course_name= "Calculus III";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 322;
+$course_name= "Numerical Analysis";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 370;
+$course_name= "Business Information Systems";
+$credits = 3;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+/* Physics */
+
+$course_id = 200;
+$course_name= "General Physics I";
+$credits = 4;
+$dept_id = "PHY";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 201;
+$course_name= "General Physics II";
+$credits = 4;
+$dept_id = "PHY";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 230;
+$course_name= "Physics for Scientists and Engineers I";
+$credits = 4;
+$dept_id = "PHY";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 231;
+$course_name= "Physics for Scientists and Engineers II";
+$credits = 4;
+$dept_id = "PHY";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 355;
+$course_name= "Electricity and Electronics";
+$credits = 4;
+$dept_id = "PHY";
+$status_id = 1;
+$insert_course->execute();
+
+/* MIS */
+$course_id = 365;
+$course_name= "Systems Thinking for MIS";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 370;
+$course_name= "Business Information Systems";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 371;
+$course_name= "Information System Analysis and Design Techniques";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 375;
+$course_name= "Decision Support Systems";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 400;
+$course_name= "Global Information Systems";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 430;
+$course_name= "Project Management";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 460;
+$course_name= "MIS Security Management";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 470;
+$course_name= "Management of Information Systems Design";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+/* Accounting */
+$course_id = 200;
+$course_name= "Principles of Financial Accounting";
+$credits = 3;
+$dept_id = "ACC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 210;
+$course_name= "Managerial Accounting";
+$credits = 3;
+$dept_id = "ACC";
+$status_id = 1;
+$insert_course->execute();
+
+/* Chemistry */
+$course_id = 120;
+$course_name= "General Chemistry I";
+$credits = 4;
+$dept_id = "CHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 121;
+$course_name= "General Chemistry II";
+$credits = 4;
+$dept_id = "CHE";
+$status_id = 1;
+$insert_course->execute();
+
+/* ESC */
+$course_id = 200;
+$course_name= "Physical Geology";
+$credits = 4;
+$dept_id = "ESC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 201;
+$course_name= "Historical Geology";
+$credits = 4;
+$dept_id = "ESC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 210;
+$course_name= "Principles of Astronomy";
+$credits = 4;
+$dept_id = "ESC";
+$status_id = 1;
+$insert_course->execute();
+
+/* Biology */
+$course_id = 100;
+$course_name= "General Zoology";
+$credits = 3;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 101;
+$course_name= "General Botany";
+$credits = 3;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 103;
+$course_name= "Biology I";
+$credits = 3;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 120;
+$course_name= "Microbiology";
+$credits = 4;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 200;
+$course_name= "Human Biology I";
+$credits = 4;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 201;
+$course_name= "Human Biology I";
+$credits = 4;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 210;
+$course_name= "Principles of Astronomy";
+$credits = 4;
+$dept_id = "BIOCHE";
 $status_id = 1;
 $insert_course->execute();
 
@@ -825,8 +1255,23 @@ $dept_id = "AAA";
 $status_id = 1;
 $insert_course->execute();
 
+/* English */
 $course_id = 110;
 $course_name= "Composition Writing Lab";
+$credits = 3;
+$dept_id = "ENG";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 112;
+$course_name= "Writing Arguments";
+$credits = 3;
+$dept_id = "ENG";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 304;
+$course_name= "Technical Writing and Communication";
 $credits = 3;
 $dept_id = "ENG";
 $status_id = 1;
