@@ -232,7 +232,7 @@ $create_course = $db_connection->prepare(
 		FOREIGN KEY(status_id) REFERENCES status(status_id));");
 $create_course->execute();
 $create_course->close();
-	
+
 /* Prerequisite */
 $create_prerequisite = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE prerequisite
@@ -242,7 +242,7 @@ $create_prerequisite = $db_connection->prepare(
 		FOREIGN KEY(course_id) REFERENCES course(course_id));");
 $create_prerequisite->execute();
 $create_prerequisite->close();
-	
+
 /* Take */
 $create_taken = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE take
@@ -262,7 +262,7 @@ $create_taken = $db_connection->prepare(
 		FOREIGN KEY(student_id) REFERENCES student(student_id));");
 $create_taken->execute();
 $create_taken->close();
-	
+
 /* Graduation Map */
 $create_graduation = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE graduation
@@ -314,7 +314,7 @@ $insert_status->bind_param("is", $status_id, $status_title);
 $status_id = 1;
 $status_title = "active";
 $insert_status->execute();
-	
+
 $status_id = 2;
 $status_title = "dormant";
 $insert_status->execute();
@@ -329,11 +329,11 @@ $insert_state->bind_param("is", $state_id, $state_title);
 $state_id = 1;
 $state_title = "past";
 $insert_state->execute();
-	
+
 $state_id = 2;
 $state_title = "present";
 $insert_state->execute();
-	
+
 $state_id = 3;
 $state_title = "future";
 $insert_state->execute();
@@ -438,6 +438,36 @@ $dept_name = "English";
 $status_id = 1;
 $insert_dept->execute();
 
+$dept_id = "CHE";
+$dept_name = "Chemistry";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "ECS";
+$dept_name = "Earth science";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "PHY";
+$dept_name = "Physics";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "BIO";
+$dept_name = "Biology";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "MIS";
+$dept_name = "Management";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "ACC";
+$dept_name = "Accounting";
+$status_id = 1;
+$insert_dept->execute();
+
 $dept_id = "AAA";
 $dept_name = "Department Not Specified";
 $status_id = 1;
@@ -457,7 +487,7 @@ $program_id,
 $program_name,
 $dept_id,
 $status_id);
-	
+
 $program_id = 1;
 $program_name = "Computer Science General";
 $dept_id = "CSC";
@@ -490,7 +520,7 @@ $email,
 $first_name,
 $last_name,
 $role_id);
-	
+
 $user_id = 1;
 $username = "ken";
 $password = crypt("SCSU2019", $salt);
@@ -591,7 +621,7 @@ $role_id = 2;
 $insert_user->execute();
 
 $insert_user->close();
-	
+
 /* Administrator */
 $insert_admin = $db_connection->prepare(
 	"INSERT INTO administrator
@@ -600,7 +630,7 @@ $insert_admin = $db_connection->prepare(
 $insert_admin->bind_param("ii",
 $admin_id,
 $user_id);
-	
+
 $admin_id = 1;
 $user_id = 2;
 $insert_admin->execute();
@@ -619,7 +649,7 @@ $faculty_id,
 $user_id,
 $dept_id,
 $status_id);
-	
+
 $faculty_id = 1;
 $user_id = 3;
 $dept_id = "CSC";
@@ -642,7 +672,7 @@ $insert_year = $db_connection->prepare(
 $insert_year->bind_param("ii",
 $year_id,
 $year_type);
-	
+
 $year_id = 1;
 $year_type= 2015;
 $insert_year->execute();
@@ -689,7 +719,7 @@ $insert_semester = $db_connection->prepare(
 $insert_semester->bind_param("is",
 $semester_id,
 $semester_type);
-	
+
 $semester_id = 1;
 $semester_type= "Fall";
 $insert_semester->execute();
@@ -701,7 +731,7 @@ $insert_semester->execute();
 $semester_id = 3;
 $semester_type= "Fall 2nd 8 weeks";
 $insert_semester->execute();
-	
+
 $semester_id = 4;
 $semester_type= "Spring 1st 8 weeks";
 $insert_semester->execute();
@@ -729,7 +759,7 @@ $insert_semester->execute();
 $semester_id = 10;
 $semester_type= "Summer C";
 $insert_semester->execute();
-	
+
 $insert_semester->close();
 
 /* Permission */
@@ -740,7 +770,7 @@ $insert_permission = $db_connection->prepare(
 $insert_permission->bind_param("is",
 $permission_id,
 $permission_type);
-	
+
 $permission_id = 1;
 $permission_type= "Approved";
 $insert_permission->execute();
@@ -759,14 +789,14 @@ $insert_course = $db_connection->prepare(
 		credits,
 		dept_id,
 		status_id) VALUES(?,?,?,?,?);");
-		
+
 $insert_course->bind_param("isisi",
 $course_id,
 $course_name,
 $credits,
 $dept_id,
 $status_id);
-	
+
 $course_id = 152;
 $course_name= "Fundamentals of Programming";
 $credits = 3;
@@ -816,7 +846,7 @@ $student_id,
 $user_id,
 $program_id,
 $status_id);
-	
+
 $student_id = 1;
 $user_id = 1;
 $status_id = 1;
@@ -873,7 +903,7 @@ $semester_id,
 $year_id,
 $state_id,
 $student_id);
-	
+
 $take_id = 1;
 $course_id = 152;
 $grade_id = 14;
@@ -929,11 +959,11 @@ $insert_graduation = $db_connection->prepare(
 $insert_graduation->bind_param("ii",
 $graduation_id,
 $take_id);
-	
+
 $graduation_id = 1;
 $take_id = 1;
 $insert_graduation->execute();
-	
+
 $insert_graduation->close();
 
 /* Advisor */
@@ -944,11 +974,11 @@ $insert_advisor = $db_connection->prepare(
 $insert_advisor->bind_param("ii",
 $student_id,
 $faculty_id);
-	
+
 $student_id = 1;
 $faculty_id = 1;
 $insert_advisor->execute();
-	
+
 $insert_advisor->close();
 
 /* Status Display */
