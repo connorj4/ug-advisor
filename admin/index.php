@@ -150,7 +150,7 @@
                 </div>
                 <div class="card-body">
                 <i class="fas fa-calendar-alt text-secondary large-icon"></i>
-                  <a href="#" class="btn btn-primary">View</a>
+                  <a href="<?php echo BASE_URL ?>/admin/semester.php" class="btn btn-primary">View</a>
                 </div>
               </div>
             </div>
