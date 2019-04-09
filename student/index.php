@@ -47,7 +47,7 @@
             if ($result->num_rows > 0) {
               while($row = $result->fetch_assoc()) {
 
-                echo '<div class="row">';
+                echo '<div class="row justify-content-sm-center">';
                 echo '<div class="col-md-6">';
                 echo '<h3 class="student_name">'. $row["first_name"] . ' ' . $row["last_name"] . '</h3>';
                 echo '</div>';
@@ -87,7 +87,7 @@
             if ($result->num_rows > 0) {
               $row = $result->fetch_assoc();
 
-                echo '<div class="row">';
+                echo '<div class="row justify-content-sm-center">';
                 echo '<div class="col-sm-6">';
                 echo '<div class="card">';
                 echo '<div class="card-header">';
@@ -103,7 +103,7 @@
                 }
                 echo '</ul>'; // end list-group
                 echo '<div class="card-footer">';
-                echo '<a href="#" class="btn btn-primary">View</a>';
+                echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
                 echo '</div>'; // end card-footer
                 echo '</div>'; // end card
                 echo '</div>'; // end col
