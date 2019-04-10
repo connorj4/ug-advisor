@@ -56,19 +56,25 @@ body > .container {
 
 /* bigger icons */
 .bigger-icon {
-  font-size: 2em;
+  font-size: 4em;
 }
 
 .card {
-  margin-bottom: 1em;
+  margin-bottom: 2em;
 }
 td form {
   margin:0;
 }
 .large-icon {
-  font-size: 6em;
+  font-size: 4em;
   margin: 0 0 0.1em;
 }
 .student_name {
   text-transform: capitalize;
 }
+
+.admin .card .card-body, .admin .card .card-footer, .admin .card .card-header {  
+  text-align: center;
+} 
+
+
