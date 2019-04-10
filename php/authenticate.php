@@ -59,6 +59,7 @@ if (isset($_POST['submit'])) {
       }
   } else {
     $message = "Username or Password did not match!";
+    header("location: " . SRC_PATH . "/logout.php"); 
     return $message;
   }
   // close the mysql connection
