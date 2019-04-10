@@ -47,25 +47,11 @@
                 </div>
               </div><!-- /card -->
             </div><!-- /col 6 -->
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-header">
-                   Select Course
-                </div><div class="card-body">
-                <div class="form-group form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1">Course Name 3</label>
-                </div>
-                </div>
-                <div class="card-footer">
-                <a href="#" class="btn btn-primary">Add Course</a>
-                </div>
-              </div><!-- /card -->
-            </div><!-- /col 6 -->
+           
 
             <div class="row justify-content-sm-center">
             <div class="col-sm-3">
-            <a href="<?php echo BASE_URL ?>/select/check-term.php" class="btn btn-primary">Save Term</a>
+            <a href="<?php echo BASE_URL ?>/select/advisor-approval.php" class="btn btn-primary">Send to Advisor</a>
             </div>
             </div>
           <hr>

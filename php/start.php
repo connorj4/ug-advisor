@@ -16,25 +16,44 @@ try {
   $db_connection = new mysqli(DB_HOST, DB_USER, DB_PASSWORD)
     OR die("Connection failed: " . $db_connection->connect_error);
 } catch (Exception $e) {
-  echo 'Caught exception: ',  $e->getMessage(), "\n";
+  echo 'Caught exception: ',  $e->getMessage(), nl2br("\r\n");
 }
-/* Check if database is there and destroy it */
+
+/* Check if database is there or will create it */
 $create_stmt = "CREATE DATABASE IF NOT EXISTS ugadvisor_db";
-$create_stmt = "DROP DATABASE ugadvisor_db";
-/* Creates the Database */
-//$create_stmt = "CREATE OR REPLACE DATABASE ugadvisor_db";
-$create_stmt = "CREATE DATABASE ugadvisor_db";
+/* Check if database drop was sucessful */
+if(mysqli_query($db_connection, $create_stmt)) {
+	echo nl2br("Database was successfully created.\r\n");
+} else {
+	echo "Error dropping database: " . mysqli_error() . nl2br("\r\n");
+}
 $prep_stmt = $db_connection -> prepare($create_stmt);
 $prep_stmt->execute();
 $prep_stmt->close();
 
-/* Select the New Database */
+/* Change to the created database */
 $db_connection->select_db("ugadvisor_db");
+
+/* Drop all tables for clean install */
+$db_connection->query('SET foreign_key_checks = 0');
+if ($result = $db_connection->query("SHOW TABLES")) {
+  while($row = $result->fetch_array(MYSQLI_NUM)) {
+    $db_connection->query('DROP TABLE IF EXISTS '.$row[0]);
+	}
+	echo "Tables removed successfully." . nl2br("\r\n");
+} else {
+	echo "No tables were removed." . nl2br("\r\n");
+}
+$db_connection->query('SET foreign_key_checks = 1');
+
+
+/* Salt used for seasoning */
 $salt = 'graduate';
 
 //-----------------------------------------------------
 // Create Database Tables
 //-----------------------------------------------------
+echo "Table creation started." . nl2br("\r\n");
 
 /* Role */
 $create_role = $db_connection->prepare(
@@ -45,7 +64,7 @@ $create_role = $db_connection->prepare(
 $create_role->execute();
 $create_role->close();
 
-/* Status */
+/* Status  */
 $create_status = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE status
   (status_id int NOT NULL AUTO_INCREMENT,
@@ -54,11 +73,29 @@ $create_status = $db_connection->prepare(
 $create_status->execute();
 $create_status->close();
 
+/* State In Time */
+$create_status = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE state
+  (state_id int NOT NULL AUTO_INCREMENT,
+  state_type varchar(255) NOT NULL,
+	PRIMARY KEY(state_id));");
+$create_status->execute();
+$create_status->close();
+
+/* Permission */
+$create_permission = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE permission
+	(permission_id int NOT NULL AUTO_INCREMENT,
+	permission_type varchar(255) NOT NULL,
+	PRIMARY KEY(permission_id));");
+$create_permission->execute();
+$create_permission->close();
+
 /* Grade */
 $create_grade = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE grade
   (grade_id int NOT NULL AUTO_INCREMENT,
-  grade_type varchar(255) NOT NULL,
+  grade_type varchar(2) NOT NULL,
 	PRIMARY KEY(grade_id));");
 $create_grade->execute();
 $create_grade->close();
@@ -82,6 +119,36 @@ $create_semester->execute();
 $create_semester->close();
 
 /* Below Are Tables That Have Forigen Keys */
+/* ------------------------------------------ */
+
+/* Department */
+$create_dept = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE department(
+		dept_id varchar(4) NOT NULL,
+		dept_name varchar(255) NOT NULL,
+		creation_date timestamp,
+		status_id int NOT NULL,
+		PRIMARY KEY(dept_id),
+		FOREIGN KEY(status_id) REFERENCES status(status_id));");
+$create_dept->execute();
+$create_dept->close();
+
+/* Program */
+$create_program = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE program
+		(program_id int NOT NULL AUTO_INCREMENT,
+		program_name varchar(255) NOT NULL,
+		creation_date timestamp,
+		dept_id varchar(4) NOT NULL,
+		status_id int NOT NULL,
+		PRIMARY KEY(program_id),
+		FOREIGN KEY(dept_id) REFERENCES department(dept_id),
+		FOREIGN KEY(status_id) REFERENCES status(status_id));");
+	$create_program->execute();
+	$create_program->close();
+
+/* Below Are Tables Describe Users */
+/* ------------------------------------------ */
 
 /* User */
 $create_user = $db_connection->prepare(
@@ -99,59 +166,6 @@ $create_user = $db_connection->prepare(
 $create_user->execute();
 $create_user->close();
 
-/* Department */
-$create_dept = $db_connection->prepare(
-	"CREATE OR REPLACE TABLE department
-	(dept_id int NOT NULL AUTO_INCREMENT,
-	dept_name varchar(255) NOT NULL,
-	creation_date timestamp,
-  status_id int NOT NULL,
-	PRIMARY KEY(dept_id),
-  FOREIGN KEY(status_id) REFERENCES status(status_id));");
-$create_dept->execute();
-$create_dept->close();
-
-/* Program */
-$create_program = $db_connection->prepare(
-	"CREATE OR REPLACE TABLE program
-	(program_id int NOT NULL AUTO_INCREMENT,
-	program_name varchar(255) NOT NULL,
-	creation_date timestamp,
-	dept_id int NOT NULL,
-  status_id int NOT NULL,
-	PRIMARY KEY(program_id),
-	FOREIGN KEY(dept_id) REFERENCES department(dept_id),
-  FOREIGN KEY(status_id) REFERENCES status(status_id));");
-$create_program->execute();
-$create_program->close();
-
-/* Course */
-$create_course = $db_connection->prepare(
-	"CREATE OR REPLACE TABLE course
-	(course_id int NOT NULL,
-	course_name varchar(255) NOT NULL,
-	credits int,
-	faculty_id int NOT NULL,
-	program_id int NOT NULL,
-  status_id int NOT NULL,
-	creation_date timestamp,
-	PRIMARY KEY(course_id),
-	FOREIGN KEY(faculty_id) REFERENCES faculty(faculty_id),
-	FOREIGN KEY(program_id) REFERENCES program(program_id),
-  FOREIGN KEY(status_id) REFERENCES status(status_id));");
-$create_course->execute();
-$create_course->close();
-
-/* Prerequisite */
-$create_prerequisite = $db_connection->prepare(
-	"CREATE OR REPLACE TABLE prerequisite
-	(prerequisite_id int NOT NULL AUTO_INCREMENT,
-	course_id int NOT NULL,
-	PRIMARY KEY(prerequisite_id),
-	FOREIGN KEY(course_id) REFERENCES course(course_id));");
-$create_prerequisite->execute();
-$create_prerequisite->close();
-
 /* Administrator */
 $create_sysadmin = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE administrator
@@ -167,7 +181,7 @@ $create_faculty = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE faculty
 	(faculty_id int NOT NULL AUTO_INCREMENT,
 	user_id int NOT NULL,
-	dept_id int NOT NULL,
+	dept_id varchar(4) NOT NULL,
   status_id int NOT NULL,
 	PRIMARY KEY(faculty_id),
 	FOREIGN KEY(user_id) REFERENCES user(user_id),
@@ -181,9 +195,11 @@ $create_student = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE student
 	(student_id int NOT NULL AUTO_INCREMENT,
 	user_id int NOT NULL,
+	program_id int NOT NULL,
   status_id int NOT NULL,
 	PRIMARY KEY(student_id),
 	FOREIGN KEY(user_id) REFERENCES user(user_id),
+	FOREIGN KEY(program_id) REFERENCES program(program_id),
   FOREIGN KEY(status_id) REFERENCES status(status_id));");
 $create_student->execute();
 $create_student->close();
@@ -199,53 +215,78 @@ $create_advisor = $db_connection->prepare(
 $create_advisor->execute();
 $create_advisor->close();
 
+/* ------------------------------------------ */
+/* Courses and graduation maps */
+
+/* Course */
+$create_course = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE course
+		(course_id int NOT NULL,
+    course_num int NOT NULL,
+		course_name varchar(255) NOT NULL,
+		credits int,
+		dept_id varchar(4) NOT NULL,
+		status_id int NOT NULL,
+		creation_date timestamp,
+		PRIMARY KEY(course_id),
+		FOREIGN KEY(dept_id) REFERENCES department(dept_id),
+		FOREIGN KEY(status_id) REFERENCES status(status_id));");
+$create_course->execute();
+$create_course->close();
+
+/* Prerequisite */
+$create_prerequisite = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE prerequisite
+		(prerequisite_id int NOT NULL AUTO_INCREMENT,
+		course_id int NOT NULL,
+		PRIMARY KEY(prerequisite_id),
+		FOREIGN KEY(course_id) REFERENCES course(course_id));");
+$create_prerequisite->execute();
+$create_prerequisite->close();
+
 /* Take */
 $create_taken = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE take
-	(take_id int NOT NULL AUTO_INCREMENT,
-	course_id int NOT NULL,
-	grade_id int NOT NULL,
-  student_id int NOT NULL,
-	PRIMARY KEY(take_id),
-	FOREIGN KEY(course_id) REFERENCES course(course_id),
-	FOREIGN KEY(grade_id) REFERENCES grade(grade_id),
-  FOREIGN KEY(student_id) REFERENCES student(student_id));");
+		(take_id int NOT NULL AUTO_INCREMENT,
+		course_id int NOT NULL,
+		grade_id int NOT NULL,
+		semester_id int NOT NULL,
+		year_id int NOT NULL,
+		state_id int NOT NULL,
+		student_id int NOT NULL,
+		PRIMARY KEY(take_id),
+		FOREIGN KEY(course_id) REFERENCES course(course_id),
+		FOREIGN KEY(grade_id) REFERENCES grade(grade_id),
+		FOREIGN KEY(semester_id) REFERENCES semester(semester_id),
+		FOREIGN KEY(year_id) REFERENCES years(year_id),
+		FOREIGN KEY(state_id) REFERENCES state(state_id),
+		FOREIGN KEY(student_id) REFERENCES student(student_id));");
 $create_taken->execute();
 $create_taken->close();
 
 /* Graduation Map */
 $create_graduation = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE graduation
-	(graduation_id int NOT NULL AUTO_INCREMENT,
-	take_id int NOT NULL,
-  program_id int NOT NULL,
-	enrolled timestamp,
-	PRIMARY KEY(graduation_id),
-	FOREIGN KEY(take_id) REFERENCES take(take_id),
-  FOREIGN KEY(program_id) REFERENCES program(program_id));");
+		(graduation_id int NOT NULL AUTO_INCREMENT,
+		take_id int NOT NULL,
+		enrolled timestamp,
+		PRIMARY KEY(graduation_id),
+		FOREIGN KEY(take_id) REFERENCES take(take_id));");
 $create_graduation->execute();
 $create_graduation->close();
 
-/* Permission */
-$create_permission = $db_connection->prepare(
-	"CREATE OR REPLACE TABLE permission
-	(permission_id int NOT NULL AUTO_INCREMENT,
-	permission_type varchar(255) NOT NULL,
-	PRIMARY KEY(permission_id));");
-$create_permission->execute();
-$create_permission->close();
-
+/* Status Display */
+echo nl2br("The database tables were successfully created.\r\n");
 
 
 //-----------------------------------------------------
-// Populate Database Tables
+// Populate Tables of Database
 //-----------------------------------------------------
 
 /* Role */
 $insert_role = $db_connection->prepare(
 	"INSERT INTO role
-	(role_id, role_type) VALUES(?,?);");
-
+		(role_id, role_type) VALUES(?,?);");
 $insert_role->bind_param("is", $role_id, $role_title);
 
 $role_id = 1;
@@ -269,7 +310,7 @@ $insert_role->close();
 /* Status */
 $insert_status = $db_connection->prepare(
 	"INSERT INTO status
-	(status_id, status_type) VALUES(?,?);");
+		(status_id, status_type) VALUES(?,?);");
 $insert_status->bind_param("is", $status_id, $status_title);
 $status_id = 1;
 $status_title = "active";
@@ -278,12 +319,32 @@ $insert_status->execute();
 $status_id = 2;
 $status_title = "dormant";
 $insert_status->execute();
+
 $insert_status->close();
+
+/* State */
+$insert_state = $db_connection->prepare(
+	"INSERT INTO state
+		(state_id, state_type) VALUES(?,?);");
+$insert_state->bind_param("is", $state_id, $state_title);
+$state_id = 1;
+$state_title = "past";
+$insert_state->execute();
+
+$state_id = 2;
+$state_title = "present";
+$insert_state->execute();
+
+$state_id = 3;
+$state_title = "future";
+$insert_state->execute();
+
+$insert_state->close();
 
 /* Grade */
 $insert_grade = $db_connection->prepare(
 	"INSERT INTO grade
-	(grade_id, grade_type) VALUES(?,?);");
+		(grade_id, grade_type) VALUES(?,?);");
 $insert_grade->bind_param("is", $grade_id, $grade_type);
 $grade_id = 1;
 $grade_type = "A+";
@@ -350,41 +411,94 @@ $insert_grade->close();
 /* Department */
 $insert_dept = $db_connection->prepare(
 	"INSERT INTO department
-	(dept_id,
-  dept_name,
-  status_id) VALUES(?,?,?);");
-$insert_dept->bind_param("isi",
-  $dept_id,
-  $dept_name,
-  $status_id);
+		(dept_id,
+		dept_name,
+		status_id) VALUES(?,?,?);");
+$insert_dept->bind_param("ssi",
+$dept_id,
+$dept_name,
+$status_id);
 
-$dept_id = 1;
+$dept_id = "CSC";
 $dept_name = "Computer Science";
 $status_id = 1;
 $insert_dept->execute();
+
+$dept_id = "MAT";
+$dept_name = "Mathematics";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "INQ";
+$dept_name = "Inquiry";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "ENG";
+$dept_name = "English";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "CHE";
+$dept_name = "Chemistry";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "ECS";
+$dept_name = "Earth science";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "PHY";
+$dept_name = "Physics";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "BIO";
+$dept_name = "Biology";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "MIS";
+$dept_name = "Management";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "ACC";
+$dept_name = "Accounting";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "AAA";
+$dept_name = "Department Not Specified";
+$status_id = 1;
+$insert_dept->execute();
+
 $insert_dept->close();
 
 /* Program */
 $insert_program = $db_connection->prepare(
 	"INSERT INTO program
-	(program_id,
-	program_name,
-  dept_id,
-  status_id) VALUES(?,?,?,?);");
-$insert_program->bind_param("isii",
-  $program_id,
-	$program_name,
-	$dept_id,
-  $status_id);
+		(program_id,
+		program_name,
+		dept_id,
+		status_id) VALUES(?,?,?,?);");
+$insert_program->bind_param("issi",
+$program_id,
+$program_name,
+$dept_id,
+$status_id);
 
 $program_id = 1;
 $program_name = "Computer Science General";
-$dept_id = 1;
+$dept_id = "CSC";
+$status_id = 1;
 $insert_program->execute();
 
 $program_id = 2;
 $program_name = "Computer Information Systems";
-$dept_id = 1;
+$dept_id = "CSC";
+$status_id = 1;
 $insert_program->execute();
 
 $insert_program->close();
@@ -392,21 +506,21 @@ $insert_program->close();
 /* User */
 $insert_user = $db_connection->prepare(
 	"INSERT INTO user
-	(user_id,
-	username,
-	password,
-	email,
-	first_name,
-	last_name,
-	role_id) VALUES(?,?,?,?,?,?,?);");
+		(user_id,
+		username,
+		password,
+		email,
+		first_name,
+		last_name,
+		role_id) VALUES(?,?,?,?,?,?,?);");
 $insert_user->bind_param("isssssi",
-  $user_id,
-	$username,
-	$password,
-	$email,
-	$first_name,
-	$last_name,
-	$role_id);
+$user_id,
+$username,
+$password,
+$email,
+$first_name,
+$last_name,
+$role_id);
 
 $user_id = 1;
 $username = "ken";
@@ -512,46 +626,53 @@ $insert_user->close();
 /* Administrator */
 $insert_admin = $db_connection->prepare(
 	"INSERT INTO administrator
-	(admin_id,
-  user_id) VALUES(?,?);");
+		(admin_id,
+		user_id) VALUES(?,?);");
 $insert_admin->bind_param("ii",
-  $admin_id,
-	$user_id);
+$admin_id,
+$user_id);
 
 $admin_id = 1;
 $user_id = 2;
 $insert_admin->execute();
+
 $insert_admin->close();
 
 /* Faculty */
 $insert_faculty = $db_connection->prepare(
 	"INSERT INTO faculty
-	(faculty_id,
-	user_id,
-	dept_id,
-  status_id) VALUES(?,?,?,?);");
-$insert_faculty->bind_param("iiii",
-	$faculty_id,
-	$user_id,
-	$dept_id,
-	$status_id);
+		(faculty_id,
+		user_id,
+		dept_id,
+		status_id) VALUES(?,?,?,?);");
+$insert_faculty->bind_param("iisi",
+$faculty_id,
+$user_id,
+$dept_id,
+$status_id);
 
 $faculty_id = 1;
 $user_id = 3;
-$dept_id = 1;
+$dept_id = "CSC";
 $status_id = 1;
 $insert_faculty->execute();
-$insert_faculty->close();
 
+$faculty_id = 2;
+$user_id = 9;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_faculty->execute();
+
+$insert_faculty->close();
 
 /* Year */
 $insert_year = $db_connection->prepare(
 	"INSERT INTO years
-	(year_id,
-	year_type) VALUES(?,?);");
+		(year_id,
+		year_type) VALUES(?,?);");
 $insert_year->bind_param("ii",
-	$year_id,
-	$year_type);
+$year_id,
+$year_type);
 
 $year_id = 1;
 $year_type= 2015;
@@ -594,18 +715,50 @@ $insert_year->close();
 /* Semester */
 $insert_semester = $db_connection->prepare(
 	"INSERT INTO semester
-	(semester_id,
-	semester_type) VALUES(?,?);");
+		(semester_id,
+		semester_type) VALUES(?,?);");
 $insert_semester->bind_param("is",
-	$semester_id,
-	$semester_type);
+$semester_id,
+$semester_type);
 
 $semester_id = 1;
 $semester_type= "Fall";
 $insert_semester->execute();
 
 $semester_id = 2;
+$semester_type= "Fall 1st 8 weeks";
+$insert_semester->execute();
+
+$semester_id = 3;
+$semester_type= "Fall 2nd 8 weeks";
+$insert_semester->execute();
+
+$semester_id = 4;
+$semester_type= "Spring 1st 8 weeks";
+$insert_semester->execute();
+
+$semester_id = 5;
+$semester_type= "Spring 2nd 8 weeks";
+$insert_semester->execute();
+
+$semester_id = 6;
 $semester_type= "Spring";
+$insert_semester->execute();
+
+$semester_id = 7;
+$semester_type= "Winter";
+$insert_semester->execute();
+
+$semester_id = 8;
+$semester_type= "Summer A";
+$insert_semester->execute();
+
+$semester_id = 9;
+$semester_type= "Summer B";
+$insert_semester->execute();
+
+$semester_id = 10;
+$semester_type= "Summer C";
 $insert_semester->execute();
 
 $insert_semester->close();
@@ -613,11 +766,11 @@ $insert_semester->close();
 /* Permission */
 $insert_permission = $db_connection->prepare(
 	"INSERT INTO permission
-	(permission_id,
-	permission_type) VALUES(?,?);");
+		(permission_id,
+		permission_type) VALUES(?,?);");
 $insert_permission->bind_param("is",
-	$permission_id,
-	$permission_type);
+$permission_id,
+$permission_type);
 
 $permission_id = 1;
 $permission_type= "Approved";
@@ -632,26 +785,635 @@ $insert_permission->close();
 /* Course */
 $insert_course = $db_connection->prepare(
 	"INSERT INTO course
-	(course_id,
-	course_name,
-	credits,
-	faculty_id,
-	program_id,
-	status_id) VALUES(?,?,?,?,?,?);");
-  
-$insert_course->bind_param("isiiii",
-	$course_id,
-	$course_name,
-	$credits,
-	$faculty_id,
-	$program_id,
-	$status_id);
+		(course_id,
+    course_num,
+		course_name,
+		credits,
+		dept_id,
+		status_id) VALUES(?,?,?,?,?,?);");
 
-$course_id = 152;
+$insert_course->bind_param("iisisi",
+$course_id,
+$course_num,
+$course_name,
+$credits,
+$dept_id,
+$status_id);
+
+/* CSC Courses */
+$course_id = 11625;
+$course_num = 101;
+$course_name= "Intro to Computers & Applications";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11629;
+$course_num = 104;
+$course_name= "Web Technology";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11630;
+$course_num = 152;
 $course_name= "Fundamentals of Programming";
 $credits = 3;
-$faculty_id = 1;
-$program_id = 1;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11636;;
+$course_num = 200;
+$course_name= "Info Mgmt/Productivity Software";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11649;
+$course_num = 207;
+$course_name= "Computer Systems";
+$credits = 4;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11651;
+$course_num = 212;
+$course_name= "CS2: Data Structures";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11654;
+$course_num = 229;
+$course_name= "Object-Oriented Programming";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11656;
+$course_num = 235;
+$course_name= "Web and Database Development";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11659;
+$course_num = 265;
+$course_name= "Computer Networking and Security I";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 42003;
+$course_num = 305;
+$course_name= "Computer Organization";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 40260;
+$course_num = 310;
+$course_name= "Multimedia Systems";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11661;
+$course_num = 321;
+$course_name= "Algorithm Design and Analysis";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11662;
+$course_num = 324;
+$course_name= "Computer Ethics";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11664;
+$course_num = 330;
+$course_name= "Software Design and Development";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 41872;
+$course_num = 334;
+$course_name= "Human-Computer Interactions";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 41873;
+$course_num = 335;
+$course_name= "Database System";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11666;
+$course_num = 341;
+$course_name= "Digital Imaging";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 50092;
+$course_num = 380;
+$course_name= "Network Technology";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 10501;
+$course_num = 398;
+$course_name= "Deep Learning";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11667;
+$course_num = 400;
+$course_name= "Capstone";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11668;
+$course_num = 424;
+$course_name= "System Administration";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11669;
+$course_num = 425;
+$course_name= "Operating Systems";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 41879;
+$course_num = 431;
+$course_name= "Computer Graphics";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11670;
+$course_num = 443;
+$course_name= "Internet Programming";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 41797;
+$course_num = 453;
+$course_name= "Information Security";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 41878;
+$course_num = 463;
+$course_name= "Development of Distributed and E-Commerce Applications";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11671;
+$course_num = 465;
+$course_name= "Computer Networking and Security II";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 42430;
+$course_num = 476;
+$course_name= "Fundamentals of Data Warehousing";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11672;
+$course_num = 477;
+$course_name= "Data Mining";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 42004;
+$course_num = 481;
+$course_name= "Artificial Intelligence";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11673;
+$course_num = 505;
+$course_name= "Comp. Pgrm & Data Structures";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 41883;
+$course_num = 535;
+$course_name= "Software Engineering";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11674;
+$course_num = 540;
+$course_name= "Database Systems";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11675;
+$course_num = 550;
+$course_name= "Fund. of Moble App. Development";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11677;
+$course_num = 558;
+$course_name= "Network Security";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11676;
+$course_num = 563;
+$course_name= "Multithreaded Dist. Programing";
+$credits = 3;
+$dept_id = "CSC";
+$status_id = 1;
+$insert_course->execute();
+
+/* Math */
+$course_id = 40114;
+$course_num = 112;
+$course_name= "Math for Natural Sciences";
+$credits = 3;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11062;
+$course_num = 122;
+$course_name= "Pre Calculus";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11073;
+$course_num = 139;
+$course_name= "Short Course in Calculus";
+$credits = 3;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11075;
+$course_num = 150;
+$course_name= "Calculus I";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11078;
+$course_num = 151;
+$course_name= "Calculus II";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11080;
+$course_num = 178;
+$course_name= "Elementary Discrete Mathematics";
+$credits = 3;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11082;
+$course_num = 221;
+$course_name= "Intermediate Applied Statistics";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11088;
+$course_num = 252;
+$course_name= "Calculus III";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11093;
+$course_num = 322;
+$course_name= "Numerical Analysis";
+$credits = 4;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 00001;
+$course_num = 370;
+$course_name= "Business Information Systems";
+$credits = 3;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+/* Physics */
+$course_id = 10400;
+$course_num = 200;
+$course_name= "General Physics I";
+$credits = 4;
+$dept_id = "PHY";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 10404;
+$course_num = 201;
+$course_name= "General Physics II";
+$credits = 4;
+$dept_id = "PHY";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 10406;
+$course_num = 230;
+$course_name= "Physics for Scientists and Engineers I";
+$credits = 4;
+$dept_id = "PHY";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 10408;
+$course_num = 231;
+$course_name= "Physics for Scientists and Engineers II";
+$credits = 4;
+$dept_id = "PHY";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 10410;
+$course_num = 355;
+$course_name= "Electricity and Electronics";
+$credits = 4;
+$dept_id = "PHY";
+$status_id = 1;
+$insert_course->execute();
+
+/* MIS */
+$course_id = 12100;
+$course_num = 365;
+$course_name= "Systems Thinking for MIS";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 40714;
+$course_num = 370;
+$course_name= "Business Information Systems";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 12109;
+$course_num = 371;
+$course_name= "Information System Analysis and Design Techniques";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 42080;
+$course_num = 375;
+$course_name= "Decision Support Systems";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 12111;
+$course_num = 400;
+$course_name= "Global Information Systems";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 42084;
+$course_num = 430;
+$course_name= "Project Management";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 42085;
+$course_num = 460;
+$course_name= "MIS Security Management";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 42086;
+$course_num = 470;
+$course_name= "Management of Information Systems Design";
+$credits = 3;
+$dept_id = "MIS";
+$status_id = 1;
+$insert_course->execute();
+
+/* Accounting */
+$course_id = 40863;
+$course_num = 200;
+$course_name= "Principles of Financial Accounting";
+$credits = 3;
+$dept_id = "ACC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 40874;
+$course_num = 210;
+$course_name= "Managerial Accounting";
+$credits = 3;
+$dept_id = "ACC";
+$status_id = 1;
+$insert_course->execute();
+
+/* Chemistry */
+$course_id = 11979;
+$course_num = 120;
+$course_name= "General Chemistry I";
+$credits = 4;
+$dept_id = "CHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 40908;
+$course_num = 121;
+$course_name= "General Chemistry II";
+$credits = 4;
+$dept_id = "CHE";
+$status_id = 1;
+$insert_course->execute();
+
+/* ESC */
+$course_id = 00002;
+$course_num = 200;
+$course_name= "Physical Geology";
+$credits = 4;
+$dept_id = "ESC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 00003;
+$course_num = 201;
+$course_name= "Historical Geology";
+$credits = 4;
+$dept_id = "ESC";
+$status_id = 1;
+$insert_course->execute();
+
+/* Biology */
+$course_id = 40120;
+$course_num = 100;
+$course_name= "General Zoology";
+$credits = 3;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 40132;
+$course_num = 101;
+$course_name= "General Botany";
+$credits = 3;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 40141;
+$course_num = 103;
+$course_name= "Biology I";
+$credits = 3;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 401153;
+$course_num = 120;
+$course_name= "Microbiology";
+$credits = 4;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 40155;
+$course_num = 200;
+$course_name= "Human Biology I";
+$credits = 4;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 40160;
+$course_num = 201;
+$course_name= "Human Biology I";
+$credits = 4;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 00005;
+$course_num = 210;
+$course_name= "Principles of Astronomy";
+$credits = 4;
+$dept_id = "BIOCHE";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 00006;
+$course_num = 101;
+$course_name= "Intellectual Inquiry";
+$credits = 3;
+$dept_id = "INQ";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 00007;
+$course_num = 001;
+$course_name= "Tech Fluency";
+$credits = 3;
+$dept_id = "AAA";
+$status_id = 1;
+$insert_course->execute();
+
+/* English */
+$course_id = 40423;
+$course_num = 110;
+$course_name= "Composition Writing Lab";
+$credits = 3;
+$dept_id = "ENG";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 40326;
+$course_num = 112;
+$course_name= "Writing Arguments";
+$credits = 3;
+$dept_id = "ENG";
 $status_id = 1;
 $insert_course->execute();
 
@@ -660,36 +1422,115 @@ $insert_course->close();
 /* Student */
 $insert_student = $db_connection->prepare(
 	"INSERT INTO student
-	(student_id,
-	user_id,
-  status_id) VALUES(?,?,?);");
-$insert_student->bind_param("iii",
-	$student_id,
-	$user_id,
-	$status_id);
+		(student_id,
+		user_id,
+		program_id,
+		status_id) VALUES(?,?,?,?);");
+$insert_student->bind_param("iiii",
+$student_id,
+$user_id,
+$program_id,
+$status_id);
 
 $student_id = 1;
 $user_id = 1;
 $status_id = 1;
+$program_id = 1;
 $insert_student->execute();
+
+$student_id = 2;
+$user_id = 4;
+$status_id = 1;
+$program_id = 2;
+$insert_student->execute();
+
+$student_id = 3;
+$user_id = 5;
+$status_id = 1;
+$program_id = 1;
+$insert_student->execute();
+
+$student_id = 3;
+$user_id = 6;
+$status_id = 1;
+$program_id = 1;
+$insert_student->execute();
+
+$student_id = 4;
+$user_id = 7;
+$status_id = 1;
+$program_id = 1;
+$insert_student->execute();
+
+$student_id = 5;
+$user_id = 8;
+$status_id = 2;
+$program_id = 1;
+$insert_student->execute();
+
 $insert_student->close();
 
 /* Take */
 $insert_take = $db_connection->prepare(
 	"INSERT INTO take
-	(take_id,
-	course_id,
-  grade_id,
-  student_id) VALUES(?,?,?,?);");
-$insert_take->bind_param("iiii",
-  $take_id,
-	$course_id,
-	$grade_id,
-  $student_id);
+		(take_id,
+		course_id,
+		grade_id,
+		semester_id,
+		year_id,
+		state_id,
+		student_id) VALUES(?,?,?,?,?,?,?);");
+$insert_take->bind_param("iiiiiii",
+$take_id,
+$course_id,
+$grade_id,
+$semester_id,
+$year_id,
+$state_id,
+$student_id);
 
 $take_id = 1;
 $course_id = 152;
 $grade_id = 14;
+$semester_id = 1;
+$year_id = 5;
+$state_id = 3;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 2;
+$course_id = 112;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 5;
+$state_id = 3;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 3;
+$course_id = 101;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 5;
+$state_id = 3;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 4;
+$course_id = 001;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 5;
+$state_id = 3;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 5;
+$course_id = 110;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 5;
+$state_id = 3;
 $student_id = 1;
 $insert_take->execute();
 
@@ -698,17 +1539,14 @@ $insert_take->close();
 /* Graduation Map */
 $insert_graduation = $db_connection->prepare(
 	"INSERT INTO graduation
-	(graduation_id,
-  take_id,
-  program_id) VALUES(?,?,?);");
-$insert_graduation->bind_param("iii",
-  $graduation_id,
-	$take_id,
-  $program_id);
+		(graduation_id,
+		take_id) VALUES(?,?);");
+$insert_graduation->bind_param("ii",
+$graduation_id,
+$take_id);
 
 $graduation_id = 1;
 $take_id = 1;
-$program_id= 1;
 $insert_graduation->execute();
 
 $insert_graduation->close();
@@ -716,27 +1554,30 @@ $insert_graduation->close();
 /* Advisor */
 $insert_advisor = $db_connection->prepare(
 	"INSERT INTO advisor
-	(student_id,
-  faculty_id) VALUES(?,?);");
+		(student_id,
+		faculty_id) VALUES(?,?);");
 $insert_advisor->bind_param("ii",
-  $student_id,
-	$faculty_id);
+$student_id,
+$faculty_id);
 
 $student_id = 1;
 $faculty_id = 1;
 $insert_advisor->execute();
 
+$student_id = 2;
+$faculty_id = 1;
+$insert_advisor->execute();
+
+$student_id = 3;
+$faculty_id = 1;
+$insert_advisor->execute();
+	
 $insert_advisor->close();
 
-
-//-----------------------------------------------------
-// Finish Database Creation
-//-----------------------------------------------------
-
 /* Status Display */
-echo 'The Database was successfully created';
+echo nl2br("The database tables were successfully populated.\r\n");
 /* Return to homepage after 5 seconds */
-header( "refresh:5;url=/ug-advisor" );
+header( "refresh:10;url=/ug-advisor" );
 
 /* ALWAYS CLOSE THE DB CONNECTION */
 $db_connection->close();

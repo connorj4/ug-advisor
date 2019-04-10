@@ -7,7 +7,6 @@ include_once (realpath(dirname(__FILE__).'/path.php'));
 include_once (realpath(dirname(__FILE__).'/config.php'));
 
 
-
 //-----------------------------------------------------
 // Authenticate
 //-----------------------------------------------------
@@ -31,15 +30,10 @@ if (isset($_POST['submit'])) {
 
     // SQL query to fetch information and find match user
     $select_user = $db_connection->prepare(
-      /*
-      "SELECT username, role_id 
-        FROM administrator JOIN faculty
-          WHERE username = ? AND password = ? ");
-*/
-      "SELECT username,role_id FROM user WHERE username = ? AND password = ? LIMIT 1");
+      "SELECT user_id, username, role_id FROM user WHERE username = ? AND password = ? LIMIT 1");
     $select_user->bind_param("ss", $username, $pass);
     $select_user->execute();
-    $select_user->bind_result($user_name, $user_role);
+    $select_user->bind_result($user_id, $user_name, $user_role);
     $select_user->store_result();
 
     if($select_user->num_rows == 1) {
@@ -47,8 +41,10 @@ if (isset($_POST['submit'])) {
 
         session_start(); 
         # This area needs to send users and admins to there own directory
+        $_SESSION['user_id'] = $user_id;
         $_SESSION['login_user']=$username;
         $_SESSION['user_role'] = $user_role;
+
 
         if ($_SESSION['user_role'] == 1) {
           header("location: " . BASE_URL . "/admin");
@@ -57,22 +53,17 @@ if (isset($_POST['submit'])) {
         } elseif ($_SESSION['user_role'] == 3) {
           header("location:" . BASE_URL . "/student");
         } else {
-          $message = "Login Failed";
-          return $message;
+          $error = "Login Failed";
+          return $error;
         }
-      
       }
   } else {
-    echo "Username or Password did not match!";
-    header("location:" . BASE_URL );
+    $message = "Username or Password did not match!";
+    return $message;
   }
   // close the mysql connection
   $select_user->close();
 } else {
-
-  // remove all session variables
-  session_unset(); 
-  // destroy the session 
-  session_destroy(); 
+  header("location: " . SRC_PATH . "/logout.php"); 
 }
 }

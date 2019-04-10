@@ -7,8 +7,6 @@
   include_once (realpath(dirname(__FILE__, 2).'/php/session.php'));
   /* Check Role */
   include_once (ROOT_SRC_PATH .'/check_admin.php');
-  /* Start The Session */
-  session_start();
 
   /* Page Name */
   $page_name = "admin-department"; 
@@ -30,9 +28,7 @@
               <h1>Department Administration</h1>
             </div>
             <div class="col-sm-3">
-              <form action="" method="post">
-                <button type="submit" class="btn btn-primary">Add Dept.</button>
-              </form>
+                <a href="../admin/department_add.php" class="btn btn-primary">Add Dept.</a>
             </div>
           </div> 
           <div class="row">
@@ -75,8 +71,8 @@
                     echo '<th scope="row">'.$row["dept_id"].'</th>';
                     echo '<td>'.$row["dept_name"].'</td>';
                     echo '<td>'.$row["status_type"].'</td>';
-                    echo '<td><form method="post" action="'.BASE_URL.'/php/#">';
-                    echo '<input type="hidden" name="#" value="#">';
+                    echo '<td><form method="post" action="'.BASE_URL.'/admin/department_edit.php">';
+                    echo '<input type="hidden" name="edit_dept_id" value="'.$row["dept_id"].'">';
                     echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> edit</button>';
                     echo '</form></td>';
                     echo '</tr>';

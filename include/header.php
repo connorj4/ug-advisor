@@ -32,7 +32,7 @@
         if (!isset($user_name)) {
           echo '<span class="navbar-text">Please login.</span>';
         } else {
-          echo '<span class="navbar-text">Hello '.$user_name.'</span> <a class="nav-link" href="' . SRC_PATH . '/logout.php">Logout</a>';  
+          echo '<span class="navbar-text"><i class="far fa-user"></i> '.$user_name.'</span> &nbsp;&nbsp;&nbsp;<a class="btn btn-primary" role="button" aria-disabled="true" href="' . SRC_PATH . '/logout.php">Logout</a>';  
         }
       ?>
     </div>
