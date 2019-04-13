@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// STUDENT ADD
+// FACULTY ADD
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -25,10 +25,10 @@
           <!-- Content for the webpage starts here -->
           <div class="row">
             <div class="col-sm-9">
-              <h1>Student Administration Addition</h1>
+              <h1>Advisor Administration Addition</h1>
             </div>
             <div class="col-sm-3">
-                <a href="<?php echo BASE_URL ?>/admin/student.php" class="btn btn-primary">Back</a>
+                <a href="<?php echo BASE_URL ?>/admin/advisor.php" class="btn btn-primary">Back</a>
             </div>
           </div> 
           <div class="row">
