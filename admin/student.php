@@ -9,7 +9,7 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-student";
+  $page_name = "admin-faculty";
 
 ?>
 <!doctype html>

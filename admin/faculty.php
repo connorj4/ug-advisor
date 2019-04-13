@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// ADMIN STUDENT
+// ADMIN FACULTY
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -9,7 +9,7 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-advisor";
+  $page_name = "admin-faculty";
 
 ?>
 <!doctype html>
@@ -26,23 +26,23 @@
           
           <div class="row">
             <div class="col-sm-9">
-              <h1>Advisor Administration</h1>
+              <h1>Faculty Administration</h1>
             </div>
             <div class="col-sm-3">
               <form action="" method="post">
-                <a href="../admin/advisor_add.php" class="btn btn-primary">Add Advisor</a>
+                <a href="../admin/faculty_add.php" class="btn btn-primary">Add Faculty</a>
               </form>
             </div>
           </div> 
           <div class="row">
             <div class="col-sm-12">
-          <!-- table of Advisor list here -->
+          <!-- table of students list here -->
           <table class="table table-striped">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Department</th>
-                <th scope="col">Name</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
                 <th scope="col">Program</th>
                 <th scope="col">Edit</th>
               <tr>
@@ -75,13 +75,13 @@
                 if ($result->num_rows > 0) {
                   while($row = $result->fetch_assoc()) {
                     echo '<tr>';
-                    echo '<td scope="row"> [ID] </td>'; 
-                    echo '<td scope="row"> [Dept] </td>'; 
-                    echo '<td scope="row"> [Name] </td>'; 
-                    echo '<td scope="row"> [Program] </td>'; 
+                    echo '<th scope="row">'.$row["student_id"].'</th>';
+                    echo '<td>'.$row["first_name"].'</td>';
+                    echo '<td scope="row">'.$row["last_name"].'</td>';
+                    echo '<td scope="row"> [dept] </td>';
                     echo '<td><form method="post" action="'.BASE_URL.'/php/#">';
                     echo '<input type="hidden" name="#" value="#">';
-                    echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> edit</button>';
+                    echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-address-card"></i> edit</button>';
                     echo '</form></td>';
                     echo '</tr>';
                   }

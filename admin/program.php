@@ -31,7 +31,7 @@
             </div>
             <div class="col-sm-3">
               <form action="" method="post">
-                <button type="submit" class="btn btn-primary">Add Program</button>
+                <a href="../admin/program_add.php" class="btn btn-primary">Add Program</a>
               </form>
             </div>
           </div> 

@@ -98,7 +98,7 @@
                   <i class="fas fa-user-tie text-secondary large-icon"></i>
                 </div>
                 <div class="card-footer">
-                  <a href="#" class="btn btn-primary">View</a>
+                  <a href="<?php echo BASE_URL ?>/admin/faculty.php" class="btn btn-primary">View</a>
                 </div><!-- end card footer -->
               </div>
             </div>
@@ -134,13 +134,13 @@
             <div class="col-md-3">
               <div class="card">
                 <div class="card-header">
-                  Prerequisit
+                  Prerequisite
                 </div>
                 <div class="card-body">
                   <i class="fas fa-clipboard-check text-secondary large-icon"></i>
                 </div>
                 <div class="card-footer">
-                  <a href="#" class="btn btn-primary">View</a>
+                  <a href="<?php echo BASE_URL ?>/admin/prerequisite.php" class="btn btn-primary">View</a>
                 </div><!-- end card footer -->
               </div>
             </div>

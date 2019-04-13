@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// STUDENT ADD
+// PROGRAM ADD
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -9,7 +9,7 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-student-add"; 
+  $page_name = "admin-course-add"; 
 
 ?>
 <!doctype html>
@@ -25,33 +25,33 @@
           <!-- Content for the webpage starts here -->
           <div class="row">
             <div class="col-sm-9">
-              <h1>Student Administration Addition</h1>
+              <h1>Program Administration Addition</h1>
             </div>
             <div class="col-sm-3">
-                <a href="<?php echo BASE_URL ?>/admin/student.php" class="btn btn-primary">Back</a>
+                <a href="<?php echo BASE_URL ?>/admin/program.php" class="btn btn-primary">Back</a>
             </div>
           </div> 
           <div class="row">
             <div class="col-sm-12">
-            <form action="<?php echo BASE_URL ?>/php/admin_student_add.php" method="post">
+            <form action="<?php echo BASE_URL ?>/php/admin_course_add.php" method="post">
                     <fieldset>
-                      <legend>Student:</legend>
+                      <legend></legend>
                       <div class="form-row">
                         <div class="form-group col-sm-3">
-                          <label for="student_id">Student ID:</label>
-                          <input type="text" class="form-control" id="dept_id" placeholder="Student ID" name="student_id" maxlength="3">
+                          <label for="course_id">Course ID:</label>
+                          <input type="text" class="form-control" id="course_id" placeholder="Course ID" name="course_id" maxlength="3">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="first_name">First Name</label>
-                          <input type="text" class="form-control" id="student_name" placeholder="First Name" name="first_name">
+                          <label for="course_name">Course Name</label>
+                          <input type="text" class="form-control" id="course_name" placeholder="Course Name" name="course_name">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="last_name">Last Name</label>
-                          <input type="text" class="form-control" id="last_name" placeholder="Last Name" name="last_name">
+                          <label for="course_credit">Course Credit</label>
+                          <input type="text" class="form-control" id="course_credit" placeholder="Course Credit" name="course_credit">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="program_name">Program</label>
-                          <input type="text" class="form-control" id="program_name" placeholder="Program Name" name="program_name">
+                          <label for="course_semester">Course Semester</label>
+                          <input type="text" class="form-control" id="course_semester" placeholder="Course Semester" name="course_semester">
                         </div>
                         <div class="form-group col-sm-3">
                           <label for="status_id">Status</label>
