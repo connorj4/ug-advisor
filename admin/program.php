@@ -1,14 +1,12 @@
 <?php
 //======================================================================
-// COURSES
+// PROGRAM ADMIN
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
   include_once (realpath(dirname(__FILE__, 2).'/php/session.php'));
   /* Check Role */
   include_once (ROOT_SRC_PATH .'/check_admin.php');
-  /* Start The Session */
-  session_start();
 
   /* Page Name */
   $page_name = "admin-program"; 
@@ -74,7 +72,7 @@
                   while($row = $result->fetch_assoc()) {
                     echo '<tr>'; 
                     echo '<td scope="row"> [ID] </td>';   
-                    echo '<td scope="row"> [Pro Name] </td>';       
+                    echo '<td scope="row"> [Program Name] </td>';       
                     echo '<td scope="row"> [Dept] </td>';
                     echo '<td scope="row"> [Status] </td>';
                     echo '<td><form method="post" action="'.BASE_URL.'/php/#">';

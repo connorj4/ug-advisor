@@ -1,17 +1,15 @@
 <?php
 //======================================================================
-// COURSES
+// PREREQUISTE ADMIN
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
   include_once (realpath(dirname(__FILE__, 2).'/php/session.php'));
   /* Check Role */
   include_once (ROOT_SRC_PATH .'/check_admin.php');
-  /* Start The Session */
-  session_start();
 
   /* Page Name */
-  $page_name = "admin-course"; 
+  $page_name = "admin-prerequisite"; 
 
 ?>
 <!doctype html>
@@ -41,8 +39,8 @@
           <table class="table table-striped">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">Course ID</th>
-                <th scope="col">Course Name</th>
+                <th scope="col">ID</th>
+                <th scope="col">Prerequisite Name</th>
                 <th scope="col">Credits</th>
                 <th scope="col">Status</th>
                 <th scope="col">Semester</th>
@@ -75,7 +73,7 @@
                   while($row = $result->fetch_assoc()) {
                     echo '<tr>'; 
                     echo '<td scope="row"> [ID] </td>';          
-                    echo '<td scope="row"> [Course Name] </td>';
+                    echo '<td scope="row"> [Prerequisite Name] </td>';
                     echo '<td scope="row"> [Credits] </td>';
                     echo '<td scope="row"> [Status] </td>';
                     echo '<td scope="row"> [Semester] </td>'; 
