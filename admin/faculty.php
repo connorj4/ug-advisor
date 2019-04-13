@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// ADMIN FACULTY
+// FACULTY ADMIN
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -27,12 +27,7 @@
           <div class="row">
             <div class="col-sm-9">
               <h1>Faculty Administration</h1>
-            </div>
-            <div class="col-sm-3">
-              <form action="" method="post">
-                <a href="../admin/faculty_add.php" class="btn btn-primary">Add Faculty</a>
-              </form>
-            </div>
+            </div>        
           </div> 
           <div class="row">
             <div class="col-sm-12">
@@ -44,7 +39,6 @@
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">Program</th>
-                <th scope="col">Edit</th>
               <tr>
             <thead>
             <tbody>
@@ -79,10 +73,7 @@
                     echo '<td>'.$row["first_name"].'</td>';
                     echo '<td scope="row">'.$row["last_name"].'</td>';
                     echo '<td scope="row"> [dept] </td>';
-                    echo '<td><form method="post" action="'.BASE_URL.'/php/#">';
-                    echo '<input type="hidden" name="#" value="#">';
-                    echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-address-card"></i> edit</button>';
-                    echo '</form></td>';
+
                     echo '</tr>';
                   }
                 } else {
