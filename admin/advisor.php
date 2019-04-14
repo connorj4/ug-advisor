@@ -41,6 +41,7 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Faculty ID</th>
+                <th scope="col">Advisor Name</th>
                 <th scope="col">Student ID</th>
                 <th scope="col">Edit</th>
               <tr>
@@ -72,13 +73,10 @@
                   while($row = $result->fetch_assoc()) {
                     echo '<tr>';
                     echo '<th scope="row">'.$row["student_id"].'</th>';
+                    echo '<td scope="row"> [Advisor Name Holder] </td>'; 
                     echo '<th scope="row">'.$row["faculty_id"].'</th>';
-                  
-                    //echo '<td>'.$row["dept_name"].'</td>';
-                   // echo '<td>'.$row["status_type"].'</td>';
-                    
-                    echo '<td><form method="post" action="'.BASE_URL.'#';
-                    echo '<input type="hidden" name="edit_dept_id" value="'.$row["dept_id"].'">';
+                    echo '<td><form method="post" action="'.BASE_URL.'/admin/advisor_edit.php">';
+                    echo '<input type="hidden" name="edit_faculty_id" value="'.$row["faculty_id"].'">';
                     echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> edit</button>';
                     echo '</form></td>';
                     echo '</tr>';

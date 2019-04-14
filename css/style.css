@@ -73,7 +73,7 @@ td form {
   text-transform: capitalize;
 }
 
-.admin .card .card-body, .admin .card .card-footer, .admin .card .card-header {  
+.admin .card {  
   text-align: center;
 } 
 

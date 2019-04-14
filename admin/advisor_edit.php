@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// DEPARTMENTS EDIT
+// ADVISOR EDIT
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -9,12 +9,12 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-department-add"; 
+  $page_name = "admin-advisor-edit"; 
 
   if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $_SESSION['edit_dept'] = $_POST['edit_dept_id'];
+    $_SESSION['edit_advisor'] = $_POST['edit_faculty_id'];
   } else {
-    $error = 'No Department ID selected.';
+    $error = 'No Advisor ID selected.';
   }
 
 ?>
@@ -31,10 +31,10 @@
           <!-- Content for the webpage starts here -->
           <div class="row">
             <div class="col-sm-9">
-              <h1>Department Edits</h1>
+              <h1>Advisor Edit</h1>
             </div>
             <div class="col-sm-3">
-                <a href="<?php echo BASE_URL ?>/admin/department.php" class="btn btn-primary">Back</a>
+                <a href="<?php echo BASE_URL ?>/admin/advisor.php" class="btn btn-primary">Back</a>
             </div>
           </div> 
           <div class="row">
@@ -42,35 +42,34 @@
             <?php
 
               $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-              $editdept = $db_connection->prepare("SELECT dept_id, dept_name, status_id FROM department WHERE dept_id = ?");
-              if ($editdept === FALSE) {
+              $editadvisor = $db_connection->prepare("SELECT student_id, faculty_id FROM advisor WHERE faculty_id = ?");
+              if ($editadvisor === FALSE) {
                 echo "Connection Failed";
                 die($db_connection->error);
               }
-              $editdept->bind_param('s', $_SESSION['edit_dept']);
-              $editdept->execute();
-              $result = $editdept->get_result();
+              $editadvisor->bind_param('s', $_SESSION['edit_advisor']);
+              $editadvisor->execute();
+              $result = $editadvisor->get_result();
               if($result->num_rows === 0) exit('No rows');
               while($row = $result->fetch_assoc()) {
-                $dept_id = $row['dept_id'];
-                $dept_name = $row['dept_name'];
-                $status_id = $row['status_id'];
+                $student_id = $row['student_id'];
+                $faculty_id = $row['faculty_id'];
               }
-              $editdept->close();
+              $editadvisor>close();
             ?>
 
-              <form action="<?php echo BASE_URL ?>/php/admin_dept_edit.php" method="post">
+              <form action="<?php echo BASE_URL ?>/php/admin_advisor_edit.php" method="post">
                 <fieldset>
-                  <legend>Department:</legend>
+                  <legend>Advisor:</legend>
 
                   <div class="form-group">
-                    <label for="dept_id">Department ID:</label>
-                    <input type="text" class="form-control" id="dept_id" name="dept_id" value="<?php echo $dept_id; ?>">
+                    <label for="student_id">Student ID:</label>
+                    <input type="text" class="form-control" id="student_id" name="student_id" value="<?php echo $student_id; ?>">
                   </div>
 
                   <div class="form-group">
-                    <label for="dept_id">Department Name:</label>
-                    <input type="text" class="form-control" id="dept_name" name="dept_name" value="<?php echo $dept_name; ?>">
+                    <label for="faculty_id">Faculty ID:</label>
+                    <input type="text" class="form-control" id="faculty_id" name="faculty_id" value="<?php echo $faculty_id; ?>">
                   </div>
 
                   <div class="form-group">
