@@ -1,17 +1,15 @@
 <?php
 //======================================================================
-// COURSES
+// PREREQUISTE ADMIN
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
   include_once (realpath(dirname(__FILE__, 2).'/php/session.php'));
   /* Check Role */
   include_once (ROOT_SRC_PATH .'/check_admin.php');
-  /* Start The Session */
-  session_start();
 
   /* Page Name */
-  $page_name = "admin-course"; 
+  $page_name = "admin-prerequisite"; 
 
 ?>
 <!doctype html>
@@ -42,11 +40,8 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Course ID</th>
-                <th scope="col">Course Name</th>
-                <th scope="col">Credits</th>
-                <th scope="col">Status</th>
-                <th scope="col">Semester</th>
-                <th scope="col">Edit</th>
+                <th scope="col">Prerequisite Name</th>
+                <th>edit</th>
               </tr>
             </thead>
             <tbody>
@@ -54,43 +49,40 @@
                 // Query Reference for Bind
                 // Nothing to Reference
 
-                // View Students
+                // View Prerequisites
                 $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-                // SQL statment
-                $dept_view = $db_connection->prepare("SELECT dept_id, dept_name, status_type 
-                FROM department NATURAL JOIN status;");
+                // SQL statemenCourset
+                $prereq_view = $db_connection->prepare("SELECT prerequisite_id, course_id
+                FROM prerequisite;");
                 // Check Connection
-                if ($dept_view === FALSE) {
+                if ($prereq_view === FALSE) {
                   $error = "Connection Failed";
                   die($db_connection->error);
                 }
                 // bind 
                 //$student_view->bind_param();
                 // execute
-                $dept_view->execute();
+                $prereq_view->execute();
                 // results
-                $result = $dept_view->get_result();
+                $result = $prereq_view->get_result();
 
                 if ($result->num_rows > 0) {
                   while($row = $result->fetch_assoc()) {
                     echo '<tr>'; 
-                    echo '<td scope="row"> [ID] </td>';          
-                    echo '<td scope="row"> [Course Name] </td>';
-                    echo '<td scope="row"> [Credits] </td>';
-                    echo '<td scope="row"> [Status] </td>';
-                    echo '<td scope="row"> [Semester] </td>'; 
-                    echo '<td><form method="post" action="'.BASE_URL.'/php/#">';
-                    echo '<input type="hidden" name="#" value="#">';
+                    echo '<td>'.$row["prerequisite_id"].'</td>';       
+                    echo '<td>'.$row["course_id"].'</td>';
+                    echo '<td><form method="post" action="'.BASE_URL.'/admin/prerequisite_edit.php">';
+                    echo '<input type="hidden" name="edit_dept_id" value="'.$row["prerequisite_id"].'">';
                     echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> edit</button>';
                     echo '</form></td>';
                     echo '</tr>';
                   }
                 } else {
-                  $error = "There was a problem showing the students list.";
+                  $error = "There was a problem showing the prerequiste list.";
                 };
 
                 // Always Close the DB Connection
-                $dept_view->close();
+                $prereq_view->close();
               ?>
 
             </tbody>

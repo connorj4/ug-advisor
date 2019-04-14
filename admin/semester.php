@@ -1,14 +1,12 @@
 <?php
 //======================================================================
-// SEMESTER
+// SEMESTER ADMIN
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
   include_once (realpath(dirname(__FILE__, 2).'/php/session.php'));
   /* Check Role */
   include_once (ROOT_SRC_PATH .'/check_admin.php');
-  /* Start The Session */
-  session_start();
 
   /* Page Name */
   $page_name = "admin-semester"; 
@@ -41,10 +39,8 @@
           <table class="table table-striped">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Semester</th>
-                <th scope="col">Year</th>
-                <th scope="col">Status</th>
+                <th scope="col">Semester ID</th>
+                <th scope="col">Semester Type</th>
                 <th scope="col">Edit</th>
               </tr>
             </thead>
@@ -53,42 +49,40 @@
                 // Query Reference for Bind
                 // Nothing to Reference
 
-                // View Students
+                // View Semeseter
                 $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-                // SQL statment
-                $dept_view = $db_connection->prepare("SELECT dept_id, dept_name, status_type 
-                FROM department NATURAL JOIN status;");
+                // SQL Statement
+                $semester_view = $db_connection->prepare("SELECT semester_id, semester_type
+                FROM semester;");
                 // Check Connection
-                if ($dept_view === FALSE) {
+                if ($semester_view === FALSE) {
                   $error = "Connection Failed";
                   die($db_connection->error);
                 }
                 // bind 
                 //$student_view->bind_param();
                 // execute
-                $dept_view->execute();
+                $semester_view->execute();
                 // results
-                $result = $dept_view->get_result();
+                $result = $semester_view->get_result();
 
                 if ($result->num_rows > 0) {
                   while($row = $result->fetch_assoc()) {
                     echo '<tr>'; 
-                    echo '<td scope="row"> [ID] </td>';          
-                    echo '<td scope="row"> [Semester] </td>';
-                    echo '<td scope="row"> [Year] </td>';
-                    echo '<td scope="row"> [Status] </td>'; 
-                    echo '<td><form method="post" action="'.BASE_URL.'/php/#">';
-                    echo '<input type="hidden" name="#" value="#">';
+                    echo '<th scope="row">'.$row["semester_id"].'</th>';     
+                    echo '<td>'.$row["semester_type"].'</td>';
+                    echo '<td><form method="post" action="'.BASE_URL.'/admin/semester_edit.php">';
+                    echo '<input type="hidden" name="edit_semester_id" value="'.$row["semester_id"].'">';
                     echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> edit</button>';
                     echo '</form></td>';
                     echo '</tr>';
                   }
                 } else {
-                  $error = "There was a problem showing the students list.";
+                  $error = "There was a problem showing the semester list.";
                 };
 
                 // Always Close the DB Connection
-                $dept_view->close();
+                $semester_view->close();
               ?>
 
             </tbody>

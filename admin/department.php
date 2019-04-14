@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// DEPARTMENTS
+// DEPARTMENT ADMIN
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -48,9 +48,9 @@
                 // Query Reference for Bind
                 // Nothing to Reference
 
-                // View Students
+                // View Departments
                 $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-                // SQL statment
+                // SQL Statement
                 $dept_view = $db_connection->prepare("SELECT dept_id, dept_name, status_type 
                 FROM department NATURAL JOIN status;");
                 // Check Connection
@@ -78,7 +78,7 @@
                     echo '</tr>';
                   }
                 } else {
-                  $error = "There was a problem showing the students list.";
+                  $error = "There was a problem showing the department list.";
                 };
 
                 // Always Close the DB Connection

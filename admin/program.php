@@ -1,14 +1,12 @@
 <?php
 //======================================================================
-// COURSES
+// PROGRAM ADMIN
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
   include_once (realpath(dirname(__FILE__, 2).'/php/session.php'));
   /* Check Role */
   include_once (ROOT_SRC_PATH .'/check_admin.php');
-  /* Start The Session */
-  session_start();
 
   /* Page Name */
   $page_name = "admin-program"; 
@@ -43,8 +41,9 @@
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Program Name</th>
-                <th scope="col">Department</th>
-                <th scope="col">Status</th>
+                <th scope="col">Creation Date</th>
+                <th scope="col">Department ID</th>
+                <th scope="col">Status ID</th>
                 <th scope="col">Edit</th>
               </tr>
             </thead>
@@ -53,42 +52,43 @@
                 // Query Reference for Bind
                 // Nothing to Reference
 
-                // View Students
+                // View Programs
                 $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-                // SQL statment
-                $dept_view = $db_connection->prepare("SELECT dept_id, dept_name, status_type 
-                FROM department NATURAL JOIN status;");
+                // SQL Statement
+                $program_view = $db_connection->prepare("SELECT program_id, program_name, creation_date, dept_id, status_id
+                FROM program;");
                 // Check Connection
-                if ($dept_view === FALSE) {
+                if ($program_view === FALSE) {
                   $error = "Connection Failed";
                   die($db_connection->error);
                 }
                 // bind 
                 //$student_view->bind_param();
                 // execute
-                $dept_view->execute();
+                $program_view->execute();
                 // results
-                $result = $dept_view->get_result();
+                $result = $program_view->get_result();
 
                 if ($result->num_rows > 0) {
                   while($row = $result->fetch_assoc()) {
                     echo '<tr>'; 
-                    echo '<td scope="row"> [ID] </td>';   
-                    echo '<td scope="row"> [Pro Name] </td>';       
-                    echo '<td scope="row"> [Dept] </td>';
-                    echo '<td scope="row"> [Status] </td>';
-                    echo '<td><form method="post" action="'.BASE_URL.'/php/#">';
-                    echo '<input type="hidden" name="#" value="#">';
+                    echo '<th scope="row">'.$row["program_id"].'</th>';
+                    echo '<td>'.$row["program_name"].'</td>';     
+                    echo '<td>'.$row["creation_date"].'</td>';
+                    echo '<td>'.$row["dept_id"].'</td>';
+                    echo '<td>'.$row["status_id"].'</td>';
+                    echo '<td><form method="post" action="'.BASE_URL.'/admin/program_edit.php">';
+                    echo '<input type="hidden" name="edit_program_id" value="'.$row["program_id"].'">';
                     echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> edit</button>';
                     echo '</form></td>';
                     echo '</tr>';
                   }
                 } else {
-                  $error = "There was a problem showing the students list.";
+                  $error = "There was a problem showing the program list.";
                 };
 
                 // Always Close the DB Connection
-                $dept_view->close();
+                $program_view->close();
               ?>
 
             </tbody>
