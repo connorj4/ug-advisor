@@ -65,7 +65,7 @@
 
               <form action="<?php echo BASE_URL ?>/php/admin_course_edit.php" method="post">
                 <fieldset>
-                  <legend>Course:</legend>
+                  <legend>Course Information:</legend>
 
                   <div class="form-group">
                     <label for="course_id">Course ID:</label>
@@ -78,12 +78,22 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="dept_id">Department Name:</label>
-                    <input type="text" class="form-control" id="dept_name" name="dept_name" value="<?php echo $dept_name; ?>">
+                    <label for="course_name">Course Name:</label>
+                    <input type="text" class="form-control" id="course_name" name="course_name" value="<?php echo $course_name; ?>">
                   </div>
 
                   <div class="form-group">
-                    <label for="private_status">Private Status</label><br>
+                    <label for="credits">Credits:</label>
+                    <input type="text" class="form-control" id="credits" name="credits" value="<?php echo $credits; ?>">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="dept_id">Department ID:</label>
+                    <input type="text" class="form-control" id="dept_id" name="dept_id" value="<?php echo $dept_id; ?>">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="private_status">Private Status:</label><br>
                     <?php
                       /* Shows either public or private status */
                       $check_active = '';
