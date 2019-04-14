@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// ADMIN STUDENT
+// ADVISOR ADMIN
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -40,10 +40,8 @@
           <table class="table table-striped">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Department</th>
-                <th scope="col">Name</th>
-                <th scope="col">Program</th>
+                <th scope="col">Faculty ID</th>
+                <th scope="col">Student ID</th>
                 <th scope="col">Edit</th>
               <tr>
             <thead>
@@ -51,36 +49,36 @@
 
               <?php
                 // Query Reference for Bind
-                $role = 3;
-                $status = 1;
+                // Nothing to Reference
 
-                // View Students
+                // View Advisor
                 $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
                 // SQL statment
-                $student_view = $db_connection->prepare("SELECT student_id, first_name, last_name 
-                  FROM student NATURAL JOIN user 
-                  WHERE role_id = ? AND status_id = ?;");
+                $advisor_view = $db_connection->prepare("SELECT student_id, faculty_id 
+                FROM advisor NATURAL JOIN status;");
                 // Check Connection
-                if ($student_view === FALSE) {
+                if ($advisor_view === FALSE) {
                   $error = "Connection Failed";
                   die($db_connection->error);
                 }
                 // bind 
-                $student_view->bind_param('ii', $role, $status);
+                //$advisor_view->bind_param();
                 // execute
-                $student_view->execute();
+                $advisor_view->execute();
                 // results
-                $result = $student_view->get_result();
+                $result = $advisor_view->get_result();
 
                 if ($result->num_rows > 0) {
                   while($row = $result->fetch_assoc()) {
                     echo '<tr>';
-                    echo '<td scope="row"> [ID] </td>'; 
-                    echo '<td scope="row"> [Dept] </td>'; 
-                    echo '<td scope="row"> [Name] </td>'; 
-                    echo '<td scope="row"> [Program] </td>'; 
-                    echo '<td><form method="post" action="'.BASE_URL.'/php/#">';
-                    echo '<input type="hidden" name="#" value="#">';
+                    echo '<th scope="row">'.$row["student_id"].'</th>';
+                    echo '<th scope="row">'.$row["faculty_id"].'</th>';
+                  
+                    //echo '<td>'.$row["dept_name"].'</td>';
+                   // echo '<td>'.$row["status_type"].'</td>';
+                    
+                    echo '<td><form method="post" action="'.BASE_URL.'#';
+                    echo '<input type="hidden" name="edit_dept_id" value="'.$row["dept_id"].'">';
                     echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> edit</button>';
                     echo '</form></td>';
                     echo '</tr>';
@@ -90,8 +88,7 @@
                 };
 
                 // Always Close the DB Connection
-                $student_view->close();
-                
+                $advisor_view->close();
               ?>
             </tbody>
           </table>

@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// FACULTY ADD
+// ADVISOR ADD
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -9,7 +9,7 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-student-add"; 
+  $page_name = "admin-advisor-add"; 
 
 ?>
 <!doctype html>
@@ -33,17 +33,17 @@
           </div> 
           <div class="row">
             <div class="col-sm-12">
-            <form action="<?php echo BASE_URL ?>/php/admin_student_add.php" method="post">
+            <form action="<?php echo BASE_URL ?>/php/admin_advisor_add.php" method="post">
                     <fieldset>
-                      <legend>Student:</legend>
+                      <legend>Advisor</legend>
                       <div class="form-row">
                         <div class="form-group col-sm-3">
-                          <label for="student_id">Student ID:</label>
-                          <input type="text" class="form-control" id="dept_id" placeholder="Student ID" name="student_id" maxlength="3">
+                          <label for="advisor_id">Advisor ID:</label>
+                          <input type="text" class="form-control" id="dept_id" placeholder="Advisor ID" name="student_id" maxlength="3">
                         </div>
                         <div class="form-group col-sm-6">
                           <label for="first_name">First Name</label>
-                          <input type="text" class="form-control" id="student_name" placeholder="First Name" name="first_name">
+                          <input type="text" class="form-control" id="first_name" placeholder="First Name" name="first_name">
                         </div>
                         <div class="form-group col-sm-6">
                           <label for="last_name">Last Name</label>
