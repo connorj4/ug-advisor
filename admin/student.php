@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// ADMIN STUDENT
+// STUDENT ADMIN
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -9,7 +9,7 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-faculty";
+  $page_name = "admin-student";
 
 ?>
 <!doctype html>
@@ -39,7 +39,7 @@
                 <th scope="col">ID</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
-                <th scope="col">Program</th>
+                <th scope="col">Program ID</th>
               <tr>
             <thead>
             <tbody>
@@ -52,7 +52,7 @@
                 // View Students
                 $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
                 // SQL statment
-                $student_view = $db_connection->prepare("SELECT student_id, first_name, last_name 
+                $student_view = $db_connection->prepare("SELECT student_id, first_name, last_name, program_id 
                   FROM student NATURAL JOIN user 
                   WHERE role_id = ? AND status_id = ?;");
                 // Check Connection
@@ -73,7 +73,7 @@
                     echo '<th scope="row">'.$row["student_id"].'</th>';
                     echo '<td>'.$row["first_name"].'</td>';
                     echo '<td scope="row">'.$row["last_name"].'</td>';
-                    echo '<td scope="row"> [dept] </td>'; 
+                    echo '<td>'.$row["program_id"].'</td>'; 
                     echo '</tr>';
                   }
                 } else {

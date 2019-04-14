@@ -31,48 +31,50 @@
           </div> 
           <div class="row">
             <div class="col-sm-12">
-          <!-- table of students list here -->
+          <!-- table of faculty list here -->
           <table class="table table-striped">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Program</th>
+                <th scope="col">Faculty Name</th>
+                <th scope="col">User ID</th>
+                <th scope="col">Dept ID</th>
+                <th scope="col">Status ID</th>
               <tr>
             <thead>
             <tbody>
 
               <?php
                 // Query Reference for Bind
-                $role = 3;
+                $role = 2;
                 $status = 1;
 
-                // View Students
+                // View Faculty
                 $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
                 // SQL statment
-                $student_view = $db_connection->prepare("SELECT student_id, first_name, last_name 
-                  FROM student NATURAL JOIN user 
+                $faculty_view = $db_connection->prepare("SELECT faculty_id, user_id, dept_id, status_id 
+                  FROM faculty NATURAL JOIN user 
                   WHERE role_id = ? AND status_id = ?;");
                 // Check Connection
-                if ($student_view === FALSE) {
+                if ($faculty_view === FALSE) {
                   $error = "Connection Failed";
                   die($db_connection->error);
                 }
                 // bind 
-                $student_view->bind_param('ii', $role, $status);
+                $faculty_view->bind_param('ii', $role, $status);
                 // execute
-                $student_view->execute();
+                $faculty_view->execute();
                 // results
-                $result = $student_view->get_result();
+                $result = $faculty_view->get_result();
 
                 if ($result->num_rows > 0) {
                   while($row = $result->fetch_assoc()) {
                     echo '<tr>';
-                    echo '<th scope="row">'.$row["student_id"].'</th>';
-                    echo '<td>'.$row["first_name"].'</td>';
-                    echo '<td scope="row">'.$row["last_name"].'</td>';
-                    echo '<td scope="row"> [dept] </td>';
+                    echo '<th scope="row">'.$row["faculty_id"].'</th>';
+                    echo '<td scope="row"> [Faculty Name Holder] </td>'; 
+                    echo '<td>'.$row["user_id"].'</td>';
+                    echo '<td scope="row">'.$row["dept_id"].'</td>';
+                    echo '<td>'.$row["status_id"].'</td>';
 
                     echo '</tr>';
                   }
@@ -81,7 +83,7 @@
                 };
 
                 // Always Close the DB Connection
-                $student_view->close();
+                $faculty_view->close();
                 
               ?>
             </tbody>
