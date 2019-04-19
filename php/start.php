@@ -268,10 +268,12 @@ $create_taken->close();
 $create_graduation = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE graduation
 		(graduation_id int NOT NULL AUTO_INCREMENT,
-		take_id int NOT NULL,
+		program_id int NOT NULL,
+		student_id int NOT NULL,
 		enrolled timestamp,
 		PRIMARY KEY(graduation_id),
-		FOREIGN KEY(take_id) REFERENCES take(take_id));");
+		FOREIGN KEY(program_id) REFERENCES program(program_id),
+		FOREIGN KEY(student_id) REFERENCES student(student_id));");
 $create_graduation->execute();
 $create_graduation->close();
 
@@ -1470,7 +1472,7 @@ $insert_student->execute();
 
 $insert_student->close();
 
-/* Take */
+/* Take   JOshC updating...*/
 $insert_take = $db_connection->prepare(
 	"INSERT INTO take
 		(take_id,
@@ -1490,7 +1492,7 @@ $state_id,
 $student_id);
 
 $take_id = 1;
-$course_id = 152;
+$course_id = 11630;
 $grade_id = 14;
 $semester_id = 1;
 $year_id = 5;
@@ -1540,13 +1542,16 @@ $insert_take->close();
 $insert_graduation = $db_connection->prepare(
 	"INSERT INTO graduation
 		(graduation_id,
-		take_id) VALUES(?,?);");
-$insert_graduation->bind_param("ii",
+		student_id,
+		program_id) VALUES(?,?,?);");
+$insert_graduation->bind_param("iii",
 $graduation_id,
-$take_id);
+$student_id,
+$program_id);
 
 $graduation_id = 1;
-$take_id = 1;
+$student_id = 1;
+$program_id = 1;
 $insert_graduation->execute();
 
 $insert_graduation->close();
