@@ -118,6 +118,15 @@ $create_semester = $db_connection->prepare(
 $create_semester->execute();
 $create_semester->close();
 
+/* Take Status */
+$create_semester = $db_connection->prepare(
+	"CREATE OR REPLACE TABLE take_status
+  (take_status_id int NOT NULL AUTO_INCREMENT,
+  take_status_type varchar(255) NOT NULL,
+	PRIMARY KEY(take_status_id));");
+$create_semester->execute();
+$create_semester->close();
+
 /* Below Are Tables That Have Forigen Keys */
 /* ------------------------------------------ */
 
@@ -221,8 +230,8 @@ $create_advisor->close();
 /* Course */
 $create_course = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE course
-		(course_id int NOT NULL,
-    course_num int NOT NULL,
+		(course_id int(6) NOT NULL,
+    course_num int(4) NOT NULL,
 		course_name varchar(255) NOT NULL,
 		credits int,
 		dept_id varchar(4) NOT NULL,
@@ -253,6 +262,7 @@ $create_taken = $db_connection->prepare(
 		semester_id int NOT NULL,
 		year_id int NOT NULL,
 		state_id int NOT NULL,
+		take_status_id int NOT NULL,
 		student_id int NOT NULL,
 		PRIMARY KEY(take_id),
 		FOREIGN KEY(course_id) REFERENCES course(course_id),
@@ -260,6 +270,7 @@ $create_taken = $db_connection->prepare(
 		FOREIGN KEY(semester_id) REFERENCES semester(semester_id),
 		FOREIGN KEY(year_id) REFERENCES years(year_id),
 		FOREIGN KEY(state_id) REFERENCES state(state_id),
+		FOREIGN KEY(take_status_id) REFERENCES take_status(take_status_id),
 		FOREIGN KEY(student_id) REFERENCES student(student_id));");
 $create_taken->execute();
 $create_taken->close();
@@ -323,6 +334,33 @@ $status_title = "dormant";
 $insert_status->execute();
 
 $insert_status->close();
+
+/* Take Status */
+$insert_take_status = $db_connection->prepare(
+	"INSERT INTO take_status
+		(take_status_id, take_status_type) VALUES(?,?);");
+$insert_take_status->bind_param("is", $take_status_id, $take_status_title);
+$take_status_id = 1;
+$take_status_title = "default";
+$insert_take_status->execute();
+
+$take_status_id = 2;
+$take_status_title = "changed";
+$insert_take_status->execute();
+
+$take_status_id = 3;
+$take_status_title = "request";
+$insert_take_status->execute();
+
+$take_status_id = 2;
+$take_status_title = "approved";
+$insert_take_status->execute();
+
+$take_status_id = 2;
+$take_status_title = "denied";
+$insert_take_status->execute();
+
+$insert_take_status->close();
 
 /* State */
 $insert_state = $db_connection->prepare(
@@ -468,6 +506,41 @@ $insert_dept->execute();
 
 $dept_id = "ACC";
 $dept_name = "Accounting";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "PHI";
+$dept_name = "Philosophy";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "SPA";
+$dept_name = "Spanish";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "PCH";
+$dept_name = "Public Health";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "ANT";
+$dept_name = "Anthropology";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "MKT";
+$dept_name = "Marketing";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "PSC";
+$dept_name = "Political Science";
+$status_id = 1;
+$insert_dept->execute();
+
+$dept_id = "GEO";
+$dept_name = "Geography";
 $status_id = 1;
 $insert_dept->execute();
 
@@ -1378,27 +1451,11 @@ $dept_id = "BIOCHE";
 $status_id = 1;
 $insert_course->execute();
 
-$course_id = 00005;
-$course_num = 210;
-$course_name= "Principles of Astronomy";
-$credits = 4;
-$dept_id = "BIOCHE";
-$status_id = 1;
-$insert_course->execute();
-
-$course_id = 00006;
+$course_id = 11295;
 $course_num = 101;
 $course_name= "Intellectual Inquiry";
 $credits = 3;
 $dept_id = "INQ";
-$status_id = 1;
-$insert_course->execute();
-
-$course_id = 00007;
-$course_num = 001;
-$course_name= "Tech Fluency";
-$credits = 3;
-$dept_id = "AAA";
 $status_id = 1;
 $insert_course->execute();
 
@@ -1418,6 +1475,89 @@ $credits = 3;
 $dept_id = "ENG";
 $status_id = 1;
 $insert_course->execute();
+
+$course_id = 10484;
+$course_num = 201;
+$course_name= "Creative Writing";
+$credits = 3;
+$dept_id = "ENG";
+$status_id = 1;
+$insert_course->execute();
+
+/* LEP TEIR II Course */
+
+$course_id = 10842;
+$course_num = 100;
+$course_name= "Introduction to Philosophy";
+$credits = 3;
+$dept_id = "PHI";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11338;
+$course_num = 201;
+$course_name= "Wellness";
+$credits = 3;
+$dept_id = "PCH";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 10027;
+$course_num = 102;
+$course_name= "Biological Anthropology";
+$credits = 3;
+$dept_id = "ANT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 10796;
+$course_num = 101;
+$course_name= "Spanish II";
+$credits = 3;
+$dept_id = "SPA";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 10807;
+$course_num = 200;
+$course_name= "Spanish III";
+$credits = 3;
+$dept_id = "SPA";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 10579;
+$course_num = 350;
+$course_name= "Product and Market Planning";
+$credits = 3;
+$dept_id = "MKT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 10031;
+$course_num = 201;
+$course_name= "The Global Community";
+$credits = 3;
+$dept_id = "ANT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 10617;
+$course_num = 200;
+$course_name= "Political Change and Conflict";
+$credits = 3;
+$dept_id = "PSC";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 11235;
+$course_num = 100;
+$course_name= "People, Places, and Environments";
+$credits = 3;
+$dept_id = "GEO";
+$status_id = 1;
+$insert_course->execute();
+
 
 $insert_course->close();
 
@@ -1481,14 +1621,16 @@ $insert_take = $db_connection->prepare(
 		semester_id,
 		year_id,
 		state_id,
-		student_id) VALUES(?,?,?,?,?,?,?);");
-$insert_take->bind_param("iiiiiii",
+		take_status_id,
+		student_id) VALUES(?,?,?,?,?,?,?,?);");
+$insert_take->bind_param("iiiiiiii",
 $take_id,
 $course_id,
 $grade_id,
 $semester_id,
 $year_id,
 $state_id,
+$take_status_id,
 $student_id);
 
 $take_id = 1;
@@ -1497,42 +1639,367 @@ $grade_id = 14;
 $semester_id = 1;
 $year_id = 5;
 $state_id = 3;
+$take_status_id = 1;
 $student_id = 1;
 $insert_take->execute();
 
 $take_id = 2;
-$course_id = 112;
+$course_id = 40114;
 $grade_id = 14;
 $semester_id = 1;
 $year_id = 5;
 $state_id = 3;
+$take_status_id = 1;
 $student_id = 1;
 $insert_take->execute();
 
 $take_id = 3;
-$course_id = 101;
+$course_id = 11295;
 $grade_id = 14;
 $semester_id = 1;
 $year_id = 5;
 $state_id = 3;
+$take_status_id = 1;
 $student_id = 1;
 $insert_take->execute();
 
 $take_id = 4;
-$course_id = 001;
+$course_id = 11636;
 $grade_id = 14;
 $semester_id = 1;
 $year_id = 5;
 $state_id = 3;
+$take_status_id = 1;
 $student_id = 1;
 $insert_take->execute();
 
 $take_id = 5;
-$course_id = 110;
+$course_id = 10842;
 $grade_id = 14;
 $semester_id = 1;
 $year_id = 5;
 $state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 6;
+$course_id = 11651;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 6;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 7;
+$course_id = 11062;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 6;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 8;
+$course_id = 10796;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 6;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 9;
+$course_id = 40326;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 6;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 10;
+$course_id = 11338;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 6;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 11;
+$course_id = 11649;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 6;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 12;
+$course_id = 11659;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 6;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 13;
+$course_id = 11075;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 6;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 14;
+$course_id = 10027;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 6;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 15;
+$course_id = 10807;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 6;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 16;
+$course_id = 11659;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 7;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 17;
+$course_id = 11654;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 7;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 18;
+$course_id = 11080;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 7;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 19;
+$course_id = 11078;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 7;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 20;
+$course_id = 11661;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 7;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 21;
+$course_id = 11662;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 7;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 22;
+$course_id = 42003;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 7;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 23;
+$course_id = 10400;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 7;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 24;
+$course_id = 10579;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 7;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 25;
+$course_id = 11664;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 8;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 26;
+$course_id = 41873;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 8;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 27;
+$course_id = 10404;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 8;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 28;
+$course_id = 10484;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 8;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 29;
+$course_id = 10031;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 8;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 30;
+$course_id = 11669;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 8;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 31;
+$course_id = 11672;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 8;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 32;
+$course_id = 10617;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 8;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 33;
+$course_id = 11082;
+$grade_id = 14;
+$semester_id = 1;
+$year_id = 8;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 34;
+$course_id = 10501;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 9;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 35;
+$course_id = 11667;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 9;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 36;
+$course_id = 11088;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 9;
+$state_id = 3;
+$take_status_id = 1;
+$student_id = 1;
+$insert_take->execute();
+
+$take_id = 37;
+$course_id = 11235;
+$grade_id = 14;
+$semester_id = 6;
+$year_id = 9;
+$state_id = 3;
+$take_status_id = 1;
 $student_id = 1;
 $insert_take->execute();
 
