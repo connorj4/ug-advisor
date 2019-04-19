@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// PROGRAM ADD
+// SEMESTER ADD
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -9,7 +9,7 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-course-add"; 
+  $page_name = "admin-semester-add"; 
 
 ?>
 <!doctype html>
@@ -33,42 +33,17 @@
           </div> 
           <div class="row">
             <div class="col-sm-12">
-            <form action="<?php echo BASE_URL ?>/php/admin_course_add.php" method="post">
+            <form action="<?php echo BASE_URL ?>/php/admin_semester_add.php" method="post">
                     <fieldset>
-                      <legend></legend>
+                      <legend>Semester:</legend>
                       <div class="form-row">
                         <div class="form-group col-sm-3">
-                          <label for="course_id">Course ID:</label>
-                          <input type="text" class="form-control" id="course_id" placeholder="Course ID" name="course_id" maxlength="3">
+                          <label for="semester_id">Semester ID:</label>
+                          <input type="text" class="form-control" id="de_id" placeholder="Semester ID" name="semester_id" maxlength="3">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="course_name">Course Name</label>
-                          <input type="text" class="form-control" id="course_name" placeholder="Course Name" name="course_name">
-                        </div>
-                        <div class="form-group col-sm-6">
-                          <label for="course_credit">Course Credit</label>
-                          <input type="text" class="form-control" id="course_credit" placeholder="Course Credit" name="course_credit">
-                        </div>
-                        <div class="form-group col-sm-6">
-                          <label for="course_semester">Course Semester</label>
-                          <input type="text" class="form-control" id="course_semester" placeholder="Course Semester" name="course_semester">
-                        </div>
-                        <div class="form-group col-sm-3">
-                          <label for="status_id">Status</label>
-                          <select class="form-control" id="status_id" name="status_id">
-                          <?php 
-                            $db_conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)
-                              OR die("Connection failed in retrieving status");
-                            $retrieve_status = $db_conn->prepare("SELECT status_id,status_type FROM status;");
-                            $retrieve_status->execute();
-                                  $retrieve_status->bind_result($result_status_id,$result_status_type);
-                            while($retrieve_status->fetch()){      
-                              echo "<option value='".$result_status_id."'>".$result_status_type."</option>";
-                            }
-                            $retrieve_status->close();
-                            $db_conn->close();
-                            ?>
-                          </select>
+                          <label for="semester_name">Semester Name:</label>
+                          <input type="text" class="form-control" id="semester_name" placeholder="Semester Name" name="semester_name">
                         </div>
                       </div>
                     </fieldset>

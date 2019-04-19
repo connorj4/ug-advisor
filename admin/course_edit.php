@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// DEPARTMENT EDIT
+// COURSE EDIT
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -9,12 +9,12 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-department-add"; 
+  $page_name = "admin-course-edit"; 
 
   if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $_SESSION['edit_dept'] = $_POST['edit_dept_id'];
+    $_SESSION['edit_course'] = $_POST['edit_course_id'];
   } else {
-    $error = 'No Department ID selected.';
+    $error = 'No Course ID selected.';
   }
 
 ?>
@@ -31,10 +31,10 @@
           <!-- Content for the webpage starts here -->
           <div class="row">
             <div class="col-sm-9">
-              <h1>Department Edits</h1>
+              <h1>Course Edit</h1>
             </div>
             <div class="col-sm-3">
-                <a href="<?php echo BASE_URL ?>/admin/department.php" class="btn btn-primary">Back</a>
+                <a href="<?php echo BASE_URL ?>/admin/course.php" class="btn btn-primary">Back</a>
             </div>
           </div> 
           <div class="row">
@@ -42,26 +42,50 @@
             <?php
 
               $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-              $editdept = $db_connection->prepare("SELECT dept_id, dept_name, status_id FROM department WHERE dept_id = ?");
-              if ($editdept === FALSE) {
+              $editcourse = $db_connection->prepare("SELECT course_id, course_num, course_name, credits, dept_id, status_id FROM course WHERE course_id = ?");
+              if ($editcourse === FALSE) {
                 echo "Connection Failed";
                 die($db_connection->error);
               }
-              $editdept->bind_param('s', $_SESSION['edit_dept']);
-              $editdept->execute();
-              $result = $editdept->get_result();
+              $editcourse->bind_param('s', $_SESSION['edit_course']);
+              $editcourse->execute();
+              $result = $editcourse->get_result();
               if($result->num_rows === 0) exit('No rows');
               while($row = $result->fetch_assoc()) {
+                $course_id = $row['course_id'];
+                $course_num = $row['course_num'];
+                $course_name = $row['course_name'];
+                $credits = $row['credits'];
                 $dept_id = $row['dept_id'];
-                $dept_name = $row['dept_name'];
                 $status_id = $row['status_id'];
+
               }
-              $editdept->close();
+              $editcourse->close();
             ?>
 
-              <form action="<?php echo BASE_URL ?>/php/admin_dept_edit.php" method="post">
+              <form action="<?php echo BASE_URL ?>/php/admin_course_edit.php" method="post">
                 <fieldset>
-                  <legend>Department:</legend>
+                  <legend>Course Information:</legend>
+
+                  <div class="form-group">
+                    <label for="course_id">Course ID:</label>
+                    <input type="text" class="form-control" id="course_id" name="course_id" value="<?php echo $course_id; ?>">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="course_num">Course Num:</label>
+                    <input type="text" class="form-control" id="course_num" name="course_num" value="<?php echo $course_num; ?>">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="course_name">Course Name:</label>
+                    <input type="text" class="form-control" id="course_name" name="course_name" value="<?php echo $course_name; ?>">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="credits">Credits:</label>
+                    <input type="text" class="form-control" id="credits" name="credits" value="<?php echo $credits; ?>">
+                  </div>
 
                   <div class="form-group">
                     <label for="dept_id">Department ID:</label>
@@ -69,12 +93,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="dept_id">Department Name:</label>
-                    <input type="text" class="form-control" id="dept_name" name="dept_name" value="<?php echo $dept_name; ?>">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="private_status">Private Status</label><br>
+                    <label for="private_status">Private Status:</label><br>
                     <?php
                       /* Shows either public or private status */
                       $check_active = '';

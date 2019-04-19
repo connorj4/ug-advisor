@@ -42,16 +42,20 @@
                           <input type="text" class="form-control" id="course_id" placeholder="Course ID" name="course_id" maxlength="3">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="course_name">Course Name</label>
+                          <label for="course_name">Course Num:</label>
+                          <input type="text" class="form-control" id="course_num" placeholder="Course Num" name="course_num">
+                        </div>
+                        <div class="form-group col-sm-6">
+                          <label for="course_name">Course Name:</label>
                           <input type="text" class="form-control" id="course_name" placeholder="Course Name" name="course_name">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="course_credit">Course Credit</label>
-                          <input type="text" class="form-control" id="course_credit" placeholder="Course Credit" name="course_credit">
+                          <label for="course_credit">Course Credit:</label>
+                          <input type="text" class="form-control" id="credits" placeholder="Course Credit" name="credits">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="course_semester">Course Semester</label>
-                          <input type="text" class="form-control" id="course_semester" placeholder="Course Semester" name="course_semester">
+                          <label for="course_semester">Dept ID:</label>
+                          <input type="text" class="form-control" id="course_semester" placeholder="Dept ID" name="dept_id">
                         </div>
                         <div class="form-group col-sm-3">
                           <label for="status_id">Status</label>

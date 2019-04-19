@@ -9,7 +9,7 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-course-add"; 
+  $page_name = "admin-program-add"; 
 
 ?>
 <!doctype html>
@@ -33,25 +33,25 @@
           </div> 
           <div class="row">
             <div class="col-sm-12">
-            <form action="<?php echo BASE_URL ?>/php/admin_course_add.php" method="post">
+            <form action="<?php echo BASE_URL ?>/php/admin_program_add.php" method="post">
                     <fieldset>
                       <legend></legend>
                       <div class="form-row">
                         <div class="form-group col-sm-3">
-                          <label for="course_id">Course ID:</label>
-                          <input type="text" class="form-control" id="course_id" placeholder="Course ID" name="course_id" maxlength="3">
+                          <label for="program_id">Program ID:</label>
+                          <input type="text" class="form-control" id="program_id" placeholder="Program ID" name="program_id" maxlength="3">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="course_name">Course Name</label>
-                          <input type="text" class="form-control" id="course_name" placeholder="Course Name" name="course_name">
+                          <label for="program_name">Program Name</label>
+                          <input type="text" class="form-control" id="program_name" placeholder="Program Name" name="program_name">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="course_credit">Course Credit</label>
-                          <input type="text" class="form-control" id="course_credit" placeholder="Course Credit" name="course_credit">
+                          <label for="program_credit">Program Credit</label>
+                          <input type="text" class="form-control" id="program_credit" placeholder="Program Credit" name="program_credit">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="course_semester">Course Semester</label>
-                          <input type="text" class="form-control" id="course_semester" placeholder="Course Semester" name="course_semester">
+                          <label for="program_semester">Program Semester</label>
+                          <input type="text" class="form-control" id="program_semester" placeholder="Program Semester" name="program_semester">
                         </div>
                         <div class="form-group col-sm-3">
                           <label for="status_id">Status</label>
