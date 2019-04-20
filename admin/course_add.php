@@ -35,11 +35,11 @@
             <div class="col-sm-12">
             <form action="<?php echo BASE_URL ?>/php/admin_course_add.php" method="post">
                     <fieldset>
-                      <legend></legend>
+                      <legend>Course:</legend>
                       <div class="form-row">
                         <div class="form-group col-sm-3">
                           <label for="course_id">Course ID:</label>
-                          <input type="text" class="form-control" id="course_id" placeholder="Course ID" name="course_id" maxlength="3">
+                          <input type="text" class="form-control" id="course_id" placeholder="Course ID" name="course_id" maxlength="5">
                         </div>
                         <div class="form-group col-sm-6">
                           <label for="course_name">Course Num:</label>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="form-group col-sm-6">
                           <label for="course_semester">Dept ID:</label>
-                          <input type="text" class="form-control" id="course_semester" placeholder="Dept ID" name="dept_id">
+                          <input type="text" class="form-control" id="dept_id" placeholder="Dept ID" name="dept_id" maxlength="3">
                         </div>
                         <div class="form-group col-sm-3">
                           <label for="status_id">Status</label>
