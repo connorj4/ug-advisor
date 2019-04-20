@@ -96,26 +96,46 @@
                 $array[] = $row;
               }
             }
-            $previousYear = null;
-            $previousSemester = null;
+
+            echo 'Current number of courses: ' . count($array) . '<br>'; 
+            echo 'Total number of credits: ' . '<br>';
+
+            //$previousYear = null;
+            //$previousSemester = null;
             
 
-            echo count($array);
             for($i=0; $i<=count($array); $i++){
-            
-                if ($previousYear == null and $previousSemester == null or $previousYear == $array[$i]["year"] and $previousSemester != $array[$i]["semester"]) {
+
+              // seperate years
+              if ($i == 0) {
+                echo '<div class="row justify-content-sm-center">';
+              } elseif (isset($array[$i-1]["year"]) and isset($array[$i-1]["semester"]) and isset($array[$i+1]["year"])) {
+                if ($array[$i-1]["year"] == $array[$i]["year"] and $array[$i-1]["semester"] != $array[$i]["semester"]) {
                   echo '<div class="row justify-content-sm-center">';
-                } 
-                // echo $previousSemester . " : " . $array[$i]["semester"];
-                if ($previousSemester == null or $previousSemester != $array[$i]["semester"]) {
+                }
+              }
+
+              // seperate terms
+              if ($i == 0) {
+                echo '<div class="col-sm-6">';
+                echo '<div class="card">';
+                echo '<div class="card-header">';
+                echo $array[$i]["year"] . ' | ' . $array[$i]["semester"] . ' | <span class="badge badge-primary badge-pill text-uppercase">' . $array[$i]["status"] . '</span>' ;
+                echo '</div>'; // end card-header
+                echo '<ul class="list-group list-group-flush">';
+              } elseif (isset($array[$i-1]["semester"]) and isset($array[$i+1]["semester"])) {
+                if ($array[$i-1]["semester"] != $array[$i]["semester"]) {
                   echo '<div class="col-sm-6">';
                   echo '<div class="card">';
                   echo '<div class="card-header">';
                   echo $array[$i]["year"] . ' | ' . $array[$i]["semester"] . ' | <span class="badge badge-primary badge-pill text-uppercase">' . $array[$i]["status"] . '</span>' ;
                   echo '</div>'; // end card-header
-                  echo '<ul class="list-group list-group-flush">'; 
+                  echo '<ul class="list-group list-group-flush">';
                 }
-                
+              }
+
+              // always print out
+              if (isset($array[$i])) {
                 echo '<li class="list-group-item">';
                 echo '<div class="d-flex flex-nowrap justify-content-between">';
                 echo '<div class="p-2 align-self-center">' . $array[$i]["dept"] . '</div>';
@@ -123,12 +143,20 @@
                 echo '<div class="p-2 align-self-center">' . $array[$i]["course_name"] . '</div>'; 
                 echo '<div class="p-2 align-self-center"><span class="badge badge-info badge-pill pill-big">' . $array[$i]["credits"] . '</span></div>';
                 echo '<div class="p-2 align-self-center"><span class="badge badge-secondary badge-pill pill-big ">' . $array[$i]["grade"] . '</span></div>';
-                echo '</div>'; // end list-group-item
+                echo '</div>'; // end d-flex
                 echo '</li>'; // end list-group-item
+              }
 
-                if ($previousSemester == null) {
-                  // do nothing
-                } elseif ($previousSemester != $array[$i]["semester"] or $rowcount == $i) {
+              // end seperate terms
+              if (empty($array[$i]["semester"] )) {
+                echo '</ul>'; // end list-group
+                echo '<div class="card-footer">';
+                echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
+                echo '</div>'; // end card-footer
+                echo '</div>'; // end card
+                echo '</div>'; // end col
+              } elseif (isset($array[$i+1]["semester"])) {
+                if ($array[$i+1]["semester"] != $array[$i]["semester"]) {
                   echo '</ul>'; // end list-group
                   echo '<div class="card-footer">';
                   echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
@@ -136,16 +164,18 @@
                   echo '</div>'; // end card
                   echo '</div>'; // end col
                 }
-                
-                if ($rowcount == $i or $previousYear == $array[$i]["year"] and $previousSemester != $array[$i]["semester"] ) {
+              }
+              
+              // end seperate years
+              if (empty($array[$i]["year"] )) {
+                echo '</div>'; // end row
+              } elseif (isset($array[$i+1]["year"]) and isset($array[$i+1]["semester"])) {
+                if ($array[$i+1]["year"] == $array[$i]["year"] and $array[$i+1]["semester"] != $array[$i]["semester"]) {
                   echo '</div>'; // end row
-                } else {
                 }
+              }
 
-                $previousYear = $array[$i]["year"];
-                $previousSemester = $array[$i]["semester"];
-                
-              } 
+            } 
              
             // Close the mysql connection
             mysqli_close($db_connection);
