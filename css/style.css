@@ -77,4 +77,7 @@ td form {
   text-align: center;
 } 
 
+.badge.pill-big {
+  font-size:100%;
+}
 
