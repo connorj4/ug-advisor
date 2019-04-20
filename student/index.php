@@ -89,69 +89,64 @@
             $result = $student_term_map->get_result();
             $rowcount = mysqli_num_rows($result);
 
-            $previousYear = null;
-            $previousSemester = null;
-            $counter = 1;
+            $array = array();
             if ($result->num_rows > 0) {
               //$row = $result->fetch_assoc();
               while($row = $result->fetch_assoc()) {
+                $array[] = $row;
+              }
+            }
+            $previousYear = null;
+            $previousSemester = null;
+            
 
-                if ($previousYear == null and $previousSemester == null) {
+            echo count($array);
+            for($i=0; $i<=count($array); $i++){
+            
+                if ($previousYear == null and $previousSemester == null or $previousYear == $array[$i]["year"] and $previousSemester != $array[$i]["semester"]) {
                   echo '<div class="row justify-content-sm-center">';
-                } elseif ($previousYear == $row["year"] and $previousSemester != $row["semester"]) {
-                  echo '</div>';
-                  echo '<div class="row justify-content-sm-center">';
-                }
-
-                if ($previousYear == null and $previousSemester == null) {
+                } 
+                // echo $previousSemester . " : " . $array[$i]["semester"];
+                if ($previousSemester == null or $previousSemester != $array[$i]["semester"]) {
                   echo '<div class="col-sm-6">';
                   echo '<div class="card">';
                   echo '<div class="card-header">';
-                  echo $row["year"] . ' | ' . $row["semester"] . ' | <span class="badge badge-primary badge-pill text-uppercase">' . $row["status"] . '</span>' ;
-                  echo '</div>'; // end card-header
-                  echo '<ul class="list-group list-group-flush">'; 
-                } elseif ($previousSemester != $row["semester"]) {
-                  echo '</ul>'; // end list-group
-                  echo '<div class="card-footer">';
-                  echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
-                  echo '</div>'; // end card-footer
-                  echo '</div>'; // end card
-                  echo '</div>'; // end col
-
-                  echo '<div class="col-sm-6">';
-                  echo '<div class="card">';
-                  echo '<div class="card-header">';
-                  echo $row["year"] . ' | ' . $row["semester"] . ' | <span class="badge badge-primary badge-pill text-uppercase">' . $row["status"] . '</span>' ;
+                  echo $array[$i]["year"] . ' | ' . $array[$i]["semester"] . ' | <span class="badge badge-primary badge-pill text-uppercase">' . $array[$i]["status"] . '</span>' ;
                   echo '</div>'; // end card-header
                   echo '<ul class="list-group list-group-flush">'; 
                 }
                 
                 echo '<li class="list-group-item">';
                 echo '<div class="d-flex flex-nowrap justify-content-between">';
-                echo '<div class="p-2 align-self-center">' . $row["dept"] . '</div>';
-                echo '<div class="p-2 align-self-center">' . $row["course"] . '</div>';
-                echo '<div class="p-2 align-self-center">' . $row["course_name"] . '</div>'; 
-                echo '<div class="p-2 align-self-center"><span class="badge badge-info badge-pill pill-big">' . $row["credits"] . '</span></div>';
-                echo '<div class="p-2 align-self-center"><span class="badge badge-secondary badge-pill pill-big ">' . $row["grade"] . '</span></div>';
+                echo '<div class="p-2 align-self-center">' . $array[$i]["dept"] . '</div>';
+                echo '<div class="p-2 align-self-center">' . $array[$i]["course"] . '</div>';
+                echo '<div class="p-2 align-self-center">' . $array[$i]["course_name"] . '</div>'; 
+                echo '<div class="p-2 align-self-center"><span class="badge badge-info badge-pill pill-big">' . $array[$i]["credits"] . '</span></div>';
+                echo '<div class="p-2 align-self-center"><span class="badge badge-secondary badge-pill pill-big ">' . $array[$i]["grade"] . '</span></div>';
                 echo '</div>'; // end list-group-item
                 echo '</li>'; // end list-group-item
 
-                if ($rowcount == 1) {
+                if ($previousSemester == null) {
+                  // do nothing
+                } elseif ($previousSemester != $array[$i]["semester"] or $rowcount == $i) {
                   echo '</ul>'; // end list-group
                   echo '<div class="card-footer">';
                   echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
                   echo '</div>'; // end card-footer
                   echo '</div>'; // end card
                   echo '</div>'; // end col
+                }
+                
+                if ($rowcount == $i or $previousYear == $array[$i]["year"] and $previousSemester != $array[$i]["semester"] ) {
                   echo '</div>'; // end row
+                } else {
                 }
 
-                $previousYear = $row["year"];
-                $previousSemester = $row["semester"];
-                $counter += 1;
-                $rowcount -= 1;
-              }
-            }
+                $previousYear = $array[$i]["year"];
+                $previousSemester = $array[$i]["semester"];
+                
+              } 
+             
             // Close the mysql connection
             mysqli_close($db_connection);
             
