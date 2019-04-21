@@ -9,7 +9,7 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-semester-add"; 
+  $page_name = "admin-semester-add";
 
 ?>
 <!doctype html>
@@ -30,7 +30,7 @@
             <div class="col-sm-3">
                 <a href="<?php echo BASE_URL ?>/admin/semester.php" class="btn btn-primary">Back</a>
             </div>
-          </div> 
+          </div>
           <div class="row">
             <div class="col-sm-12">
             <form action="<?php echo BASE_URL ?>/php/admin_semester_add.php" method="post">
@@ -39,11 +39,11 @@
                       <div class="form-row">
                         <div class="form-group col-sm-3">
                           <label for="semester_id">Semester ID:</label>
-                          <input type="text" class="form-control" id="de_id" placeholder="Semester ID" name="semester_id" maxlength="3">
+                          <input type="text" class="form-control" id="semester_id" placeholder="Semester ID" name="semester_id" maxlength="3">
                         </div>
                         <div class="form-group col-sm-6">
                           <label for="semester_name">Semester Name:</label>
-                          <input type="text" class="form-control" id="semester_name" placeholder="Semester Name" name="semester_name">
+                          <input type="text" class="form-control" id="semester_type" placeholder="Semester Type" name="semester_type">
                         </div>
                       </div>
                     </fieldset>
@@ -59,7 +59,7 @@
                   </form>
 
                   <?php include_once (ROOT_SRC_PATH . '/error_rprt.php'); ?>
-           
+
             </div>
           </div>
         </div>
