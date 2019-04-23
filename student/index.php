@@ -65,12 +65,16 @@
             $student_term_map = $db_connection->prepare("SELECT 
               year_type AS year, 
               semester_type AS semester, 
+              take_status_type AS status, 
               dept_id AS dept, 
-              course_id AS course, 
-              course_name 
+              course_num AS course, 
+              course_name,
+              grade_type AS grade,
+              credits
               FROM take 
                 NATURAL JOIN semester 
                 NATURAL JOIN years 
+                NATURAL JOIN take_status
                 NATURAL JOIN grade 
                 NATURAL JOIN course;");
             // Check Connection
@@ -83,33 +87,96 @@
             $student_term_map->execute();
             // results
             $result = $student_term_map->get_result();
+            $rowcount = mysqli_num_rows($result);
 
+            $array = array();
             if ($result->num_rows > 0) {
-              $row = $result->fetch_assoc();
+              //$row = $result->fetch_assoc();
+              while($row = $result->fetch_assoc()) {
+                $array[] = $row;
+              }
+            }
 
+            echo 'Current number of courses: ' . count($array) . '<br>'; 
+            echo 'Total number of credits: ' . '<br>';
+
+            //$previousYear = null;
+            //$previousSemester = null;
+            
+
+            for($i=0; $i<=count($array); $i++){
+
+              // seperate years
+              if ($i == 0) {
                 echo '<div class="row justify-content-sm-center">';
+              } elseif (isset($array[$i-1]["year"]) and isset($array[$i-1]["semester"]) and isset($array[$i+1]["year"])) {
+                if ($array[$i-1]["year"] == $array[$i]["year"] and $array[$i-1]["semester"] != $array[$i]["semester"]) {
+                  echo '<div class="row justify-content-sm-center">';
+                }
+              }
+
+              // seperate terms
+              if ($i == 0) {
                 echo '<div class="col-sm-6">';
                 echo '<div class="card">';
                 echo '<div class="card-header">';
-                echo $row["year"] . ' ' . $row["semester"];
+                echo $array[$i]["year"] . ' | ' . $array[$i]["semester"] . ' | <span class="badge badge-primary badge-pill text-uppercase">' . $array[$i]["status"] . '</span>' ;
                 echo '</div>'; // end card-header
-                echo '<ul class="list-group list-group-flush">'; 
-                if ($result->num_rows > 0) {
-                  while($row = $result->fetch_assoc()) {
-                    echo '<li class="list-group-item">';
-                    echo $row["dept"] . '-' . $row["course"] . ' ' . $row["course_name"];
-                    echo '</li>'; // end list-group-item
-                  }
+                echo '<ul class="list-group list-group-flush">';
+              } elseif (isset($array[$i-1]["semester"]) and isset($array[$i+1]["semester"])) {
+                if ($array[$i-1]["semester"] != $array[$i]["semester"]) {
+                  echo '<div class="col-sm-6">';
+                  echo '<div class="card">';
+                  echo '<div class="card-header">';
+                  echo $array[$i]["year"] . ' | ' . $array[$i]["semester"] . ' | <span class="badge badge-primary badge-pill text-uppercase">' . $array[$i]["status"] . '</span>' ;
+                  echo '</div>'; // end card-header
+                  echo '<ul class="list-group list-group-flush">';
                 }
+              }
+
+              // always print out
+              if (isset($array[$i])) {
+                echo '<li class="list-group-item">';
+                echo '<div class="d-flex flex-nowrap justify-content-between">';
+                echo '<div class="p-2 align-self-center">' . $array[$i]["dept"] . '</div>';
+                echo '<div class="p-2 align-self-center">' . $array[$i]["course"] . '</div>';
+                echo '<div class="p-2 align-self-center">' . $array[$i]["course_name"] . '</div>'; 
+                echo '<div class="p-2 align-self-center"><span class="badge badge-info badge-pill pill-big">' . $array[$i]["credits"] . '</span></div>';
+                echo '<div class="p-2 align-self-center"><span class="badge badge-secondary badge-pill pill-big ">' . $array[$i]["grade"] . '</span></div>';
+                echo '</div>'; // end d-flex
+                echo '</li>'; // end list-group-item
+              }
+
+              // end seperate terms
+              if (empty($array[$i]["semester"] )) {
                 echo '</ul>'; // end list-group
                 echo '<div class="card-footer">';
                 echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
                 echo '</div>'; // end card-footer
                 echo '</div>'; // end card
                 echo '</div>'; // end col
-                echo '</div>'; // end row
+              } elseif (isset($array[$i+1]["semester"])) {
+                if ($array[$i+1]["semester"] != $array[$i]["semester"]) {
+                  echo '</ul>'; // end list-group
+                  echo '<div class="card-footer">';
+                  echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
+                  echo '</div>'; // end card-footer
+                  echo '</div>'; // end card
+                  echo '</div>'; // end col
+                }
+              }
               
-            }
+              // end seperate years
+              if (empty($array[$i]["year"] )) {
+                echo '</div>'; // end row
+              } elseif (isset($array[$i+1]["year"]) and isset($array[$i+1]["semester"])) {
+                if ($array[$i+1]["year"] == $array[$i]["year"] and $array[$i+1]["semester"] != $array[$i]["semester"]) {
+                  echo '</div>'; // end row
+                }
+              }
+
+            } 
+             
             // Close the mysql connection
             mysqli_close($db_connection);
             
@@ -119,154 +186,7 @@
 
           <!-- GRADUATION  MAP -->
 
-          <!-- YEAR -->
-          <div class="row">
-            <!-- TERM -->
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-header">
-                  [YEAR] - Fall
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                </ul>
-                <div class="card-footer">
-                <a href="#" class="btn btn-primary">View</a>
-                </div>
-              </div><!-- /card -->
-            </div><!-- /col 6 -->
-            <!-- TERM -->
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-header">
-                  [YEAR] - Spring
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                </ul>
-                <div class="card-footer">
-                <a href="#" class="btn btn-primary">View</a>
-                </div>
-              </div><!-- /card -->
-            </div><!-- /col 6 -->
-          </div><!-- /row -->
-          <hr>
-          <div class="row">
-            <!-- TERM -->
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-header">
-                  [YEAR] - Fall
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                </ul>
-                <div class="card-footer">
-                <a href="#" class="btn btn-primary">View</a>
-                </div>
-              </div><!-- /card -->
-            </div><!-- /col 6 -->
-            <!-- TERM -->
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-header">
-                  [YEAR] - Spring
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                </ul>
-                <div class="card-footer">
-                <a href="#" class="btn btn-primary">View</a>
-                </div>
-              </div><!-- /card -->
-            </div><!-- /col 6 -->
-          </div><!-- /row -->
-          <hr>
-          <div class="row">
-            <!-- TERM -->
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-header">
-                  [YEAR] - Fall
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                </ul>
-                <div class="card-footer">
-                <a href="#" class="btn btn-primary">View</a>
-                </div>
-              </div><!-- /card -->
-            </div><!-- /col 6 -->
-            <!-- TERM -->
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-header">
-                  [YEAR] - Spring
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                </ul>
-                <div class="card-footer">
-                <a href="#" class="btn btn-primary">View</a>
-                </div>
-              </div><!-- /card -->
-            </div><!-- /col 6 -->
-          </div><!-- /row -->
-          <hr>
-          <div class="row">
-            <!-- TERM -->
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-header">
-                  [YEAR] - Fall
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                </ul>
-                <div class="card-footer">
-                <a href="#" class="btn btn-primary">View</a>
-                </div>
-              </div><!-- /card -->
-            </div><!-- /col 6 -->
-            <!-- TERM -->
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-header">
-                  [YEAR] - Spring
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                  <li class="list-group-item">[course]</li>
-                </ul>
-                <div class="card-footer">
-                <a href="#" class="btn btn-primary">View</a>
-                </div>
-              </div><!-- /card -->
-            </div><!-- /col 6 -->
-          </div><!-- /row -->
+          
           <hr>
         </div>
       </div>

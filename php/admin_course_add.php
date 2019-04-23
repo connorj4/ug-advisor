@@ -23,7 +23,7 @@ $insert_course = $db_connection->prepare(
 		credits, 
 		dept_id,
 		status_id) VALUES(?,?,?,?,?,?);");
-$insert_course->bind_param("ssi", 
+$insert_course->bind_param("iisisi", 
   $course_id,
   $course_num,
   $course_name,

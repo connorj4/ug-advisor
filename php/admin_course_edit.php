@@ -11,7 +11,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
  
   $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $update_course = $db_connection->prepare("UPDATE course SET course_id = ?, course_num = ?, course_name = ?, credits = ?, dept_id = ?, status_id = ? WHERE course_id = ?");
-  $update_course->bind_param("ssis", 
+  $update_course->bind_param("iisisii", 
     $_POST['course_id'], 
     $_POST['course_num'], 
     $_POST['course_name'], 
@@ -26,5 +26,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
   header("location: " . BASE_URL . "/admin/course.php");
 }
+
 
 ?>
