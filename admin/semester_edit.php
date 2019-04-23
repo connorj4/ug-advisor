@@ -72,7 +72,35 @@
                     <input type="text" class="form-control" id="dept_name" name="dept_name" value="<?php echo $semester_type; ?>">
                   </div>
 
+                  <div class="form-group">
+                    <label for="private_status">Private Status</label><br>
+                    <?php
+                      /* Shows either public or private status */
+                      $check_active = '';
+                      $check_dormant = '';
+
+                      if(isset($semester_id)){
+                        if($semester_id === 1) {
+                          $check_active = 'checked';
+                        }elseif($semester_id === 2) {
+                          $check_dormant = 'checked';
+                        }
+                      } else {
+                        $error = 'error detected: nothing is selected';
+                      }
+                    ?>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="status_id" id="inlineRadio1" value="1" <?php echo $check_active; ?>>
+                      <label class="form-check-label" for="inlineRadio1">active</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="status_id" id="inlineRadio2" value="2" <?php echo $check_dormant; ?>>
+                      <label class="form-check-label" for="inlineRadio2">dormant</label>
+                    </div>
+                  </div>
+
                 </fieldset>
+                <button type="submit" class="btn btn-primary">UPDATE</button>
               </form>
 
               <?php include_once (ROOT_SRC_PATH . '/error_rprt.php'); ?>
