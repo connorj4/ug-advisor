@@ -9,7 +9,7 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-semester-add"; 
+  $page_name = "admin-semester-add";
 
   if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $_SESSION['edit_semester'] = $_POST['edit_semester_id'];
@@ -36,7 +36,7 @@
             <div class="col-sm-3">
                 <a href="<?php echo BASE_URL ?>/admin/semester.php" class="btn btn-primary">Back</a>
             </div>
-          </div> 
+          </div>
           <div class="row">
             <div class="col-sm-12">
             <?php
@@ -64,12 +64,12 @@
 
                   <div class="form-group">
                     <label for="dept_id">Semester ID:</label>
-                    <input type="text" class="form-control" id="dept_id" name="dept_id" value="<?php echo $semester_id; ?>">
+                    <input type="text" class="form-control" id="semester_id" name="semester_id" value="<?php echo $semester_id; ?>">
                   </div>
 
                   <div class="form-group">
                     <label for="dept_id">Semester Type:</label>
-                    <input type="text" class="form-control" id="dept_name" name="dept_name" value="<?php echo $semester_type; ?>">
+                    <input type="text" class="form-control" id="semester_type" name="semester_type" value="<?php echo $semester_type; ?>">
                   </div>
 
                   <div class="form-group">
@@ -100,11 +100,11 @@
                   </div>
 
                 </fieldset>
-                <button type="submit" class="btn btn-primary">UPDATE</button>
+                  <button type="submit" class="btn btn-primary">UPDATE</button>
               </form>
 
               <?php include_once (ROOT_SRC_PATH . '/error_rprt.php'); ?>
-           
+
             </div>
           </div>
         </div>
