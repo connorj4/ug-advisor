@@ -248,8 +248,10 @@ $create_prerequisite = $db_connection->prepare(
 	"CREATE OR REPLACE TABLE prerequisite
 		(prerequisite_id int NOT NULL AUTO_INCREMENT,
 		course_id int NOT NULL,
+    course_prerequisite_id int NOT NULL,
 		PRIMARY KEY(prerequisite_id),
-		FOREIGN KEY(course_id) REFERENCES course(course_id));");
+		FOREIGN KEY(course_id) REFERENCES course(course_id),
+    FOREIGN KEY(course_prerequisite_id) REFERENCES course(course_id));");
 $create_prerequisite->execute();
 $create_prerequisite->close();
 
@@ -900,7 +902,7 @@ $dept_id = "CSC";
 $status_id = 1;
 $insert_course->execute();
 
-$course_id = 11636;;
+$course_id = 11636;
 $course_num = 200;
 $course_name= "Info Mgmt/Productivity Software";
 $credits = 3;
@@ -1168,6 +1170,14 @@ $insert_course->execute();
 $course_id = 40114;
 $course_num = 112;
 $course_name= "Math for Natural Sciences";
+$credits = 3;
+$dept_id = "MAT";
+$status_id = 1;
+$insert_course->execute();
+
+$course_id = 40816;
+$course_num = 120;
+$course_name= "College Algebra";
 $credits = 3;
 $dept_id = "MAT";
 $status_id = 1;
@@ -2043,8 +2053,67 @@ $insert_advisor->execute();
 $student_id = 3;
 $faculty_id = 1;
 $insert_advisor->execute();
-	
+
 $insert_advisor->close();
+
+/* Prerequisite */
+$insert_prerequisite = $db_connection->prepare(
+	"INSERT INTO prerequisite
+		(prerequisite_id,
+      course_prerequisite_id,
+      course_id) VALUES(?,?,?);");
+$insert_prerequisite->bind_param("iii",
+$prerequisite_id,
+$course_prerequisite_id,
+$course_id);
+
+$prerequisite_id = 1;
+$course_id = 11630;
+$course_prerequisite_id = 40114;
+$insert_prerequisite->execute();
+
+$prerequisite_id = 2;
+$course_id = 11649;
+$course_prerequisite_id = 11630;
+$insert_prerequisite->execute();
+
+$prerequisite_id = 3;
+$course_id = 11649;
+$course_prerequisite_id = 40816;
+$insert_prerequisite->execute();
+
+$prerequisite_id = 4;
+$course_id = 11651;
+$course_prerequisite_id = 40114;
+$insert_prerequisite->execute();
+
+$prerequisite_id = 5;
+$course_id = 11651;
+$course_prerequisite_id = 11630;
+$insert_prerequisite->execute();
+
+$prerequisite_id = 6;
+$course_id =11656;
+$course_prerequisite_id = 11651;
+$insert_prerequisite->execute();
+
+$prerequisite_id = 7;
+$course_id = 11654;
+$course_prerequisite_id = 11651;
+$insert_prerequisite->execute();
+
+$prerequisite_id = 8;
+$course_id = 11659;
+$course_prerequisite_id = 11649;
+$insert_prerequisite->execute();
+
+$prerequisite_id = 9;
+$course_id = 42003;
+$course_prerequisite_id = 11649;
+$insert_prerequisite->execute();
+
+
+$insert_prerequisite->close();
 
 /* Status Display */
 echo nl2br("The database tables were successfully populated.\r\n");

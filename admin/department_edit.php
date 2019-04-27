@@ -80,10 +80,14 @@
                       $check_active = '';
                       $check_dormant = '';
 
-                      if(isset($status_id)){
-                        if($status_id === 1) {
+                      if(isset($dept_id)){
+                        if($dept_id === 1) {
                           $check_active = 'checked';
+<<<<<<< HEAD
                         }elseif($status_id === 2) {
+=======
+                        }elseif($dept_id === 2) {
+>>>>>>> ae46ad47e0f36eba4489a7bfc5d3b8d8385b648a
                           $check_dormant = 'checked';
                         }
                       } else {
