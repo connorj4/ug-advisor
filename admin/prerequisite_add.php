@@ -33,7 +33,7 @@
           </div> 
           <div class="row">
             <div class="col-sm-12">
-            <form action="<?php echo BASE_URL ?>/php/admin_student_add.php" method="post">
+            <form action="<?php echo BASE_URL ?>/php/admin_prerequisite_add.php" method="post">
                     <fieldset>
                       <legend></legend>
                       <div class="form-row">
@@ -42,17 +42,15 @@
                           <input type="text" class="form-control" id="prerequisite_id" placeholder="Prerequisite ID" name="prerequisite_id" maxlength="3">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="prerequisite_id">Prerequisite Name</label>
-                          <input type="text" class="form-control" id="prerequisite_id" placeholder="Prerequisite Name" name="prerequisite_id">
+                          <label for="course_id">Course ID:</label>
+                          <input type="text" class="form-control" id="course_id" placeholder="Course ID" name="course_id">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="prerequisite_credit">Prerequisite Credit</label>
-                          <input type="text" class="form-control" id="prerequisite_credit" placeholder="Prerequisite Credit" name="prerequisite_credit">
+                          <label for="course_prerequisite_id">Course Prerequisite ID:</label>
+                          <input type="text" class="form-control" id="course_prerequisite_id" placeholder="Course Prerequisite ID" name="course_prerequisite_id">
                         </div>
-                        <div class="form-group col-sm-6">
-                          <label for="prerequisite_semester">Prerequisite Semester</label>
-                          <input type="text" class="form-control" id="prerequisite_semester" placeholder="Prerequisite Semester" name="prerequisite_semester">
-                        </div>
+ 
+
                         <div class="form-group col-sm-3">
                           <label for="status_id">Status</label>
                           <select class="form-control" id="status_id" name="status_id">
