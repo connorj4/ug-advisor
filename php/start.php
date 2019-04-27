@@ -894,15 +894,15 @@ $dept_id = "CSC";
 $status_id = 1;
 $insert_course->execute();
 
-$course_id = 152;
-$course_num = 11630;
+$course_id = 11630;
+$course_num = 152;
 $course_name= "Fundamentals of Programming";
 $credits = 3;
 $dept_id = "CSC";
 $status_id = 1;
 $insert_course->execute();
 
-$course_id = 11636;;
+$course_id = 11636;
 $course_num = 200;
 $course_name= "Info Mgmt/Productivity Software";
 $credits = 3;
