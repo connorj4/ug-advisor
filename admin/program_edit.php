@@ -90,7 +90,7 @@
                       if(isset($program_id)){
                         if($program_id === 1) {
                           $check_active = 'checked';
-                        }elseif($private_status === 2) {
+                        }elseif($program_status === 2) {
                           $check_dormant = 'checked';
                         }
                       } else {
