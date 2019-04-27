@@ -9,7 +9,7 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-program-add"; 
+  $page_name = "admin-program-add";
 
 ?>
 <!doctype html>
@@ -30,7 +30,7 @@
             <div class="col-sm-3">
                 <a href="<?php echo BASE_URL ?>/admin/program.php" class="btn btn-primary">Back</a>
             </div>
-          </div> 
+          </div>
           <div class="row">
             <div class="col-sm-12">
             <form action="<?php echo BASE_URL ?>/php/admin_program_add.php" method="post">
@@ -39,30 +39,26 @@
                       <div class="form-row">
                         <div class="form-group col-sm-3">
                           <label for="program_id">Program ID:</label>
-                          <input type="text" class="form-control" id="program_id" placeholder="Program ID" name="program_id" maxlength="3">
+                          <input type="text" class="form-control" id="program_id" placeholder="Program ID:" name="program_id" maxlength="3">
                         </div>
                         <div class="form-group col-sm-6">
                           <label for="program_name">Program Name</label>
                           <input type="text" class="form-control" id="program_name" placeholder="Program Name" name="program_name">
                         </div>
                         <div class="form-group col-sm-6">
-                          <label for="program_credit">Program Credit</label>
-                          <input type="text" class="form-control" id="program_credit" placeholder="Program Credit" name="program_credit">
-                        </div>
-                        <div class="form-group col-sm-6">
-                          <label for="program_semester">Program Semester</label>
-                          <input type="text" class="form-control" id="program_semester" placeholder="Program Semester" name="program_semester">
+                          <label for="dept_id">Department Id</label>
+                          <input type="text" class="form-control" id="dept_id" placeholder="Department Name" name="dept_id">
                         </div>
                         <div class="form-group col-sm-3">
                           <label for="status_id">Status</label>
                           <select class="form-control" id="status_id" name="status_id">
-                          <?php 
+                          <?php
                             $db_conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)
                               OR die("Connection failed in retrieving status");
                             $retrieve_status = $db_conn->prepare("SELECT status_id,status_type FROM status;");
                             $retrieve_status->execute();
                                   $retrieve_status->bind_result($result_status_id,$result_status_type);
-                            while($retrieve_status->fetch()){      
+                            while($retrieve_status->fetch()){
                               echo "<option value='".$result_status_id."'>".$result_status_type."</option>";
                             }
                             $retrieve_status->close();
@@ -84,7 +80,7 @@
                   </form>
 
                   <?php include_once (ROOT_SRC_PATH . '/error_rprt.php'); ?>
-           
+
             </div>
           </div>
         </div>

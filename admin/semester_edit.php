@@ -9,7 +9,7 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-semester-add"; 
+  $page_name = "admin-semester-add";
 
   if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $_SESSION['edit_semester'] = $_POST['edit_semester_id'];
@@ -36,7 +36,7 @@
             <div class="col-sm-3">
                 <a href="<?php echo BASE_URL ?>/admin/semester.php" class="btn btn-primary">Back</a>
             </div>
-          </div> 
+          </div>
           <div class="row">
             <div class="col-sm-12">
             <?php
@@ -64,19 +64,47 @@
 
                   <div class="form-group">
                     <label for="dept_id">Semester ID:</label>
-                    <input type="text" class="form-control" id="dept_id" name="dept_id" value="<?php echo $semester_id; ?>">
+                    <input type="text" class="form-control" id="semester_id" name="semester_id" value="<?php echo $semester_id; ?>">
                   </div>
 
                   <div class="form-group">
                     <label for="dept_id">Semester Type:</label>
-                    <input type="text" class="form-control" id="dept_name" name="dept_name" value="<?php echo $semester_type; ?>">
+                    <input type="text" class="form-control" id="semester_type" name="semester_type" value="<?php echo $semester_type; ?>">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="private_status">Private Status</label><br>
+                    <?php
+                      /* Shows either public or private status */
+                      $check_active = '';
+                      $check_dormant = '';
+
+                      if(isset($semester_id)){
+                        if($semester_id === 1) {
+                          $check_active = 'checked';
+                        }elseif($semester_id === 2) {
+                          $check_dormant = 'checked';
+                        }
+                      } else {
+                        $error = 'error detected: nothing is selected';
+                      }
+                    ?>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="status_id" id="inlineRadio1" value="1" <?php echo $check_active; ?>>
+                      <label class="form-check-label" for="inlineRadio1">active</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="status_id" id="inlineRadio2" value="2" <?php echo $check_dormant; ?>>
+                      <label class="form-check-label" for="inlineRadio2">dormant</label>
+                    </div>
                   </div>
 
                 </fieldset>
+                  <button type="submit" class="btn btn-primary">UPDATE</button>
               </form>
 
               <?php include_once (ROOT_SRC_PATH . '/error_rprt.php'); ?>
-           
+
             </div>
           </div>
         </div>
