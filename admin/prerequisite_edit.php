@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// PROGRAM EDIT
+// DEPARTMENT EDIT
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -9,12 +9,12 @@
   include_once (ROOT_SRC_PATH .'/check_admin.php');
 
   /* Page Name */
-  $page_name = "admin-program-add"; 
+  $page_name = "admin-prerequisite-edit"; 
 
   if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $_SESSION['edit_program'] = $_POST['edit_program_id'];
+    $_SESSION['edit_prerequisite'] = $_POST['edit_prerequisite_id'];
   } else {
-    $error = 'No Program ID selected.';
+    $error = 'No prerequisite ID selected.';
   }
 
 ?>
@@ -31,10 +31,10 @@
           <!-- Content for the webpage starts here -->
           <div class="row">
             <div class="col-sm-9">
-              <h1>Program Edits</h1>
+              <h1>Prerequisite Edits</h1>
             </div>
             <div class="col-sm-3">
-                <a href="<?php echo BASE_URL ?>/admin/program.php" class="btn btn-primary">Back</a>
+                <a href="<?php echo BASE_URL ?>/admin/prerequisite.php" class="btn btn-primary">Back</a>
             </div>
           </div> 
           <div class="row">
@@ -42,55 +42,54 @@
             <?php
 
               $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-              $editdept = $db_connection->prepare("SELECT program_id, program_name, dept_id, status_id FROM program WHERE program_id = ?");
-              if ($editdept === FALSE) {
+              $editprerequisite = $db_connection->prepare("SELECT prerequisite_id, course_prerequisite_id, course_id, status_id FROM prerequisite WHERE prerequisite_id = ?");
+              if ($editprerequisite === FALSE) {
                 echo "Connection Failed";
                 die($db_connection->error);
               }
-              $editdept->bind_param('s', $_SESSION['edit_program']);
-              $editdept->execute();
-              $result = $editdept->get_result();
+              $editprerequisite->bind_param('s', $_SESSION['edit_prerequisite']);
+              $editprerequisite->execute();
+              $result = $editprerequisite->get_result();
               if($result->num_rows === 0) exit('No rows');
               while($row = $result->fetch_assoc()) {
-                $program_id = $row['program_id'];
-                $program_name = $row['program_name'];
-                $dept_id = $row['dept_id'];
+                $prerequisite_id = $row['prerequisite_id'];
+                $course_id = $row['course_id'];
+                $course_prerequisite_id = $row['course_prerequisite_id'];
                 $status_id = $row['status_id'];
               }
-              $editdept->close();
+              $editprerequisite->close();
             ?>
 
-              <form action="<?php echo BASE_URL ?>/php/admin_program_edit.php" method="post">
+              <form action="<?php echo BASE_URL ?>/php/admin_prerequisite_edit.php" method="post">
                 <fieldset>
-                  <legend>Program:</legend>
+                  <legend>Prerequisite:</legend>
 
                   <div class="form-group">
-                    <label for="dept_id">Program ID:</label>
-                    <input type="text" class="form-control" id="program_id" name="program_id" value="<?php echo $program_id; ?>">
+                    <label for="prerequisite_id">Prerequisite ID:</label>
+                    <input type="text" class="form-control" id="prerequisite_id" name="prerequisite_id" value="<?php echo $prerequisite_id; ?>">
                   </div>
 
                   <div class="form-group">
-                    <label for="dept_id">Program Name:</label>
-                    <input type="text" class="form-control" id="program_name" name="program_name" value="<?php echo $program_name; ?>">
+                    <label for="course_id">Course ID:</label>
+                    <input type="text" class="form-control" id="course_id" name="course_id" value="<?php echo $course_id; ?>">
                   </div>
 
                   <div class="form-group">
-                    <label for="dept_id">Department ID:</label>
-                    <input type="text" class="form-control" id="dept_id" name="dept_id" value="<?php echo $dept_id; ?>">
+                    <label for="course_prerequisite_id">Course ID:</label>
+                    <input type="text" class="form-control" id="course_prerequisite_id" name="course_prerequisite_id" value="<?php echo $course_prerequisite_id; ?>">
                   </div>
 
                   <div class="form-group">
                     <label for="private_status">Private Status</label><br>
-                  </div>
                     <?php
                       /* Shows either public or private status */
                       $check_active = '';
                       $check_dormant = '';
 
-                      if(isset($program_id)){
-                        if($program_id === 1) {
+                      if(isset($status_id)){
+                        if($status_id === 1) {
                           $check_active = 'checked';
-                        }elseif($private_status === 2) {
+                        }elseif($status_id === 2) {
                           $check_dormant = 'checked';
                         }
                       } else {
