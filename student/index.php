@@ -30,7 +30,7 @@
             //-----------------------------------------------------
 
             $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-            $student_detail = $db_connection->prepare("SELECT first_name, last_name 
+            $student_detail = $db_connection->prepare("SELECT first_name, last_name, student_id
                 FROM user NATURAL JOIN student
                 WHERE user_id = ?;");
             // Check Connection
@@ -46,6 +46,7 @@
 
             if ($result->num_rows > 0) {
               while($row = $result->fetch_assoc()) {
+                $_SESSION['student_id'] = $row["student_id"] ;
 
                 echo '<div class="row justify-content-sm-center">';
                 echo '<div class="col-md-6">';
@@ -53,6 +54,7 @@
                 echo '</div>';
                 echo '<div class="col-md-6">';
                 echo 'Advisor: <a href="mailto:#"><i class="far fa-envelope"></i></a>';
+                echo '<br> Studnet Id: '. $_SESSION['student_id'];
                 echo '</div>';
                 echo '</div>';
 
@@ -63,6 +65,8 @@
 
             // create the first term map
             $student_term_map = $db_connection->prepare("SELECT 
+              year_id,
+              semester_id,
               year_type AS year, 
               semester_type AS semester, 
               take_status_type AS status, 
@@ -76,13 +80,15 @@
                 NATURAL JOIN years 
                 NATURAL JOIN take_status
                 NATURAL JOIN grade 
-                NATURAL JOIN course;");
+                NATURAL JOIN course
+              WHERE student_id = ?;");
             // Check Connection
             if ($student_term_map === FALSE) {
               $error = "Connection Failed";
               die($db_connection->error);
             }
             // bind
+            $student_term_map->bind_param("s", $_SESSION['student_id']);
             // $student_term_map->bind_param("s", $user_id);
             $student_term_map->execute();
             // results
@@ -151,7 +157,15 @@
               if (empty($array[$i]["semester"] )) {
                 echo '</ul>'; // end list-group
                 echo '<div class="card-footer">';
-                echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
+                // view the term to make edits
+                echo '<form method="post" action="'.BASE_URL.'/student/term.php">';
+                echo '<input type="hidden" name="term_year" value="'.$array[$i]["year_id"].'">';
+                echo '<input type="hidden" name="term_semester" value="'.$array[$i]["semester_id"].'">';
+                //echo '<input type="hidden" name="student_id" value="'.$_SESSION['student_id'].'">';
+                echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> View</button>';
+                echo '</form>';
+
+                //echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
                 echo '</div>'; // end card-footer
                 echo '</div>'; // end card
                 echo '</div>'; // end col

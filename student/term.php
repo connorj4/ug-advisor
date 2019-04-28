@@ -10,8 +10,12 @@
   /* Page Name */
   $page_name = "term";
 
-  /* Start The Session */
-  session_start();
+  if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $year_type = $_POST['term_year'];
+    $semester_type = $_POST['term_semester'];
+  } else {
+    $error = 'No Department ID selected.';
+  }
 
 ?>
 <!doctype html>
@@ -29,6 +33,65 @@
           <h2>[ YYYY - Semester ]</h2>
 
           <!-- CURRENT TERM-->
+          <?php
+            $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+            $student_term_detail = $db_connection->prepare("SELECT 
+              year_type AS year, 
+              semester_type AS semester, 
+              take_status_type AS status, 
+              dept_id AS dept, 
+              course_num AS course, 
+              course_name,
+              grade_type AS grade,
+              credits
+              FROM take 
+                NATURAL JOIN semester 
+                NATURAL JOIN years 
+                NATURAL JOIN take_status
+                NATURAL JOIN grade 
+                NATURAL JOIN course
+              WHERE student_id = ? AND year_id = ? AND semester_id = ?;");
+            // Check Connection
+            if ($student_term_detail === FALSE) {
+              $error = "Connection Failed";
+              die($db_connection->error);
+            }
+            // bind
+            $student_term_detail->bind_param("iis", 
+              $_SESSION['student_id'],
+              $year_type,
+              $semester_type
+            );
+            $student_term_detail->execute();
+
+            $result = $student_term_detail->get_result();
+            $rowcount = mysqli_num_rows($result);
+
+            $array = array();
+            if ($result->num_rows > 0) {
+              $row = $result->fetch_assoc();
+
+              echo $row["year_type"];
+
+
+              while($row = $result->fetch_assoc()) {
+                $array[] = $row;
+              }
+            }
+            $student_term_detail->close();
+
+            for($i=0; $i<=count($array); $i++) {
+              //echo $array[$i]["year"];
+              //echo $array[$i]["semester"];
+              echo count($array) . '<br>';
+              echo $rowcount;
+            }
+
+          ?>
+
+
+
+
 
           <div class="row">
             <div class="col-sm-6">
@@ -65,7 +128,7 @@
 
             <div class="row justify-content-sm-center">
             <div class="col-sm-3">
-            <a href="<?php echo BASE_URL ?>/select/check-term.php" class="btn btn-primary">Save Term</a>
+            <a href="<?php echo BASE_URL ?>/select/check-term.php" class="btn btn-primary">Update Term</a>
             </div>
             </div>
           <hr>
