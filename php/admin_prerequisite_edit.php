@@ -10,12 +10,11 @@ include_once (ROOT_SRC_PATH .'/check_admin.php');
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
  
   $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-  $update_prerequisite = $db_connection->prepare("UPDATE prerequisite SET prerequisite_id = ?, course_id = ?, course_prerequisite_id, status_id = ? WHERE prerequisite_id = ?");
-  $update_prerequisite->bind_param("iii", 
+  $update_prerequisite = $db_connection->prepare("UPDATE prerequisite SET prerequisite_id = ?, course_id = ?, course_prerequisite_id = ? WHERE prerequisite_id = ?");
+  $update_prerequisite->bind_param("iiis", 
     $_POST['prerequisite_id'], 
     $_POST['course_id'], 
-    $_POST['course_prerequisite_id']
-    $_POST['status_id'],
+    $_POST['course_prerequisite_id'],
     $_SESSION['edit_prerequisite']);
 
   $update_prerequisite->execute();

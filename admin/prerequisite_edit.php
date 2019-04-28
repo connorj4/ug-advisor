@@ -1,6 +1,6 @@
 <?php
 //======================================================================
-// DEPARTMENT EDIT
+// PREREQUISITE EDIT
 //======================================================================
   /* Quick Paths */
   /* note the 2 after __FILE__, because it's 2 directories deep */
@@ -14,7 +14,7 @@
   if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $_SESSION['edit_prerequisite'] = $_POST['edit_prerequisite_id'];
   } else {
-    $error = 'No prerequisite ID selected.';
+    $error = 'No Prerequisite ID selected.';
   }
 
 ?>
@@ -42,7 +42,7 @@
             <?php
 
               $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-              $editprerequisite = $db_connection->prepare("SELECT prerequisite_id, course_prerequisite_id, course_id, status_id FROM prerequisite WHERE prerequisite_id = ?");
+              $editprerequisite = $db_connection->prepare("SELECT prerequisite_id, course_id, course_prerequisite_id FROM prerequisite WHERE prerequisite_id = ?");
               if ($editprerequisite === FALSE) {
                 echo "Connection Failed";
                 die($db_connection->error);
@@ -55,7 +55,6 @@
                 $prerequisite_id = $row['prerequisite_id'];
                 $course_id = $row['course_id'];
                 $course_prerequisite_id = $row['course_prerequisite_id'];
-                $status_id = $row['status_id'];
               }
               $editprerequisite->close();
             ?>
@@ -75,35 +74,8 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="course_prerequisite_id">Course ID:</label>
+                    <label for="course_prerequisite_id">Course Prerequisite ID:</label>
                     <input type="text" class="form-control" id="course_prerequisite_id" name="course_prerequisite_id" value="<?php echo $course_prerequisite_id; ?>">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="private_status">Private Status</label><br>
-                    <?php
-                      /* Shows either public or private status */
-                      $check_active = '';
-                      $check_dormant = '';
-
-                      if(isset($status_id)){
-                        if($status_id === 1) {
-                          $check_active = 'checked';
-                        }elseif($status_id === 2) {
-                          $check_dormant = 'checked';
-                        }
-                      } else {
-                        $error = 'error detected: nothing is selected';
-                      }
-                    ?>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="status_id" id="inlineRadio1" value="1" <?php echo $check_active; ?>>
-                      <label class="form-check-label" for="inlineRadio1">active</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="status_id" id="inlineRadio2" value="2" <?php echo $check_dormant; ?>>
-                      <label class="form-check-label" for="inlineRadio2">dormant</label>
-                    </div>
                   </div>
                   
                 </fieldset>

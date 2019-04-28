@@ -87,10 +87,10 @@
                       $check_active = '';
                       $check_dormant = '';
 
-                      if(isset($program_id)){
-                        if($program_id === 1) {
+                      if(isset($status_id)){
+                        if($status_id === 1) {
                           $check_active = 'checked';
-                        }elseif($program_status === 2) {
+                        }elseif($status_id === 2) {
                           $check_dormant = 'checked';
                         }
                       } else {
