@@ -10,9 +10,6 @@
   /* Page Name */
   $page_name = "advisor";
 
-  /* Start The Session */
-  session_start(); 
-
 ?>
 <!doctype html>
 <html lang="en">
