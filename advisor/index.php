@@ -33,37 +33,49 @@
                 <th scope="col">#</th>
                 <th scope="col">First</th>
                 <th scope="col">Last</th>
-                <th scope="col">Permission</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Take Status</th>
                 <th scope="col">View Record</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th scope="row">1</th>
-                <td>Mike</td>
-                <td>Hunt</td>
+                <td>Sample</td>
+                <td>Student</td>
+                <td><a href="mailto:#"><i class="far fa-envelope"></i></a></td>
                 <td>@mdo</td>
                 <td>
-                <form action="//" type="post">
-	                <button type="submit" value="DoIt">This</button>
-                </form>
-</td>
+                  <form action="//" type="post">
+                    <button type="submit" value="DoIt">View Record</button>
+                  </form>
+                </td>
 
               </tr>
               <tr>
                 <th scope="row">2</th>
-                <td>Billy bob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>@mdo</td>
+                <td>Sample</td>
+                <td>Student</td>
+                <td><a href="mailto:#"><i class="far fa-envelope"></i></a></td>
+                <td><i class="fa fa-flag" aria-hidden="true"></i></td>
+                <td>
+                  <form action="//" type="post">
+                    <button type="submit" value="DoIt">View Record</button>
+                  </form>
+                </td>
 
               </tr>
               <tr>
                 <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
+                <td>Sample</td>
+                <td>Student</td>
+                <td><a href="mailto:#"><i class="far fa-envelope"></i></a></td>
                 <td>@twitter</td>
-                <td>@mdo</td>
+                <td>
+                  <form action="//" type="post">
+                    <button type="submit" value="DoIt">View Record</button>
+                  </form>
+                </td>
 
               </tr>
             </tbody>
