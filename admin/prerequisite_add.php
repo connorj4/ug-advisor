@@ -49,25 +49,6 @@
                           <label for="course_prerequisite_id">Course Prerequisite ID:</label>
                           <input type="text" class="form-control" id="course_prerequisite_id" placeholder="Course Prerequisite ID" name="course_prerequisite_id">
                         </div>
- 
-
-                        <div class="form-group col-sm-3">
-                          <label for="status_id">Status</label>
-                          <select class="form-control" id="status_id" name="status_id">
-                          <?php 
-                            $db_conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)
-                              OR die("Connection failed in retrieving status");
-                            $retrieve_status = $db_conn->prepare("SELECT status_id,status_type FROM status;");
-                            $retrieve_status->execute();
-                                  $retrieve_status->bind_result($result_status_id,$result_status_type);
-                            while($retrieve_status->fetch()){      
-                              echo "<option value='".$result_status_id."'>".$result_status_type."</option>";
-                            }
-                            $retrieve_status->close();
-                            $db_conn->close();
-                            ?>
-                          </select>
-                        </div>
                       </div>
                     </fieldset>
                     <?php

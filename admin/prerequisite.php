@@ -74,7 +74,7 @@
                     echo '<td>'.$row["course_id"].'</td>';
                     echo '<td>'.$row["course_prerequisite_id"].'</td>';
                     echo '<td><form method="post" action="'.BASE_URL.'/admin/prerequisite_edit.php">';
-                    echo '<input type="hidden" name="edit_dept_id" value="'.$row["prerequisite_id"].'">';
+                    echo '<input type="hidden" name="edit_prerequisite_id" value="'.$row["prerequisite_id"].'">';
                     echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> edit</button>';
                     echo '</form></td>';
                     echo '</tr>';
