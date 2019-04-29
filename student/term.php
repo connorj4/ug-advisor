@@ -30,12 +30,13 @@
         <div class="col-sm-9">
           <!-- Content for the webpage starts here -->
           <h1>Student <?php echo $user_name ?></h1>
-          <h2><?php echo $year_type . ' - ' . $semester_type ?></h2>
           <div class="row">
           <!-- CURRENT TERM-->
           <?php
             $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
             $student_term_detail = $db_connection->prepare("SELECT 
+              take_id,
+              course_id,
               year_type AS year, 
               semester_type AS semester, 
               take_status_type AS status, 
@@ -68,71 +69,48 @@
             if ($result->num_rows > 0) {
               while($row = $result->fetch_assoc()) {
 
-                echo '<form method="post" action="'.BASE_URL.'/student/term.php">';
-                echo '<input type="hidden" name="term_year" value="'.$row["year"].'">';
-                echo '<input type="hidden" name="term_semester" value="'.$row["semester"].'">';
-                echo '<input type="hidden" name="term_semester" value="'.$_SESSION['student_id'].'">';
                 if ($counter == 1) {
                   echo '<div class="col-sm-6">';
+                  echo '<form method="post" action="'.BASE_URL.'/student/term.php">';
+                  echo '<input type="hidden" name="take_id" value="'.$row["take_id"].'">';
                   echo '<div class="card">';
                   echo '<div class="card-header">';
                   echo '<strong>' . $row["semester"] . ' - ' . $row["year"] . '</strong><br>';
                   echo '<small>Number of Courses:' . $rowcount . '</small>';
                   echo '</div>';
-                  echo '<ul class="list-group list-group-flush">';
+                  echo '<div class="card-body">';
                 }
-
-                echo '<li class="list-group-item">';
-                echo '<div class="d-flex flex-nowrap justify-content-between">';
-                echo '<div class="p-2 align-self-center">' . $row["dept"] . '</div>';
-                echo '<div class="p-2 align-self-center">' . $row["course"] . '</div>';
-                echo '<div class="p-2 align-self-center">' . $row["course_name"] . '</div>'; 
-                echo '<div class="p-2 align-self-center"><span class="badge badge-info badge-pill pill-big">' . $row["credits"] . '</span></div>';
-                echo '';
-                echo '</div>'; // end d-flex
-                echo '</li>'; // end list-group-item
-
+                
+                echo '<div class="form-group form-check text-left">';
+                echo '<input type="checkbox" class="form-check-input" id="'.$row["course_id"].'" name="course_id" value="'.$row["course_id"].'">';
+                echo '<label class="form-check-label small" for="'.$row["course_id"].'">';
+                echo $row["dept"] . ' ';
+                echo $row["course"] . ' - ';
+                echo $row["course_name"] . ' - ';
+                echo $row["credits"];
+                echo '</label>'; // end form-check-label
+                echo '</div>'; // end form-group
                 $credit_total += $row["credits"];
 
                 if ($counter == $rowcount) {
-                  echo '</ul>'; // end list-group
+                  //echo '</ul>'; // end list-group
+                  echo '</div>'; // end card-body
                   echo '<div class="card-footer">';
                   echo 'Total Credits: '. $credit_total . '<br>';
                   echo '<a href="#" class="btn btn-primary">Remove Class</a>';
                   echo '</div>'; // end card-footer
                   echo '</div>'; // end card
+                  echo '</form>'; // end form
                   echo '</div>'; // end col
                 }
-                echo '</form>';
+                
                 $counter += 1;
             
             }
           }
-            
             $student_term_detail->close();
           ?>
 
-
-
-          </div> <!-- end row -->
-
-          <div class="row">
-            <div class="col-sm-6">
-            <div class="card">
-                <div class="card-header">
-                   Term [total credits]
-                </div>
-                <div class="card-body">
-                <div class="form-group form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1">Course Name 3</label>
-                </div>
-                </div>
-                <div class="card-footer">
-                <a href="#" class="btn btn-primary">Remove Class</a>
-                </div>
-              </div><!-- /card -->
-            </div><!-- /col 6 -->
             <div class="col-sm-6">
               <div class="card">
                 <div class="card-header">
@@ -149,11 +127,13 @@
               </div><!-- /card -->
             </div><!-- /col 6 -->
 
-            <div class="row justify-content-sm-center">
+          </div> <!-- end row -->
+          
+          <div class="row justify-content-sm-center">
             <div class="col-sm-12">
             <a href="<?php echo BASE_URL ?>/select/check-term.php" class="btn btn-primary">Update Term</a>
             </div>
-            </div>
+          </div>
           <hr>
         </div>
       </div>
