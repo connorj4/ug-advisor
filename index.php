@@ -5,6 +5,7 @@
   /* Quick Paths */
   include_once (realpath(dirname(__FILE__).'/php/path.php'));
 
+
   /* Page Name */
   $page_name = "home";
 

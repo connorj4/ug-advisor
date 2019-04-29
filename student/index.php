@@ -151,6 +151,8 @@
                 echo '<div class="p-2 align-self-center"><span class="badge badge-secondary badge-pill pill-big ">' . $array[$i]["grade"] . '</span></div>';
                 echo '</div>'; // end d-flex
                 echo '</li>'; // end list-group-item
+                $year = $array[$i]["year_id"];
+                $semester = $array[$i]["semester_id"];
               }
 
               // end seperate terms
@@ -159,8 +161,8 @@
                 echo '<div class="card-footer">';
                 // view the term to make edits
                 echo '<form method="post" action="'.BASE_URL.'/student/term.php">';
-                echo '<input type="hidden" name="term_year" value="'.$array[$i]["year_id"].'">';
-                echo '<input type="hidden" name="term_semester" value="'.$array[$i]["semester_id"].'">';
+                echo '<input type="hidden" name="term_year" value="'.$year.'">';
+                echo '<input type="hidden" name="term_semester" value="'.$semester.'">';
                 //echo '<input type="hidden" name="student_id" value="'.$_SESSION['student_id'].'">';
                 echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> View</button>';
                 echo '</form>';
@@ -173,7 +175,13 @@
                 if ($array[$i+1]["semester"] != $array[$i]["semester"]) {
                   echo '</ul>'; // end list-group
                   echo '<div class="card-footer">';
-                  echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
+                  //echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
+                  echo '<form method="post" action="'.BASE_URL.'/student/term.php">';
+                  echo '<input type="hidden" name="term_year" value="'.$year.'">';
+                  echo '<input type="hidden" name="term_semester" value="'.$semester.'">';
+                  //echo '<input type="hidden" name="student_id" value="'.$_SESSION['student_id'].'">';
+                  echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> View</button>';
+                  echo '</form>';
                   echo '</div>'; // end card-footer
                   echo '</div>'; // end card
                   echo '</div>'; // end col
