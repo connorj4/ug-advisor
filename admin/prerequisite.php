@@ -39,9 +39,10 @@
           <table class="table table-striped">
             <thead class="thead-dark">
               <tr>
+                <th scope="col">Prerequisite ID</th>
                 <th scope="col">Course ID</th>
-                <th scope="col">Prerequisite Name</th>
-                <th>edit</th>
+                <th scope="col">Course Prerequisite ID</th>
+                <th>Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -52,7 +53,7 @@
                 // View Prerequisites
                 $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
                 // SQL statemenCourset
-                $prereq_view = $db_connection->prepare("SELECT prerequisite_id, course_id
+                $prereq_view = $db_connection->prepare("SELECT prerequisite_id, course_id, course_prerequisite_id
                 FROM prerequisite;");
                 // Check Connection
                 if ($prereq_view === FALSE) {
@@ -71,8 +72,9 @@
                     echo '<tr>'; 
                     echo '<td>'.$row["prerequisite_id"].'</td>';       
                     echo '<td>'.$row["course_id"].'</td>';
+                    echo '<td>'.$row["course_prerequisite_id"].'</td>';
                     echo '<td><form method="post" action="'.BASE_URL.'/admin/prerequisite_edit.php">';
-                    echo '<input type="hidden" name="edit_dept_id" value="'.$row["prerequisite_id"].'">';
+                    echo '<input type="hidden" name="edit_prerequisite_id" value="'.$row["prerequisite_id"].'">';
                     echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> edit</button>';
                     echo '</form></td>';
                     echo '</tr>';

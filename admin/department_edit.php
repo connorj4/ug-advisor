@@ -24,7 +24,7 @@
   <?php include_once (ROOT_PATH . '/include/head.php'); ?>
   </head>
   <body class="<?php echo $page_name; ?>">
-  <?php //include_once (ROOT_PATH . '/include/header.php'); ?>
+  <?php include_once (ROOT_PATH . '/include/header.php'); ?>
     <main role="main" class="container">
       <div class="row justify-content-sm-center">
         <div class="col-sm-9">
@@ -80,10 +80,10 @@
                       $check_active = '';
                       $check_dormant = '';
 
-                      if(isset($dept_id)){
-                        if($dept_id === 1) {
+                      if(isset($status_id)){
+                        if($status_id === 1) {
                           $check_active = 'checked';
-                        }elseif($dept_id === 2) {
+                        }elseif($status_id === 2) {
                           $check_dormant = 'checked';
                         }
                       } else {

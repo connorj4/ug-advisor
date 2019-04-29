@@ -59,7 +59,6 @@ if (isset($_POST['submit'])) {
       }
   } else {
     $_SESSION['message'] = "Username or Password did not match!";
-    echo "Username or Password did not match!";
     header("location: " . SRC_PATH . "/logout.php"); 
     exit();
   }
