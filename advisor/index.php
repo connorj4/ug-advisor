@@ -11,7 +11,7 @@
   $page_name = "advisor";
 
   /* Start The Session */
-  session_start(); 
+  //session_start(); 
 
 ?>
 <!doctype html>
