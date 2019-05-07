@@ -61,7 +61,6 @@
                   }
                   // bind
                   $advisor_detail->bind_param("s", $user_id);
-                  $advisor_detail->execute();
                   // execute
                   $advisor_detail->execute();
                   // results
