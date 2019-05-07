@@ -2054,6 +2054,10 @@ $student_id = 3;
 $faculty_id = 1;
 $insert_advisor->execute();
 
+$student_id = 5;
+$faculty_id = 2;
+$insert_advisor->execute();
+
 $insert_advisor->close();
 
 /* Prerequisite */
