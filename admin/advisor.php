@@ -23,7 +23,7 @@
       <div class="row justify-content-sm-center">
         <div class="col-sm-9">
           <!-- Content for the webpage starts here -->
-          
+
           <div class="row">
             <div class="col-sm-9">
               <h1>Advisor Administration</h1>
@@ -33,7 +33,7 @@
                 <a href="../admin/advisor_add.php" class="btn btn-primary">Add Advisor</a>
               </form>
             </div>
-          </div> 
+          </div>
           <div class="row">
             <div class="col-sm-12">
           <!-- table of Advisor list here -->
@@ -55,14 +55,14 @@
                 // View Advisor
                 $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
                 // SQL statment
-                $advisor_view = $db_connection->prepare("SELECT student_id, faculty_id 
+                $advisor_view = $db_connection->prepare("SELECT student_id, faculty_id
                 FROM advisor NATURAL JOIN status;");
                 // Check Connection
                 if ($advisor_view === FALSE) {
                   $error = "Connection Failed";
                   die($db_connection->error);
                 }
-                // bind 
+                // bind
                 //$advisor_view->bind_param();
                 // execute
                 $advisor_view->execute();
@@ -73,7 +73,7 @@
                   while($row = $result->fetch_assoc()) {
                     echo '<tr>';
                     echo '<th scope="row">'.$row["student_id"].'</th>';
-                    echo '<td scope="row"> [Advisor Name Holder] </td>'; 
+                    echo '<td scope="row"> [Advisor Name Holder] </td>';
                     echo '<th scope="row">'.$row["faculty_id"].'</th>';
                     echo '<td><form method="post" action="'.BASE_URL.'/admin/advisor_edit.php">';
                     echo '<input type="hidden" name="edit_faculty_id" value="'.$row["faculty_id"].'">';
