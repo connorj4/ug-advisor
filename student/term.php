@@ -11,10 +11,12 @@
   $page_name = "term";
 
   if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $year_type = $_POST['term_year'];
-    $semester_type = $_POST['term_semester'];
+    $_SESSION['year'] = $_POST['term_year'];
+    $_SESSION['semester'] = $_POST['term_semester'];
   } else {
-    $error = 'No Department ID selected.';
+    if (!isset($_SESSION['year']) or !isset($_SESSION['semester'])) {
+      $error = 'There was a problem, year: ' . $_SESSION['year'] . ' semester: ' . $_SESSION['semester'];
+    }
   }
 
 ?>
@@ -29,7 +31,16 @@
       <div class="row justify-content-sm-center">
         <div class="col-sm-9">
           <!-- Content for the webpage starts here -->
-          <h1>Student <?php echo $user_name ?></h1>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <h1>Student <?php echo $user_name ?></h1>
+            </div>
+            <div class="col-sm-6">
+              <a href="<?php echo BASE_URL ?>/student" class="btn btn-info">back <i class="fas fa-undo-alt"></i></a>
+            </div>
+           </div> 
+
           <div class="row">
           <!-- CURRENT TERM-->
           <?php
@@ -58,7 +69,7 @@
               die($db_connection->error);
             }
             // bind
-            $student_term_detail->bind_param('iii', $_SESSION['student_id'], $year_type, $semester_type);
+            $student_term_detail->bind_param('iii', $_SESSION['student_id'], $_SESSION['year'], $_SESSION['semester']);
             $student_term_detail->execute(); 
 
             $result = $student_term_detail->get_result();
@@ -71,8 +82,7 @@
 
                 if ($counter == 1) {
                   echo '<div class="col-sm-6">';
-                  echo '<form method="post" action="'.BASE_URL.'/student/term.php">';
-                  echo '<input type="hidden" name="take_id" value="'.$row["take_id"].'">';
+                  echo '<form method="post" action="'.BASE_URL.'/php/student_term_remove.php">';
                   echo '<div class="card">';
                   echo '<div class="card-header">';
                   echo '<strong>' . $row["semester"] . ' - ' . $row["year"] . '</strong><br>';
@@ -82,7 +92,7 @@
                 }
                 
                 echo '<div class="form-group form-check text-left">';
-                echo '<input type="checkbox" class="form-check-input" id="'.$row["course_id"].'" name="course_id" value="'.$row["course_id"].'">';
+                echo '<input type="checkbox" class="form-check-input" id="'.$row["take_id"].'" name="take_id[]" value="'.$row["take_id"].'">';
                 echo '<label class="form-check-label small" for="'.$row["course_id"].'">';
                 echo $row["dept"] . ' ';
                 echo $row["course"] . ' - ';
@@ -97,7 +107,7 @@
                   echo '</div>'; // end card-body
                   echo '<div class="card-footer">';
                   echo 'Total Credits: '. $credit_total . '<br>';
-                  echo '<a href="#" class="btn btn-primary">Remove Class</a>';
+                  echo '<button type="submit" class="btn btn-primary">Remove Class</button>';
                   echo '</div>'; // end card-footer
                   echo '</div>'; // end card
                   echo '</form>'; // end form
@@ -111,27 +121,91 @@
             $student_term_detail->close();
           ?>
 
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-header">
-                   Select Course
-                </div><div class="card-body">
-                <div class="form-group form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1">Course Name 3</label>
-                </div>
-                </div>
-                <div class="card-footer">
-                <a href="#" class="btn btn-primary">Add Course</a>
-                </div>
-              </div><!-- /card -->
-            </div><!-- /col 6 -->
+          <?php
+
+            $course_dept = 'CSC';
+
+            $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+            $student_term_detail = $db_connection->prepare("SELECT 
+              course.course_id,
+              course.dept_id AS dept, 
+              course.course_num AS course, 
+              course.course_name,
+              course.credits
+              FROM take 
+                RIGHT JOIN course 
+                ON take.course_id = course.course_id
+              WHERE take.student_id IS NULL AND course.dept_id = ?
+              ORDER BY course.course_num;");
+            // Check Connection
+            if ($student_term_detail === FALSE) {
+              $error = "Connection Failed";
+              die($db_connection->error);
+            }
+            // bind
+            $student_term_detail->bind_param('s', $course_dept);
+            $student_term_detail->execute(); 
+
+            $result = $student_term_detail->get_result();
+            $rowcount = mysqli_num_rows($result);
+            
+            $counter = 1;
+
+            if ($result->num_rows > 0) {
+              while($row = $result->fetch_assoc()) {
+
+                if ($counter == 1) {
+                  echo '<div class="col-sm-6">';
+                  echo '<form method="post" action="'.BASE_URL.'/php/student_term_add.php">';
+                  echo '<div class="card">';
+                  echo '<div class="card-header">';
+                  echo '<strong> Add a Course </strong><br>';
+                  echo '<small>Number of Courses:' . $rowcount . '</small>';
+                  echo '</div>';
+                  echo '<div class="card-body">';
+                }
+                
+                echo '<div class="form-group form-check text-left">';
+                echo '<input type="checkbox" class="form-check-input" id="'.$row["course_id"].'" name="course_id[]" value="'.$row["course_id"].'">';
+                echo '<label class="form-check-label small" for="'.$row["course_id"].'">';
+                echo $row["dept"] . ' ';
+                echo $row["course"] . ' - ';
+                echo $row["course_name"] . ' - ';
+                echo $row["credits"];
+                echo '</label>'; // end form-check-label
+                echo '</div>'; // end form-group
+                
+
+                if ($counter == $rowcount) {
+                  //echo '</ul>'; // end list-group
+                  echo '</div>'; // end card-body
+                  echo '<div class="card-footer">';
+                  echo $credit_total . '<br>';
+                  if ($credit_total < 21) {
+                    echo '<button type="submit" class="btn btn-primary">Add Class</button>';
+                  } else {
+                    echo '<div class="alert alert-warning" role="warning">Max credit total reached: ' . $credit_total . '</div>';
+                  }
+                  echo '</div>'; // end card-footer
+                  echo '</div>'; // end card
+                  echo '</form>'; // end form
+                  echo '</div>'; // end col
+                }
+                
+                $counter += 1;
+            
+            }
+          }
+            $student_term_detail->close();
+          ?>
 
           </div> <!-- end row -->
+
+          <?php include_once (ROOT_SRC_PATH . '/error_rprt.php'); ?>
           
           <div class="row justify-content-sm-center">
             <div class="col-sm-12">
-            <a href="<?php echo BASE_URL ?>/select/check-term.php" class="btn btn-primary">Update Term</a>
+            <a href="<?php echo BASE_URL ?>/student/check-term.php" class="btn btn-primary">Update Term</a>
             </div>
           </div>
           <hr>
