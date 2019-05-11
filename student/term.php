@@ -205,7 +205,7 @@
           
           <div class="row justify-content-sm-center">
             <div class="col-sm-12">
-            <a href="<?php echo BASE_URL ?>/student/check-term.php" class="btn btn-primary">Update Term</a>
+            <a href="<?php echo BASE_URL ?>/student/check-term.php" class="btn btn-primary">Save Term Update</a>
             </div>
           </div>
           <hr>

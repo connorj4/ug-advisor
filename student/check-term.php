@@ -10,9 +10,6 @@
   /* Page Name */
   $page_name = "term";
 
-  /* Start The Session */
-  session_start();
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -68,12 +65,14 @@
             $credit_total = 0;
             $counter = 1;
 
+            $take_id_array = array();
+
             if ($result->num_rows > 0) {
               while($row = $result->fetch_assoc()) {
 
                 if ($counter == 1) {
                   echo '<div class="col-sm-6">';
-                  echo '<form method="post" action="'.BASE_URL.'/php/student_term_remove.php">';
+                  //echo '<form method="post" action="'.BASE_URL.'/php/student_term_remove.php">';
                   echo '<div class="card">';
                   echo '<div class="card-header">';
                   echo '<strong>' . $row["semester"] . ' - ' . $row["year"] . '</strong><br>';
@@ -81,7 +80,7 @@
                   echo '</div>';
                   echo '<ul class="list-group list-group-flush">';
                 }
-                
+                $take_id_array[] = $row["take_id"];
                 echo '<li class="list-group-item">';
                 echo '<div class="d-flex flex-nowrap justify-content-between">';
                 echo '<div class="p-2 align-self-center">' . $row["dept"] . '</div>';
@@ -95,10 +94,19 @@
 
                 if ($counter == $rowcount) {
                   //echo '</ul>'; // end list-group
-                  echo '</ul'; // end card-body
+                  echo '</ul>'; // end card-body
                   echo '<div class="card-footer">';
                   echo 'Total Credits: '. $credit_total . '<br>';
-                  echo '<a href="<?php echo BASE_URL ?>/select/advisor-approval.php" class="btn btn-primary">Send to Advisor</a>';
+                  // Form will change status
+
+                  
+                  echo '<form method="post" action="'.BASE_URL.'/php/student_term_advisor.php">';
+                  foreach($take_id_array as $value)
+                  {
+                    echo '<input type="hidden" name="take_id[]" value="'. $value. '">';
+                  }
+                  echo '<button type="submit" class="btn btn-primary">Send to Advisor</button>';
+                  echo '</form>';
             
                   echo '</div>'; // end card-footer
                   echo '</div>'; // end card
@@ -107,13 +115,14 @@
                 }
                 
                 $counter += 1;
-            
             }
           }
             $student_term_detail->close();
           ?>
           </div>
+
         </div>
+        <?php include_once (ROOT_SRC_PATH . '/error_rprt.php'); ?>
       </div>
     </main>
     <?php include_once (ROOT_PATH . '/include/footer.php'); ?>

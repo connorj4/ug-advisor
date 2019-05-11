@@ -13,28 +13,36 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   $take_status_id = 1;
 
   $course_row = $_POST['course_id'];
-  $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-  for($i=0;$i<count($course_row);$i++){
-    $insert_tkcourse = $db_connection->prepare("INSERT INTO take (
-      course_id,
-      grade_id,
-      semester_id,
-      year_id,
-      state_id,
-      take_status_id, 
-      student_id) VALUES(?,?,?,?,?,?,?);");
-    $insert_tkcourse->bind_param("iiiiiii", 
-      $course_row[$i],
-      $grade_id,
-      $_SESSION['semester'],
-      $_SESSION['year'],
-      $state_id,
-      $take_status_id,
-      $_SESSION['student_id']);
-    $insert_tkcourse->execute();
+  //Check if form is empty
+  if (!isset($course_row)) {
+    $_SESSION['error'] = 'You must select a course to add';
+    header("location: " . BASE_URL . "/student/term.php");
 
-    if($insert_tkcourse->affected_rows === 0) exit('No rows updated');
+  } else {
+    $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+    for($i=0;$i<count($course_row);$i++){
+      $insert_tkcourse = $db_connection->prepare("INSERT INTO take (
+        course_id,
+        grade_id,
+        semester_id,
+        year_id,
+        state_id,
+        take_status_id, 
+        student_id) VALUES(?,?,?,?,?,?,?);");
+      $insert_tkcourse->bind_param("iiiiiii", 
+        $course_row[$i],
+        $grade_id,
+        $_SESSION['semester'],
+        $_SESSION['year'],
+        $state_id,
+        $take_status_id,
+        $_SESSION['student_id']);
+      $insert_tkcourse->execute();
+
+      if($insert_tkcourse->affected_rows === 0) exit('No rows updated');
+    }
   }
   
   $insert_tkcourse->close();
