@@ -58,9 +58,9 @@ if (isset($_POST['submit'])) {
         }
       }
   } else {
-    $_SESSION["Username or Password did not match!"];
+    $_SESSION['message'] = "Username or Password did not match!";
     header("location: " . SRC_PATH . "/logout.php"); 
-    return $message;
+    exit();
   }
   // close the mysql connection
   $select_user->close();

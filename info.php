@@ -5,7 +5,6 @@
   /* Quick Paths */
   include_once (realpath(dirname(__FILE__).'/php/path.php'));
 
-
   /* Page Name */
   $page_name = "home";
 
@@ -23,17 +22,14 @@
     <main role="main" class="container">
       <div class="row justify-content-sm-center">
         <div class="col-sm-4">
-          <h1>Login</h1>
-          <form action="<?php echo BASE_URL; ?>/php/authenticate.php" method="post">
-            <div class="form-group">
-              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="username" placeholder="Enter username" name="username" required>
-            </div>
-            <div class="form-group">
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter Password" name="password" required>
-            </div>
-            <?php include_once (ROOT_PATH . '/php/error_rprt.php'); ?>
-            <button type="submit" class="btn btn-primary">Log In</button>
-          </form>
+          <h1>Undergraduate Advisor</h1><br>
+          <p>Undergraduate Advisor (UA) is a web application designed to streamline the course selection experience for undergraduate students attending Southern Connecticut State University (SCSU).</p>
+          <p> The aim of the application is twofold: 
+          <ol> 1) to provide a clear course selection path for undergraduates, and </ol>
+          <ol> 2) to increase communication between undergraduate students and their advisors.</ol>
+          <p>Undergraduate Advisor is built on a foundation of SCSU catalog requirements. It makes use of an adaptive ‘Academic Maps’ function to build out student roadmaps toward the academic major, minor, and liberal arts requirements.</p>
+
+
           
         </div>
       </div>

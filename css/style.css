@@ -80,4 +80,7 @@ td form {
 .badge.pill-big {
   font-size:100%;
 }
+.text-title {
+  text-transform: capitalize;
+}
 

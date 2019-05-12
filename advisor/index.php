@@ -10,9 +10,12 @@
   /* Page Name */
   $page_name = "advisor";
 
+<<<<<<< HEAD
   /* Start The Session */
   //session_start(); 
 
+=======
+>>>>>>> 27d457cf963eb08925b98a3bd036da92d7b658f9
 ?>
 <!doctype html>
 <html lang="en">
@@ -30,7 +33,6 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th scope="col">#</th>
                 <th scope="col">First</th>
                 <th scope="col">Last</th>
                 <th scope="col">Contact</th>
@@ -39,44 +41,71 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Sample</td>
-                <td>Student</td>
-                <td><a href="mailto:#"><i class="far fa-envelope"></i></a></td>
-                <td>@mdo</td>
-                <td>
-                  <form action="//" type="post">
-                    <button type="submit" value="DoIt">View Record</button>
-                  </form>
-                </td>
+              <?php
+                  // Query Reference for Bind
+                  // Nothing to Reference
 
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Sample</td>
-                <td>Student</td>
-                <td><a href="mailto:#"><i class="far fa-envelope"></i></a></td>
-                <td><i class="fa fa-flag" aria-hidden="true"></i></td>
-                <td>
-                  <form action="//" type="post">
-                    <button type="submit" value="DoIt">View Record</button>
-                  </form>
-                </td>
+                  // View advisor
+                  $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+                  // SQL statemenCourset
+                  $advisor_view = $db_connection->prepare("SELECT student_id, advisor.faculty_id, user.first_name, user.last_name, user.email
+                  FROM advisor
+                  NATURAL JOIN student
+                  NATURAL JOIN user
+                  INNER JOIN faculty on advisor.faculty_id = faculty.faculty_id
+                  ");
+                  // Check Connection
+                  if ($advisor_view === FALSE) {
+                    $error = "Connection Failed";
+                    die($db_connection->error);
+                  }
+                  // bind
+                  //$student_view->bind_param();
+                  // execute
+                  $advisor_view->execute();
+                  // results
+                  $result = $advisor_view->get_result();
+                  if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                      echo '<tr>';
+                      echo '<td>'.$row["first_name"].'</td>';
+                      echo '<td>'.$row["last_name"].'</td>';
+                      echo '<td><a href="mailto:'.$row["email"].'"><i class="far fa-envelope"></i></a></td>';
+                      echo '<td><i class="fa fa-flag" aria-hidden="true"></i></td>';
+                      echo '<td><form action="//" type="post">';
+                      echo '<button type="submit" value="DoIt">View Record</button>';
+                      echo '</form>';
+                      echo '</td>';
+                      echo '</form></td>';
+                      echo '</tr>';
+                    }
+                  } else {
+                    $error = "There was a problem showing the advisor list.";
+                  };
 
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Sample</td>
-                <td>Student</td>
-                <td><a href="mailto:#"><i class="far fa-envelope"></i></a></td>
-                <td>@twitter</td>
-                <td>
-                  <form action="//" type="post">
-                    <button type="submit" value="DoIt">View Record</button>
-                  </form>
-                </td>
+                  // Always Close the DB Connection
+                  $advisor_view->close();
+                ?>
 
+              </tbody>
+            </table>
+            </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+              <!-- Error Reporting -->
+              <?php
+                /* Error Message */
+                if (isset($error)) {
+                  // uses bootstrap alert style for error messages
+                  echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
+                }
+                /* Message Information */
+                if (isset($message)) {
+                  // uses bootstrap alert style for error messages
+                  echo '<div class="alert alert-info" role="alert">' . $message . '</div>';
+                }
+              ?>
               </tr>
             </tbody>
           </table>

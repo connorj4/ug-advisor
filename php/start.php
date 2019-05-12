@@ -354,11 +354,11 @@ $take_status_id = 3;
 $take_status_title = "request";
 $insert_take_status->execute();
 
-$take_status_id = 2;
+$take_status_id = 4;
 $take_status_title = "approved";
 $insert_take_status->execute();
 
-$take_status_id = 2;
+$take_status_id = 5;
 $take_status_title = "denied";
 $insert_take_status->execute();
 

@@ -10,8 +10,12 @@
   /* Page Name */
   $page_name = "term";
 
-  /* Start The Session */
-  session_start();
+  if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $year_type = $_POST['term_year'];
+    $semester_type = $_POST['term_semester'];
+  } else {
+    $error = 'No Department ID selected.';
+  }
 
 ?>
 <!doctype html>
@@ -25,14 +29,96 @@
       <div class="row justify-content-sm-center">
         <div class="col-sm-9">
           <!-- Content for the webpage starts here -->
-          <h1>Student [NAME]</h1>
-          <h2>[ YYYY - Semester ]</h2>
-
+          <h1>Student <?php echo $user_name ?></h1>
+          <h2><?php echo $year_type . ' - ' . $semester_type ?></h2>
+          <div class="row">
           <!-- CURRENT TERM-->
+          <?php
+            $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+            $student_term_detail = $db_connection->prepare("SELECT 
+              year_type AS year, 
+              semester_type AS semester, 
+              take_status_type AS status, 
+              dept_id AS dept, 
+              course_num AS course, 
+              course_name,
+              grade_type AS grade,
+              credits
+              FROM take 
+                NATURAL JOIN semester 
+                NATURAL JOIN years 
+                NATURAL JOIN take_status
+                NATURAL JOIN grade 
+                NATURAL JOIN course
+              WHERE student_id = ? AND year_id = ? AND semester_id = ?;");
+            // Check Connection
+            if ($student_term_detail === FALSE) {
+              $error = "Connection Failed";
+              die($db_connection->error);
+            }
+            // bind
+            $student_term_detail->bind_param('iii', $_SESSION['student_id'], $year_type, $semester_type);
+            $student_term_detail->execute(); 
+
+            $result = $student_term_detail->get_result();
+            $rowcount = mysqli_num_rows($result);
+            $credit_total = 0;
+            $counter = 1;
+
+            if ($result->num_rows > 0) {
+              while($row = $result->fetch_assoc()) {
+
+                echo '<form method="post" action="'.BASE_URL.'/student/term.php">';
+                echo '<input type="hidden" name="term_year" value="'.$row["year"].'">';
+                echo '<input type="hidden" name="term_semester" value="'.$row["semester"].'">';
+                echo '<input type="hidden" name="term_semester" value="'.$_SESSION['student_id'].'">';
+                if ($counter == 1) {
+                  echo '<div class="col-sm-6">';
+                  echo '<div class="card">';
+                  echo '<div class="card-header">';
+                  echo '<strong>' . $row["semester"] . ' - ' . $row["year"] . '</strong><br>';
+                  echo '<small>Number of Courses:' . $rowcount . '</small>';
+                  echo '</div>';
+                  echo '<ul class="list-group list-group-flush">';
+                }
+
+                echo '<li class="list-group-item">';
+                echo '<div class="d-flex flex-nowrap justify-content-between">';
+                echo '<div class="p-2 align-self-center">' . $row["dept"] . '</div>';
+                echo '<div class="p-2 align-self-center">' . $row["course"] . '</div>';
+                echo '<div class="p-2 align-self-center">' . $row["course_name"] . '</div>'; 
+                echo '<div class="p-2 align-self-center"><span class="badge badge-info badge-pill pill-big">' . $row["credits"] . '</span></div>';
+                echo '';
+                echo '</div>'; // end d-flex
+                echo '</li>'; // end list-group-item
+
+                $credit_total += $row["credits"];
+
+                if ($counter == $rowcount) {
+                  echo '</ul>'; // end list-group
+                  echo '<div class="card-footer">';
+                  echo 'Total Credits: '. $credit_total . '<br>';
+                  echo '<a href="#" class="btn btn-primary">Remove Class</a>';
+                  echo '</div>'; // end card-footer
+                  echo '</div>'; // end card
+                  echo '</div>'; // end col
+                }
+                echo '</form>';
+                $counter += 1;
+            
+            }
+          }
+            
+            $student_term_detail->close();
+          ?>
+
+
+
+          </div> <!-- end row -->
 
           <div class="row">
             <div class="col-sm-6">
-              <div class="card">
+            <div class="card">
                 <div class="card-header">
                    Term [total credits]
                 </div>
@@ -64,8 +150,8 @@
             </div><!-- /col 6 -->
 
             <div class="row justify-content-sm-center">
-            <div class="col-sm-3">
-            <a href="<?php echo BASE_URL ?>/select/check-term.php" class="btn btn-primary">Save Term</a>
+            <div class="col-sm-12">
+            <a href="<?php echo BASE_URL ?>/select/check-term.php" class="btn btn-primary">Update Term</a>
             </div>
             </div>
           <hr>
