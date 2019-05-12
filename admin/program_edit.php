@@ -81,7 +81,6 @@
 
                   <div class="form-group">
                     <label for="private_status">Private Status</label><br>
-                  
                     <?php
                       /* Shows either public or private status */
                       $check_active = '';

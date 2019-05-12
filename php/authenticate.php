@@ -53,14 +53,14 @@ if (isset($_POST['submit'])) {
         } elseif ($_SESSION['user_role'] == 3) {
           header("location:" . BASE_URL . "/student");
         } else {
-          $error = "Login Failed";
-          return $error;
+          $_SESSION['error'] = "Login Failed";
+          
         }
       }
   } else {
-    $_SESSION["Username or Password did not match!"];
+    $_SESSION['message'] = "Username or Password did not match!";
     header("location: " . SRC_PATH . "/logout.php"); 
-    return $message;
+    exit();
   }
   // close the mysql connection
   $select_user->close();
