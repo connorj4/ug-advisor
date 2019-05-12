@@ -9,7 +9,6 @@
   include_once (ROOT_SRC_PATH .'/check_advisor.php');
   /* Page Name */
   $page_name = "advisor";
-
 ?>
 <!doctype html>
 <html lang="en">
