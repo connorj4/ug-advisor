@@ -5,7 +5,8 @@
 //======================================================================
 
 if($user_role == 3){
-  $_SESSION['message'] = "Access Granted";
+    // Everything is working
+    echo '<script>console.log("Everything is Working");</script>';
 } else {
   $_SESSION['message'] = "Access Denied";
   header("location: " . SRC_PATH . "/logout.php");

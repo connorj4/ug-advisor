@@ -81,7 +81,8 @@
                 NATURAL JOIN take_status
                 NATURAL JOIN grade 
                 NATURAL JOIN course
-              WHERE student_id = ?;");
+              WHERE student_id = ?
+              ORDER BY year_id ASC, semester_id DESC;");
             // Check Connection
             if ($student_term_map === FALSE) {
               $error = "Connection Failed";
@@ -102,6 +103,8 @@
                 $array[] = $row;
               }
             }
+            
+            // krsort($array);
 
             echo 'Current number of courses: ' . count($array) . '<br>'; 
             echo 'Total number of credits: ' . '<br>';
@@ -163,11 +166,9 @@
                 echo '<form method="post" action="'.BASE_URL.'/student/term.php">';
                 echo '<input type="hidden" name="term_year" value="'.$year.'">';
                 echo '<input type="hidden" name="term_semester" value="'.$semester.'">';
-                //echo '<input type="hidden" name="student_id" value="'.$_SESSION['student_id'].'">';
-                echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> View</button>';
+                echo '<button type="submit" class="btn btn-primary"><i class="far fa-eye"></i> View</button>';
                 echo '</form>';
 
-                //echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
                 echo '</div>'; // end card-footer
                 echo '</div>'; // end card
                 echo '</div>'; // end col
@@ -175,12 +176,10 @@
                 if ($array[$i+1]["semester"] != $array[$i]["semester"]) {
                   echo '</ul>'; // end list-group
                   echo '<div class="card-footer">';
-                  //echo '<a href="'. BASE_URL .'/student/term.php" class="btn btn-primary">View</a>';
                   echo '<form method="post" action="'.BASE_URL.'/student/term.php">';
                   echo '<input type="hidden" name="term_year" value="'.$year.'">';
                   echo '<input type="hidden" name="term_semester" value="'.$semester.'">';
-                  //echo '<input type="hidden" name="student_id" value="'.$_SESSION['student_id'].'">';
-                  echo '<button type="submit" class="btn btn-link btn-sm"><i class="fas fa-archway"></i> View</button>';
+                  echo '<button type="submit" class="btn btn-primary"><i class="far fa-eye"></i> View</button>';
                   echo '</form>';
                   echo '</div>'; // end card-footer
                   echo '</div>'; // end card

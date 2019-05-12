@@ -48,23 +48,27 @@
                   // View advisor
                   $db_connection->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
                   // SQL statemenCourset
-                  $advisor_view = $db_connection->prepare("SELECT student_id, advisor.faculty_id, user.first_name, user.last_name, user.email
+                  $advisor_detail = $db_connection->prepare("SELECT student_id, advisor.faculty_id, user.first_name, user.last_name, user.email
                   FROM advisor
                   NATURAL JOIN student
                   NATURAL JOIN user
                   INNER JOIN faculty on advisor.faculty_id = faculty.faculty_id
-                  ");
+                  WHERE faculty.user_id = ?");
                   // Check Connection
-                  if ($advisor_view === FALSE) {
+
+                //  WHERE advisor.faculty_id = ?
+
+                  if ($advisor_detail === FALSE) {
                     $error = "Connection Failed";
                     die($db_connection->error);
                   }
                   // bind
-                  //$student_view->bind_param();
+                  $advisor_detail->bind_param("s", $user_id);
                   // execute
-                  $advisor_view->execute();
+                  $advisor_detail->execute();
                   // results
-                  $result = $advisor_view->get_result();
+
+                    $result = $advisor_detail->get_result();
                   if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                       echo '<tr>';
@@ -84,7 +88,7 @@
                   };
 
                   // Always Close the DB Connection
-                  $advisor_view->close();
+                  $advisor_detail->close();
                 ?>
 
               </tbody>

@@ -53,8 +53,8 @@ if (isset($_POST['submit'])) {
         } elseif ($_SESSION['user_role'] == 3) {
           header("location:" . BASE_URL . "/student");
         } else {
-          $error = "Login Failed";
-          return $error;
+          $_SESSION['error'] = "Login Failed";
+          
         }
       }
   } else {

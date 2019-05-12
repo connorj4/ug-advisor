@@ -680,7 +680,7 @@ $last_name = "ike";
 $role_id = 2;
 $insert_user->execute();
 
-$user_id = 9;
+$user_id = 10;
 $username = "prof_jess";
 $password = crypt("sugar2", $salt);
 $email = "prof_jess@place.edu";
@@ -689,7 +689,7 @@ $last_name = "ike";
 $role_id = 2;
 $insert_user->execute();
 
-$user_id = 9;
+$user_id = 11;
 $username = "prof_pam";
 $password = crypt("sugar3", $salt);
 $email = "prof_pam@place.edu";
@@ -2052,6 +2052,10 @@ $insert_advisor->execute();
 
 $student_id = 3;
 $faculty_id = 1;
+$insert_advisor->execute();
+
+$student_id = 5;
+$faculty_id = 2;
 $insert_advisor->execute();
 
 $insert_advisor->close();
