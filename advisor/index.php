@@ -9,13 +9,6 @@
   include_once (ROOT_SRC_PATH .'/check_advisor.php');
   /* Page Name */
   $page_name = "advisor";
-
-<<<<<<< HEAD
-  /* Start The Session */
-  //session_start(); 
-
-=======
->>>>>>> 27d457cf963eb08925b98a3bd036da92d7b658f9
 ?>
 <!doctype html>
 <html lang="en">
