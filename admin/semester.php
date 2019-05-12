@@ -29,7 +29,7 @@
             </div>
             <div class="col-sm-3">
               <form action="" method="post">
-                <a href="../admin/semester_add.php" class="btn btn-primary">Add Semester</a>
+              <!--  <a href="../admin/semester_add.php" class="btn btn-primary">Add Semester</a> -->
               </form>
             </div>
           </div> 
