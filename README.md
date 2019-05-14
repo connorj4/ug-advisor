@@ -56,6 +56,6 @@ As an advisor you are able to provide advisement to all students assigned to you
 Once logged in you are brought to your home page which shows all students you are currently advising. You can see which students needs advisement by the 'take flag' When indicated by the flag you will be able to accept or decline a students proposed schedule. If you feel that further information is needed to be given to the student or would like to meet in person you also have the ability to contact the student via the mail button.
 
 ### Students
-As a student you are able to build a unique graduation map in order to help you graduate on time. 
+As a student you are given a graduation map based on your major. You then have the ability to uniquely edit it to fit your specific needs and schedule. (Currently only implemented CSC graduation map and only exists for user Ken at this time)
 
 Once logged in you are presented with your home page which shows your current graduation map. The map consists of semesters or terms. To start you would select a term by clicking view term. Once viewing that term you have the ability to add courses based on the required courses for your major. After adding courses you an then click "Save Term Update" towards the bottom of the page. You are then able to review the term and if you are happy with it click "Send to Advisor" to allow them to review the proposed courses.
